@@ -20,6 +20,8 @@ int main(int argc,char* argv[])
     {
         if ((string)argv[1] == "hello")
             cout << "Bonjour le monde !" << endl ;
+        else
+            cout << " \"" << argv[1] << "\" ne correspond a aucune fonctionnalité implémenté " << endl ;
     }    
     else
     {
