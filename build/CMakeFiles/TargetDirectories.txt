@@ -1,3 +1,0 @@
-/home/piquet/Travail/build/CMakeFiles/edit_cache.dir
-/home/piquet/Travail/build/CMakeFiles/rebuild_cache.dir
-/home/piquet/Travail/build/CMakeFiles/run.dir
