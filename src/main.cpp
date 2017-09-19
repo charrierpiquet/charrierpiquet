@@ -16,10 +16,17 @@ using namespace state;
 
 int main(int argc,char* argv[]) 
 {
-    Exemple exemple;
-    exemple.setX(3);
+    if (argc == 2)
+    {
+        if ((string)argv[1] == "hello")
+            cout << "Bonjour le monde !" << endl ;
+    }    
+    else
+    {
+        Exemple exemple;
+        exemple.setX(3);
 
-    cout << "It works !" << endl;
-
+        cout << "It works !" << endl;
+    }
     return 0;
 }

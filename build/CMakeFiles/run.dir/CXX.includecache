@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/state.h
+state/Exemple.h
+../src/state/Exemple.h
+
+../src/state.hpp
+state.h
+../src/state.h
+
+../src/state/Exemple.h
+
+/home/piquet/Travail/src/main.cpp
+iostream
+-
+SFML/Graphics.hpp
+-
+state.hpp
+/home/piquet/Travail/src/state.hpp
+
+/home/piquet/Travail/src/state.h
+state/Exemple.h
+/home/piquet/Travail/src/state/Exemple.h
+
+/home/piquet/Travail/src/state.hpp
+state.h
+/home/piquet/Travail/src/state.h
+
+/home/piquet/Travail/src/state/Exemple.cpp
+state.hpp
+/home/piquet/Travail/src/state/state.hpp
+
+/home/piquet/Travail/src/state/Exemple.h
+
