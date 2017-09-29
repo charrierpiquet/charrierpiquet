@@ -1,1 +1,0 @@
-/usr/bin/g++    -Wall -std=c++11 -pthread -g -O3 -DNDEBUG   CMakeFiles/client.dir/client/main.cpp.o CMakeFiles/client.dir/shared/state/Exemple.cpp.o  -o ../bin/client -rdynamic -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network 
