@@ -1,5 +1,4 @@
 
-
 HEADERS:=$(shell find src -type f -name '*.h')
 
 all: | clean extern configure build
