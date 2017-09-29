@@ -68,10 +68,4 @@ find_library(
 	DOC "microhttpd library"
 )
 #target_link_libraries(server ${MHD_LIBRARY})
-find_library(
-	MHD_LIBRARY
-	NAMES microhttpd microhttpd-10 libmicrohttpd libmicrohttpd-dll
-	DOC "microhttpd library"
-)
-#target_link_libraries(server ${MHD_LIBRARY})
 
