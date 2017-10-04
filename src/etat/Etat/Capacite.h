@@ -15,19 +15,18 @@ namespace Etat {
   class Capacite : public Etat::Objet {
     // Attributes
   protected:
-    string keyWord;
+    std::string keyWord;
     int categorie;
     // Operations
   public:
-    String GetKeyWord ();
+    std::string GetKeyWord ();
     int GetCategorie ();
-    Capacite ();
-    ~Capacite ();
+    Capacite (std::string motclef, int type);
     // Setters and Getters
-    const string& getKeyWord() const;
-    void setKeyWord(const string& keyWord);
-    int getCategorie() const;
-    void setCategorie(int categorie);
+//    const string& getKeyWord() const;
+//    void setKeyWord(const string& keyWord);
+//    int getCategorie() const;
+//    void setCategorie(int categorie);
   };
 
 };

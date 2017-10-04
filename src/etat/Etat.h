@@ -2,15 +2,14 @@
 #ifndef __ETAT__H
 #define __ETAT__H
 
+#include "Etat/Objet.h"
 #include "Etat/Cout.h"
 #include "Etat/ManaPool.h"
-#include "Etat/Objet.h"
+#include "Etat/Joueur.h"
+#include "Etat/Etat.h"
 #include "Etat/Capacite.h"
 #include "Etat/Carte.h"
 #include "Etat/Active.h"
-#include "Etat/Joueur.h"
-#include "Etat/Zone.h"
-#include "Etat/Etat.h"
 #include "Etat/Declenchee.h"
 #include "Etat/Creature.h"
 #endif

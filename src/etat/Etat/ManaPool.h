@@ -15,11 +15,11 @@ namespace Etat {
   class ManaPool {
     // Attributes
   private:
-     inc;
-     black;
-     blue;
-     green;
-     multi;
+     int inc;
+     int black;
+     int blue;
+     int green;
+     int multi;
     // Operations
   public:
     void AddInc ();
@@ -29,12 +29,11 @@ namespace Etat {
     void AddMulti ();
     void Vider ();
     void Payer (Cout cost);
-    int GetInc();
-    int GetBlue();
-    int GetBlack();
-    int GetGreen();
-    int GetMulti();
-    
+    int GetInc ();
+    int GetBlue ();
+    int GetBlack ();
+    int GetGreen ();
+    int GetMulti ();
     // Setters and Getters
   };
 

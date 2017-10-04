@@ -2,18 +2,14 @@
 #ifndef ETAT__JOUEUR__H
 #define ETAT__JOUEUR__H
 
+#include <vector>
+
 namespace Etat {
   class ManaPool;
-  class Zone;
   class Objet;
-  class Carte;
-  class Active;
 }
 
 #include "ManaPool.h"
-#include "Zone.h"
-#include "Carte.h"
-#include "Active.h"
 #include "Objet.h"
 
 namespace Etat {
@@ -26,30 +22,29 @@ namespace Etat {
     ManaPool manaPool;
     int pv;
     bool aJoueTerrain;
-    Zone graveyard;
-    Zone hand;
-    Zone library;
-    Objet* cartes;
-    int nbCarte;
+    std::vector<Objet> hand;
+    std::vector<Objet> graveyard;
+    std::vector<Objet> library;
     // Operations
   public:
     int GetPv ();
     void SetPv (int Pv);
     void Draw ();
     void Discard ();
-    void Sacrifice (Objet carte);
-    Zone GetHand ();
-    Zone GetLibrary ();
-    Zone GetGraveyard ();
-    ManaPool GetManaPool();
+    std::vector<Objet> GetHand ();
     bool GetAJoueTerrain ();
     void SetAJoueTerrain (bool value);
-    Objet GetCarte (int i);
     Joueur ();
     ~Joueur ();
-    void AddObjet (Objet newObj);
-    void DestroyObjet(Objet Obj);
-    int GetNbCarte();
+    std::vector<Objet> GetLibrary ();
+    std::vector<Objet> GetGraveyard ();
+    ManaPool GetManaPool ();
+    void AddCardLibrary (Objet card);
+    void AddCardHand (Objet card);
+    void AddCardGraveyard (Objet card);
+    void DelCardHand (Objet card);
+    void DelCardLibrary (Objet card);
+    void DelCardGraveyard (Objet card);
     // Setters and Getters
   };
 

@@ -18,13 +18,11 @@ namespace Etat {
     // Associations
     // Attributes
   private:
-    Cout -cost;
+    Cout cost;
     // Operations
   public:
     Cout GetCost ();
-    void Active ();
-    Active ();
-    ~Active ();
+    Active (Cout cout, std::string motclef);
     // Setters and Getters
   };
 

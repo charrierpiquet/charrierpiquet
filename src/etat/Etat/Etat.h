@@ -2,16 +2,15 @@
 #ifndef ETAT__ETAT__H
 #define ETAT__ETAT__H
 
+#include <vector>
 
 namespace Etat {
   class Joueur;
-  class Zone;
   class Objet;
 }
 
-#include "Zone.h"
-#include "Joueur.h"
 #include "Objet.h"
+#include "Joueur.h"
 
 namespace Etat {
 
@@ -24,19 +23,24 @@ namespace Etat {
     int phase;
     Joueur * joueurs;
     int priorite;
-    Zone pile;
-    Zone battlefield;
+    std::vector<Objet> pile;
+    std::vector<Objet> battlefield;
     int nbJoueur;
     // Operations
   public:
     void IncrPriority ();
     void IncrPhase ();
     Joueur JoueurActif ();
-    void ToPile (Objet obj);
-    void ToBattlefield (Objet obj);
-    Joueur GetJoueur (int i);
+    void AddCardPile (Objet card);
+    void AddCardBattlefield (Objet card);
     Etat (int nb = 2);
+    int GetNbJoueur ();
     ~Etat ();
+    Joueur GetJoueur (int i);
+    void DelCardBattlefield (Objet card);
+    void DelCardPile (Objet card);
+    std::vector<Objet> GetPile ();
+    std::vector<Objet> GetBattlefield ();
     // Setters and Getters
   };
 

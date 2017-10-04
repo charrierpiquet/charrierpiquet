@@ -4,11 +4,9 @@
 
 
 namespace Etat {
-  class Zone;
   class Objet;
 }
 
-#include "Zone.h"
 
 namespace Etat {
 
@@ -17,23 +15,21 @@ namespace Etat {
     // Attributes
   protected:
     bool isCapacite;
-    Zone conteneur;
     Objet target;
+    int indJoueur;
     // Operations
   public:
-    virtual void Resolve () = 0;
     void SetTarget (Objet cible);
     Objet GetTarget ();
     bool GetIsCapacite ();
-    Zone GetConteneur ();
-    void Deplacer (Zone zoneCible);
+    int GetIndJoueur ();
     // Setters and Getters
-    bool getIsCapacite() const;
-    void setIsCapacite(bool isCapacite);
-    const Zone& getConteneur() const;
-    void setConteneur(const Zone& conteneur);
-    const Objet& getTarget() const;
-    void setTarget(const Objet& target);
+//    bool getIsCapacite() const;
+//    void setIsCapacite(bool isCapacite);
+//    const Objet& getTarget() const;
+//    void setTarget(const Objet& target);
+//    int getIndJoueur() const;
+//    void setIndJoueur(int indJoueur);
   };
 
 };

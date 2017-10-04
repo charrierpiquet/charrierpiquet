@@ -24,12 +24,14 @@ namespace Etat {
   public:
     int GetForce ();
     int GetEndurance ();
-    void SetBonusEOT ();
-    void SetBlessure ();
+    int GetBlessure ();
+    void SetBonusEOT (int value);
+    void SetBlessure (int value);
     bool GetMalInvoc ();
     void SetMalInvoc (bool value);
     Creature ();
     ~Creature ();
+    int GetBonusEOT ();
     // Setters and Getters
   };
 

@@ -21,8 +21,8 @@ namespace Etat
             joueurs[i] = new Joueur( );
         }
         
-        pile = new Zone (NULL,2,"pile");
-        battlefield = new Zone(NULL,2,"battlefield");
+        pile = new std::vector<Objet> ();
+        battlefield = new std::vector<Objet> ();
         
         joueur = 0; phase = 0;
     }
@@ -30,33 +30,38 @@ namespace Etat
     void Etat::IncrPhase()
     {
         phase ++;
+        
+        // gestion des morts
+        for (int i=0 ; i < battlefield.size() ; i++)
+            if (((Carte)battlefield[i]).GetIsCreature())
+                if (((Creature)battlefield[i]).GetBlessure() >= ((Creature)battlefield[i]).GetEndurance())
+                {
+                    joueurs[battlefield[i].GetIndJoueur()].AddCardGraveyard(battlefield[i]);
+                    this->DelCardBattlefield(battlefield[i]);
+                }
+        
+        //vider la mana pool
+        for(int i = 0; i < nbJoueur ; i++)
+            this->GetJoueur(i).GetManaPool().Vider();
+        
         if (phase > NbPhase)
         {
             phase = 0;
                        
             //cleanup
-            for(int i = 0; i < nbJoueur ; i++)
-            {
-                //vider la mana pool
-                this->GetJoueur(i).GetManaPool().Vider();
+
                 
-                //retirer les blessures et effet fin tour
-                for (int j = 0; j < this->GetJoueur(i).GetNbCarte() ; j++)
-                    if ("battlefield" == this->GetJoueur(i).GetCarte(j).GetConteneur().GetName()
-                            && false == this->GetJoueur(i).GetCarte(j).GetIsCapacite() )
-                        if (((Carte)this->GetJoueur(i).GetCarte(j)).GetIsCreature())
-                        {
-                            ((Creature)this->GetJoueur(i).GetCarte(j)).SetBlessure(0);
-                            ((Creature)this->GetJoueur(i).GetCarte(j)).SetBonusEOT(0);
-                        }   
-            }
+            //retirer les blessures et effet fin tour
+            for (int i=0 ; i < battlefield.size() ; i++)
+                if (((Carte)battlefield[i]).GetIsCreature())
+                {
+                    ((Creature)battlefield[i]).SetBlessure(0);
+                    ((Creature)battlefield[i]).SetBonusEOT(0);
+                }
+            
             //retirer cartes en trop dans la main
-            int carteTrop = 0;
-            for (int i = 0 ; i < this->JoueurActif().GetNbCarte() ; i++)
-                    if ("hand" == this->JoueurActif().GetCarte(i).GetConteneur().GetName())
-                        carteTrop ++;
-            if (carteTrop > 7)
-                for(int i = 0 ; i < 7-carteTrop ; i++)
+            if (this->JoueurActif().GetHand().size() > 7)
+                for (int i = 0 ; i < this->JoueurActif().GetHand().size() - 7 ; i++)
                     this->JoueurActif().Discard();
             
             // changement de tour
@@ -65,12 +70,12 @@ namespace Etat
                 joueur = 0; 
             
             //uptap & mal invoc
-            for (int i = 0 ; i < this->JoueurActif().GetNbCarte() ; i++)
-                if ("battlefield" == this->JoueurActif().GetCarte(i).GetConteneur().GetName())
+            for (int i=0 ; i < battlefield.size() ; i++)
+                if (battlefield[i].GetIndJoueur() == joueur)
                 {
-                    ((Carte)this->JoueurActif().GetCarte(i)).UnTap();
-                    if (((Carte)this->JoueurActif().GetCarte(i)).GetIsCreature())
-                        ((Creature)this->JoueurActif().GetCarte(i)).SetMalInvoc(false);
+                    ((Carte)battlefield[i]).UnTap();
+                    if (((Carte)battlefield[i]).GetIsCreature())
+                        ((Creature)battlefield[i]).SetMalInvoc(false);
                 }
             
             //draw
@@ -90,12 +95,32 @@ namespace Etat
     {
         return joueurs[priorite];
     }
-    void Etat::ToBattlefield(Objet obj)
+    void Etat::AddCardBattlefield(Objet card)
     {
-        obj.Deplacer(battlefield);
+        battlefield.push_back(card);
     }
-    void Etat::ToPile(Objet obj)
+    void Etat::AddCardPile(Objet card)
     {
-        obj.Deplacer(pile);
+        pile.push_back(card);
+    }
+    void Etat::DelCardBattlefield(Objet card)
+    {
+        int ind =-1;
+        for(int i=0 ; i<battlefield.size() ; i++)
+            if (battlefield[i] == card)
+                ind = i;
+        
+        if (ind >= 0)
+            battlefield.erase(battlefield.begin + ind);
+    }
+    void Etat::DelCardPile(Objet card)
+    {
+        int ind =-1;
+        for(int i=0 ; i<pile.size() ; i++)
+            if (pile[i] == card)
+                ind = i;
+        
+        if (ind >= 0)
+            pile.erase(pile.begin + ind);
     }
 };

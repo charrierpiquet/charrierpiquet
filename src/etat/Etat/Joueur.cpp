@@ -12,18 +12,9 @@ namespace Etat
         pv = 20;
         aJoueTerrain = false;
         
-        graveyard = new Zone(this, 2, "graveyard");
-        library = new Zone(this, 0,"library");
-        hand = new Zone(this, 1, "hand");
-        
-        cartes = malloc(NbCarteDeck*sizeof(Objet));
-        if (cartes == NULL)
-        {
-            // erreur
-        }
-        
-        for(int i = 0; i<NbCarteDeck; i++)
-            cartes[i] = new Carte();
+        graveyard = new std::vector<Objet>();
+        library =  new std::vector<Objet>();
+        hand =  new std::vector<Objet>();
     }
     
     int Joueur::GetPv()
@@ -37,60 +28,27 @@ namespace Etat
     
     void Joueur::Draw()
     {
-        int i;
-        bool canDraw = false;
-        
-        for (int j = 0 ; j < nbCarte ; j++)
-            if (cartes[j].GetConteneur().GetName() == "library")
-                canDraw = true;
-        
-        while (canDraw)
-        {
-            i = rand()% nbCarte;
-            if (cartes[i].GetConteneur().GetName() == "library")
-            {
-                cartes[i].Deplacer(hand);
-                break;
-            }
-        }  
+        hand.push_back(library.back());
+        library.pop_back();
     }
     
     void Joueur::Discard()
     {
-        int i;
-        bool canDiscard = false;
-        
-        for (int j = 0 ; j < nbCarte ; j++)
-            if (cartes[j].GetConteneur().GetName() == "hand")
-                canDiscard = true;
-        
-        while (canDiscard)
-        {
-            i = rand()% nbCarte;
-            if (cartes[i].GetConteneur().GetName() == "hand")
-            {
-                cartes[i].Deplacer(graveyard);
-                break;
-            }
-        }
+        if (hand.size() > 0)
+            hand.erase(hand.begin()+rand()%hand.size());
     }
     
-    void Joueur::Sacrifice(Objet carte)
-    {
-        carte.Deplacer(graveyard);
-    }
-    
-    Zone Joueur::GetHand()
+    std::vector<Objet> Joueur::GetHand()
     {
         return hand;
     }
     
-    Zone Joueur::GetLibrary()
+    std::vector<Objet> Joueur::GetLibrary()
     {
         return library;
     }
     
-    Zone Joueur::GetGraveyard()
+    std::vector<Objet> Joueur::GetGraveyard()
     {
         return graveyard;
     }
@@ -110,21 +68,48 @@ namespace Etat
         aJoueTerrain = value;
     }
     
-    Objet Joueur::GetCarte(int i)
+    void Joueur::AddCardGraveyard(Objet card)
     {
-        return cartes[i];
+        graveyard.push_back(card);
     }
-    
-    void Joueur::AddObjet(Objet newObj)
+    void Joueur::DelCardGraveyard(Objet card)
     {
-        nbCarte ++;
-        cartes = realloc(cartes,nbCarte);
-        cartes[nbCarte -1] = newObj;
-    }
-    
-    void Joueur::DestroyObjet(Objet Obj)
-    {
+        int ind =-1;
+        for(int i=0 ; i<graveyard.size() ; i++)
+            if (graveyard[i] == card)
+                ind = i;
         
+        if (ind >= 0)
+            graveyard.erase(graveyard.begin + ind);
     }
     
+    void Joueur::AddCardLibrary(Objet card)
+    {
+        library.push_back(card);
+    }
+    void Joueur::DelCardLibrary(Objet card)
+    {
+        int ind =-1;
+        for(int i=0 ; i<library.size() ; i++)
+            if (library[i] == card)
+                ind = i;
+        
+        if (ind >= 0)
+            library.erase(library.begin + ind);
+    }
+    
+    void Joueur::AddCardHand(Objet card)
+    {
+        hand.push_back(card);
+    }
+    void Joueur::DelCardHand(Objet card)
+    {
+        int ind =-1;
+        for(int i=0 ; i<hand.size() ; i++)
+            if (hand[i] == card)
+                ind = i;
+        
+        if (ind >= 0)
+            hand.erase(hand.begin + ind);
+    }
 };
