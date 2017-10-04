@@ -2,18 +2,18 @@
 #ifndef ETAT__CAPACITE__H
 #define ETAT__CAPACITE__H
 
+#include <string>
 
 namespace Etat {
   class Objet;
 }
 
 #include "Objet.h"
-#include <string>
 
 namespace Etat {
 
   /// class Capacite - 
-  class Capacite : public Objet {
+  class Capacite : public Etat::Objet {
     // Attributes
   private:
     std::string keyWord;
@@ -24,10 +24,6 @@ namespace Etat {
     int GetCategorie ();
     Capacite (std::string motclef, int type, int id, int prop);
     // Setters and Getters
-//    const string& getKeyWord() const;
-//    void setKeyWord(const string& keyWord);
-//    int getCategorie() const;
-//    void setCategorie(int categorie);
   };
 
 };

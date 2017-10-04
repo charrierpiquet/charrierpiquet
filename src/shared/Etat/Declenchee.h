@@ -2,6 +2,7 @@
 #ifndef ETAT__DECLENCHEE__H
 #define ETAT__DECLENCHEE__H
 
+#include <string>
 
 namespace Etat {
   class Capacite;
@@ -13,12 +14,13 @@ namespace Etat {
 
   /// class Declenchee - 
   class Declenchee : public Capacite {
+    // Attributes
   private:
-      int event;
+    int event;
     // Operations
   public:
-      int GetEvent();
-      Declenchee(int evnt, std::string motclef, int id, int prop);
+    int GetEvent ();
+    Declenchee (int evnt, std::string motclef, int id, int prop);
     // Setters and Getters
   };
 

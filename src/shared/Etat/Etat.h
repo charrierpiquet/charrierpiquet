@@ -7,10 +7,12 @@
 namespace Etat {
   class Joueur;
   class Objet;
+  class Carte;
 }
 
-#include "Objet.h"
 #include "Joueur.h"
+#include "Objet.h"
+#include "Carte.h"
 
 namespace Etat {
 
@@ -23,8 +25,8 @@ namespace Etat {
     int phase;
     Joueur * joueurs;
     int priorite;
-    std::vector<Objet> pile;
-    std::vector<Carte> battlefield;
+    std::vector<Objet*> pile;
+    std::vector<Carte*> battlefield;
     int nbJoueur;
     // Operations
   public:
@@ -38,8 +40,8 @@ namespace Etat {
     Joueur GetJoueur (int i);
     void DelCardBattlefield (Carte card);
     void DelCardPile (Objet card);
-    std::vector<Objet> GetPile ();
-    std::vector<Carte> GetBattlefield ();
+    std::vector<Objet*> GetPile ();
+    std::vector<Carte*> GetBattlefield ();
     // Setters and Getters
   };
 

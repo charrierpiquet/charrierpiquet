@@ -1,5 +1,4 @@
 #include "Etat.h"
-#include "Carte.h"
 #include "Creature.h"
 #include <cstddef>
 #include <iostream>
@@ -27,7 +26,7 @@ namespace Etat
         
         //vider la mana pool
         for(int i = 0; i < nbJoueur ; i++)
-            this->GetJoueur(i).GetManaPool().Vider();
+            GetJoueur(i).GetManaPool().Vider();
         
         if (phase > NbPhase)
         {
@@ -35,16 +34,16 @@ namespace Etat
                        
             //cleanup   
             //retirer les blessures et effet fin tour
-            for (int i=0 ; i < battlefield.size() ; i++)
-                if (battlefield[i].GetIsCreature())
+            for (int i=0 ; (unsigned)i < battlefield.size() ; i++)
+                if (battlefield[i]->GetIsCreature())
                 {
-                    battlefield[i].SetBlessure(0);
-                    battlefield[i].SetBonusEOT(0);
+                    ((Creature*)battlefield[i])->SetBlessure(0);
+                    ((Creature*)battlefield[i])->SetBonusEOT(0);
                 }
             
             //retirer cartes en trop dans la main
             if (this->JoueurActif().GetHand().size() > 7)
-                for (int i = 0 ; i < this->JoueurActif().GetHand().size() - 7 ; i++)
+                for (int i = 0 ; (unsigned)i < this->JoueurActif().GetHand().size() - 7 ; i++)
                     this->JoueurActif().Discard();
             
             // changement de tour
@@ -53,12 +52,12 @@ namespace Etat
                 joueur = 0; 
             
             //uptap & mal invoc
-            for (int i=0 ; i < battlefield.size() ; i++)
-                if (battlefield[i].GetIndJoueur() == joueur)
+            for (int i=0 ; (unsigned)i < battlefield.size() ; i++)
+                if (battlefield[i]->GetIndJoueur() == joueur)
                 {
-                    battlefield[i].SetIsTap(false);
-                    if (battlefield[i].GetIsCreature())
-                        battlefield[i].SetMalInvoc(false);
+                    battlefield[i]->SetIsTap(false);
+                    if (battlefield[i]->GetIsCreature())
+                        ((Creature*)battlefield[i])->SetMalInvoc(false);
                 }
             
             //draw
@@ -80,17 +79,17 @@ namespace Etat
     }
     void Etat::AddCardBattlefield(Carte card)
     {
-        battlefield.push_back(card);
+        battlefield.push_back(&card);
     }
     void Etat::AddCardPile(Objet card)
     {
-        pile.push_back(card);
+        pile.push_back(&card);
     }
     void Etat::DelCardBattlefield(Carte card)
     {
         int ind =-1;
-        for(int i=0 ; i<battlefield.size() ; i++)
-            if (battlefield[i].GetIdObj() == card.GetIdObj())
+        for(int i=0 ; (unsigned)i<battlefield.size() ; i++)
+            if (battlefield[i]->GetIdObj() == card.GetIdObj())
                 ind = i;
         
         if (ind >= 0)
@@ -99,11 +98,19 @@ namespace Etat
     void Etat::DelCardPile(Objet card)
     {
         int ind =-1;
-        for(int i=0 ; i<pile.size() ; i++)
-            if (pile[i].GetIdObj() == card.GetIdObj())
+        for(int i=0 ; (unsigned)i<pile.size() ; i++)
+            if (pile[i]->GetIdObj() == card.GetIdObj())
                 ind = i;
         
         if (ind >= 0)
             pile.erase(pile.begin() + ind);
+    }
+    Joueur Etat::GetJoueur(int i)
+    {
+        return *(joueurs +i);
+    }
+    int Etat::GetNbJoueur()
+    {
+        return nbJoueur;
     }
 };

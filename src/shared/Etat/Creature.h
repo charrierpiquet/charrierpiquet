@@ -2,11 +2,17 @@
 #ifndef ETAT__CREATURE__H
 #define ETAT__CREATURE__H
 
+#include <string>
+#include <vector>
 
 namespace Etat {
+  class Cout;
+  class Capacite;
   class Carte;
 }
 
+#include "Cout.h"
+#include "Capacite.h"
 #include "Carte.h"
 
 namespace Etat {
@@ -24,16 +30,13 @@ namespace Etat {
   public:
     int GetForce ();
     int GetEndurance ();
-    int GetBlessure ();
     bool GetMalInvoc ();
     int GetBonusEOT ();
-    
+    int GetBlessure ();
     void SetBonusEOT (int value);
     void SetBlessure (int value);
     void SetMalInvoc (bool value);
-    Creature (int strengh, int thougness,bool token,std::string nom, Cout cout,
-            Capacite capa, int id, int prop);
-    
+    Creature (int strengh, int thougness, bool token, std::string nom, Cout cout, std::vector<Capacite> capa, int id, int prop);
     // Setters and Getters
   };
 

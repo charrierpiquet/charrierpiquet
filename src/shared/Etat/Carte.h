@@ -2,70 +2,50 @@
 #ifndef ETAT__CARTE__H
 #define ETAT__CARTE__H
 
+#include <string>
+#include <vector>
 
 namespace Etat {
   class Cout;
-  class Objet;
   class Capacite;
+  class Objet;
 }
 
 #include "Cout.h"
-#include "Objet.h"
 #include "Capacite.h"
+#include "Objet.h"
 
 namespace Etat {
 
   /// class Carte - 
-  class Carte : public Objet {
+  class Carte : public Etat::Objet {
     // Associations
     // Attributes
   private:
-    std::string name;
-    Cout cost;
-    int counters;
-    Capacite ability;
     bool isPermanent;
     bool isLand;
     bool isTap;
     bool isCreature;
     bool isToken;
-    
+    std::string name;
+    Cout cost;
+    int counters;
+    std::vector<Capacite> ability;
     // Operations
   public:
     std::string GetName ();
     Cout GetCost ();
     int GetCounter ();
-    void SetCounter (int value);
-    Carte(bool permanent,bool land,bool creature,bool token, std::string nom,
-           Cout cout, Capacite capa, int id, int prop);
-    
-    
     bool GetIsLand ();
     bool GetIsPermanent ();
     bool GetIsCreature ();
     bool GetIsToken ();
-    bool GetIsTap();
-    void SetIsTap(bool value);
-    
+    bool GetIsTap ();
+    std::vector<Capacite> GetAbility ();
+    void SetIsTap (bool value);
+    void SetCounter (int value);
+    Carte (bool permanent, bool land, bool creature, bool token, std::string nom, Cout cout, std::vector<Capacite> capa, int id, int prop);
     // Setters and Getters
-//    bool getIsPermanent() const;
-//    void setIsPermanent(bool isPermanent);
-//    bool getIsLand() const;
-//    void setIsLand(bool isLand);
-//    bool getIsTap() const;
-//    void setIsTap(bool isTap);
-//    bool getIsCreature() const;
-//    void setIsCreature(bool isCreature);
-//    bool getIsToken() const;
-//    void setIsToken(bool isToken);
-//    const string& getName() const;
-//    void setName(const string& name);
-//    const Cout& getCost() const;
-//    void setCost(const Cout& cost);
-//    int getCounters() const;
-//    void setCounters(int counters);
-//    const capacites& getAbility() const;
-//    void setAbility(const capacites& ability);
   };
 
 };

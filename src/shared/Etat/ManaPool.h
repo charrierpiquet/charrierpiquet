@@ -15,11 +15,11 @@ namespace Etat {
   class ManaPool {
     // Attributes
   private:
-     int inc;
-     int black;
-     int blue;
-     int green;
-     int multi;
+    int inc;
+    int black;
+    int blue;
+    int green;
+    int multi;
     // Operations
   public:
     void AddInc ();

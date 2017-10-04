@@ -2,6 +2,7 @@
 #ifndef ETAT__ACTIVE__H
 #define ETAT__ACTIVE__H
 
+#include <string>
 
 namespace Etat {
   class Cout;

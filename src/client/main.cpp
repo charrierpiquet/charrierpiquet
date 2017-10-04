@@ -10,11 +10,12 @@ void testSFML() {
 // Fin test SFML
 
 #include "Etat.h"
-#include "TestEtat.h"
+#include "Test.h"
 #include <iostream>
 
 using namespace std;
 using namespace Etat;
+using namespace Test;
 
 int main(int argc,char* argv[]) 
 {
@@ -28,7 +29,7 @@ int main(int argc,char* argv[])
             cout << "Bonjour le monde !"<< endl;
         else if ((string)argv[1] == "state")
         {                
-            int sortie = testEtat();   
+            int sortie = TestEtat();   
             if (sortie != 0)
                 cout << "Il y a des erreurs, voir sortie : " << sortie <<endl;
             else

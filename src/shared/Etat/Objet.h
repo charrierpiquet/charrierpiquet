@@ -18,24 +18,15 @@ namespace Etat {
     Objet* target;
     int indJoueur;
     int idObj;
-
     // Operations
   public:
     void SetTarget (Objet cible);
     Objet GetTarget ();
     bool GetIsCapacite ();
     int GetIndJoueur ();
-    int GetIdObj();
-    
-    Objet(bool capa, int id, int prop);
-    
+    int GetIdObj ();
+    Objet (bool capa, int id, int prop);
     // Setters and Getters
-//    bool getIsCapacite() const;
-//    void setIsCapacite(bool isCapacite);
-//    const Objet& getTarget() const;
-//    void setTarget(const Objet& target);
-//    int getIndJoueur() const;
-//    void setIndJoueur(int indJoueur);
   };
 
 };

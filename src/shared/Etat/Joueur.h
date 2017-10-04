@@ -6,12 +6,13 @@
 
 namespace Etat {
   class ManaPool;
+  class Carte;
   class Objet;
 }
 
 #include "ManaPool.h"
-#include "Objet.h"
 #include "Carte.h"
+#include "Objet.h"
 
 namespace Etat {
 
@@ -23,21 +24,21 @@ namespace Etat {
     ManaPool manaPool;
     int pv;
     bool aJoueTerrain;
-    std::vector<Carte> hand;
-    std::vector<Carte> graveyard;
-    std::vector<Carte> library;
+    std::vector<Carte*> hand;
+    std::vector<Carte*> graveyard;
+    std::vector<Carte*> library;
     // Operations
   public:
     int GetPv ();
     void SetPv (int Pv);
     void Draw ();
     void Discard ();
-    std::vector<Carte> GetHand ();
+    std::vector<Carte*> GetHand ();
     bool GetAJoueTerrain ();
     void SetAJoueTerrain (bool value);
     Joueur ();
-    std::vector<Carte> GetLibrary ();
-    std::vector<Carte> GetGraveyard ();
+    std::vector<Carte*> GetLibrary ();
+    std::vector<Carte*> GetGraveyard ();
     ManaPool GetManaPool ();
     void AddCardLibrary (Carte card);
     void AddCardHand (Carte card);

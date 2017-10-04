@@ -3,17 +3,14 @@
 namespace Etat
 {
     Carte::Carte(bool permanent,bool land,bool creature,bool token,
-            std::string nom,Cout cout, Capacite capa, int id, int prop):
+            std::string nom,Cout cout, std::vector<Capacite> capa, int id, int prop):
     Objet(false, id, prop), cost(cout),ability(capa)
     {
         isPermanent = permanent;
         isLand = land;
         isCreature = creature;
         isToken = token;
-        name = nom;
-        cost = cout;
-        ability = capa;
-        
+        name = nom;        
         
         counters =0;
         isTap = false;
@@ -55,15 +52,21 @@ namespace Etat
         return isTap;
     }
     
+    int Carte::GetCounter()
+    {
+        return counters;
+    }
+    
+    std::vector<Capacite> Carte::GetAbility()
+    {
+        return ability;
+    }
+    
     void Carte::SetIsTap(bool value)
     {
         isTap = value;
     }
     
-    int Carte::GetCounter()
-    {
-        return counters;
-    }
     
     void Carte::SetCounter(int value)
     {
