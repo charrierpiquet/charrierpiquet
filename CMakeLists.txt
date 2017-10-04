@@ -5,6 +5,7 @@ project (plt)
 include_directories ("${PROJECT_SOURCE_DIR}/src/client")
 include_directories ("${PROJECT_SOURCE_DIR}/src/server")
 include_directories ("${PROJECT_SOURCE_DIR}/src/shared")
+include_directories ("${PROJECT_SOURCE_DIR}/src/Test")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
