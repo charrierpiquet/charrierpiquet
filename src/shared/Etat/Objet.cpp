@@ -9,23 +9,23 @@ namespace Etat
         indJoueur = prop;
     }
     
-    void Objet::SetTarget(Objet cible)
+    void Objet::SetTarget(std::weak_ptr<Objet> cible)
     {
-        target = &cible;
+        target = cible;
     }
-    Objet Objet::GetTarget()
+    std::weak_ptr<Objet> Objet::GetTarget() const
     {
-        return *target;
+        return target;
     }
-    bool Objet::GetIsCapacite()
+    bool Objet::GetIsCapacite() const
     {
         return isCapacite;
     }
-    int Objet::GetIndJoueur()
+    int Objet::GetIndJoueur() const
     {
         return indJoueur;
     }
-    int Objet::GetIdObj()
+    int Objet::GetIdObj() const
     {
         return idObj;
     }

@@ -18,7 +18,7 @@ namespace Etat {
 namespace Etat {
 
   /// class Creature - 
-  class Creature : public Carte {
+  class Creature : public Etat::Carte {
     // Attributes
   private:
     int force;
@@ -28,15 +28,15 @@ namespace Etat {
     bool malInvoc;
     // Operations
   public:
-    int GetForce ();
-    int GetEndurance ();
-    bool GetMalInvoc ();
-    int GetBonusEOT ();
-    int GetBlessure ();
+    Creature (int strengh, int thougness, bool token, std::string nom, Cout cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
+    int GetForce () const;
+    int GetEndurance () const;
+    bool GetMalInvoc () const;
+    int GetBonusEOT () const;
+    int GetBlessure () const;
     void SetBonusEOT (int value);
     void SetBlessure (int value);
     void SetMalInvoc (bool value);
-    Creature (int strengh, int thougness, bool token, std::string nom, Cout cout, std::vector<Capacite> capa, int id, int prop);
     // Setters and Getters
   };
 

@@ -148,23 +148,23 @@ namespace Etat
         }
     }
     
-    int ManaPool::GetInc()
+    int ManaPool::GetInc() const
     {
         return inc;
     }
-    int ManaPool::GetBlack()
+    int ManaPool::GetBlack() const
     {
         return black;
     }
-    int ManaPool::GetBlue()
+    int ManaPool::GetBlue() const
     {
         return blue;
     }
-    int ManaPool::GetGreen()
+    int ManaPool::GetGreen() const
     {
         return green;
     }
-    int ManaPool::GetMulti()
+    int ManaPool::GetMulti() const
     {
         return multi;
     }

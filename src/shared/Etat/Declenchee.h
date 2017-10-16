@@ -13,14 +13,14 @@ namespace Etat {
 namespace Etat {
 
   /// class Declenchee - 
-  class Declenchee : public Capacite {
+  class Declenchee : public Etat::Capacite {
     // Attributes
   private:
     int event;
     // Operations
   public:
-    int GetEvent ();
     Declenchee (int evnt, std::string motclef, int id, int prop);
+    int GetEvent ();
     // Setters and Getters
   };
 

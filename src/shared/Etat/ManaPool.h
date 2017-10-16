@@ -29,11 +29,11 @@ namespace Etat {
     void AddMulti ();
     void Vider ();
     void Payer (Cout cost);
-    int GetInc ();
-    int GetBlue ();
-    int GetBlack ();
-    int GetGreen ();
-    int GetMulti ();
+    int GetInc () const;
+    int GetBlue () const;
+    int GetBlack () const;
+    int GetGreen () const;
+    int GetMulti () const;
     // Setters and Getters
   };
 

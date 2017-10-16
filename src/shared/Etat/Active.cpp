@@ -7,7 +7,7 @@ namespace Etat
         cost = cout;
     }
     
-    Cout Active::GetCost()
+    Cout Active::GetCost() const
     {
         return cost;
     }

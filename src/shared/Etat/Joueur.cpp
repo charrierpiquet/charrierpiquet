@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
+#include <algorithm>
 
 #define NbCarteDeck 20
 
@@ -12,15 +13,16 @@ namespace Etat
     {
         pv = 20;
         aJoueTerrain = false;
+        manaPool = (std::shared_ptr<ManaPool>)new ManaPool();
     }
     
-    int Joueur::GetPv()
+    int Joueur::GetPv() const
     {
         return pv;
     }
     void Joueur::SetPv(int Pv)
     {
-        pv = Pv;
+        pv = std::max(Pv,0);
     }
     
     void Joueur::Draw()
@@ -36,27 +38,27 @@ namespace Etat
             hand.erase(hand.begin()+std::rand()%hand.size());
     }
     
-    std::vector<Carte*> Joueur::GetHand()
+    std::vector<std::shared_ptr<Carte> > Joueur::GetHand() const
     {
         return hand;
     }
     
-    std::vector<Carte*> Joueur::GetLibrary()
+    std::vector<std::shared_ptr<Carte> > Joueur::GetLibrary() const
     {
         return library;
     }
     
-    std::vector<Carte*> Joueur::GetGraveyard()
+    std::vector<std::shared_ptr<Carte> > Joueur::GetGraveyard() const
     {
         return graveyard;
     }
     
-    ManaPool Joueur::GetManaPool()
+    std::shared_ptr<ManaPool> Joueur::GetManaPool() const 
     {
         return manaPool;
     }
     
-    bool Joueur::GetAJoueTerrain()
+    bool Joueur::GetAJoueTerrain() const
     {
         return aJoueTerrain;
     }
@@ -68,7 +70,7 @@ namespace Etat
     
     void Joueur::AddCardGraveyard(Carte card)
     {
-        graveyard.push_back(&card);
+        graveyard.push_back((std::shared_ptr<Carte>)&card);
     }
     void Joueur::DelCardGraveyard(Carte card)
     {
@@ -83,7 +85,7 @@ namespace Etat
     
     void Joueur::AddCardLibrary(Carte card)
     {
-        library.push_back(&card);
+        library.push_back((std::shared_ptr<Carte>)&card);
     }
     void Joueur::DelCardLibrary(Carte card)
     {
@@ -98,7 +100,7 @@ namespace Etat
     
     void Joueur::AddCardHand(Carte card)
     {
-        hand.push_back(&card);
+        hand.push_back((std::shared_ptr<Carte>)&card);
     }
     void Joueur::DelCardHand(Carte card)
     {

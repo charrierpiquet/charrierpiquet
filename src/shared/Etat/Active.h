@@ -15,15 +15,15 @@ namespace Etat {
 namespace Etat {
 
   /// class Active - 
-  class Active : public Capacite {
+  class Active : public Etat::Capacite {
     // Associations
     // Attributes
   private:
     Cout cost;
     // Operations
   public:
-    Cout GetCost ();
     Active (Cout cout, std::string motclef, int id, int prop);
+    Cout GetCost () const;
     // Setters and Getters
   };
 
