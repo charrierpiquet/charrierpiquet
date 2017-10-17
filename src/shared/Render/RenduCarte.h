@@ -5,6 +5,13 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
+//namespace Etat
+//{
+	//class Carte;
+//}
+
+//#include "Carte.h"
+
 namespace Render {
 
   /// class RenduCarte - 
@@ -15,10 +22,7 @@ namespace Render {
     bool isSelected;
     int posX;
     int posY;
-    sf::Texture img;
-    sf::Transform modif;
-    sf::VertexArray tabPts;
-    sf::RenderStates render;
+    sf::Sprite sprite;
     // Operations
   public:
     RenduCarte ();
@@ -29,6 +33,8 @@ namespace Render {
     int GetPosY () const;
     // Setters and Getters
   };
+  
+  
 
 };
 
