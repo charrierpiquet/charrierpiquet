@@ -19,10 +19,10 @@ namespace Render {
     // Associations
     // Attributes
   private:
-    int dimX;
-    int dimY;
-    int sizeX;
-    int sizeY;
+    int x;
+    int y;
+    int width;
+    int height;
     int ind_dbt;
     int nb_elem;
     bool isVertical;
@@ -30,14 +30,14 @@ namespace Render {
     std::vector<RenduCarte> listeCartes;
     // Operations
   public:
-    Editeur (string nom);
+    Editeur (std::string nom, bool orientation, int x, int y, int width, int height);
     std::weak_ptr<Etat::Objet> Click ();
     void Draw (sf::RenderTarget& target);
     void Actu (std::vector<std::weak_ptr<Etat::Objet> > list_carte);
-    int GetDimX () const;
-    int GetDimY () const;
-    int GetSizeX () const;
-    int GetSizeY () const;
+    int GetX () const;
+    int GetY () const;
+    int GetWidth () const;
+    int GetHeight () const;
     int GetIndDbt () const;
     int GetNbElem () const;
     bool GetIsVertical () const;

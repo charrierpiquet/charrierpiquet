@@ -15,15 +15,12 @@ namespace Render {
     bool isSelected;
     int posX;
     int posY;
-    sf::Texture img;
-    sf::Transform modif;
-    sf::VertexArray tabPts;
-    sf::RenderStates render;
+    sf::Sprite sprite;
     // Operations
   public:
     RenduCarte ();
     void Draw (sf::RenderTarget& target);
-    std::weak_ptr<Objet> GetCarte () const;
+    std::weak_ptr<Etat::Objet> GetCarte () const;
     bool GetIsSelected () const;
     int GetPosX () const;
     int GetPosY () const;
