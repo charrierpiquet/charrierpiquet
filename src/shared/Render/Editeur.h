@@ -6,13 +6,13 @@
 #include <vector>
 #include <memory>
 
-namespace render {
+namespace Render {
   class RenduCarte;
 }
 
 #include "RenduCarte.h"
 
-namespace render {
+namespace Render {
 
   /// class Editeur - 
   class Editeur {
@@ -33,7 +33,7 @@ namespace render {
     Editeur (string nom);
     std::weak_ptr<Etat::Objet> Click ();
     void Draw (sf::RenderTarget& target);
-    void Actu (std::vector<std::weak_ptr<Objet> > list_carte);
+    void Actu (std::vector<std::weak_ptr<Etat::Objet> > list_carte);
     int GetDimX () const;
     int GetDimY () const;
     int GetSizeX () const;

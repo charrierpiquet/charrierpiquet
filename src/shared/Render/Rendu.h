@@ -4,13 +4,13 @@
 
 #include <memory>
 
-namespace render {
+namespace Render {
   class Editeur;
 }
 
 #include "Editeur.h"
 
-namespace render {
+namespace Render {
 
   /// class Rendu - 
   class Rendu {

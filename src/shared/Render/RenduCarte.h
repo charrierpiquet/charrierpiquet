@@ -5,7 +5,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
-namespace render {
+namespace Render {
 
   /// class RenduCarte - 
   class RenduCarte {
