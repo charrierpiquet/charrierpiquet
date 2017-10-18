@@ -22,7 +22,7 @@ namespace Etat
         
         //vider la mana pool
         for(int i = 0; i < nbJoueur ; i++)
-            GetJoueur(i)->GetManaPool()->Vider();
+            joueurs[i]->GetManaPool()->Vider();
         
         if (phase > NbPhase)
         {
@@ -38,9 +38,9 @@ namespace Etat
                 }
             
             //retirer cartes en trop dans la main
-            if (this->JoueurActif()->GetHand().size() > 7)
-                for (int i = 0 ; (unsigned)i < this->JoueurActif()->GetHand().size() - 7 ; i++)
-                    this->JoueurActif()->Discard();
+            if (joueurs[priorite]->GetHand().size() > 7)
+                for (int i = 0 ; (unsigned)i < joueurs[priorite]->GetHand().size() - 7 ; i++)
+                    joueurs[priorite]->Discard();
             
             // changement de tour
             joueur ++;
@@ -57,7 +57,7 @@ namespace Etat
                 }
             
             //draw
-            this->JoueurActif()->Draw();
+            joueurs[priorite]->Draw();
         }
         priorite = joueur;
     }
@@ -67,11 +67,6 @@ namespace Etat
         priorite ++;
         if (priorite >= nbJoueur)
             priorite = 0;
-    }
-    
-    std::shared_ptr<Joueur>  State::JoueurActif()
-    {
-        return joueurs[priorite];
     }
     
     void State::AddCardBattlefield(Carte card)
@@ -102,17 +97,19 @@ namespace Etat
         if (ind >= 0)
             pile.erase(pile.begin() + ind);
     }
-    std::shared_ptr<Joueur> State::GetJoueur(int i) const
+    std::vector<std::shared_ptr<Joueur> > State::GetJoueurs() const
     {
-        return joueurs[i];
+        return joueurs;
     }
-    int State::GetNbJoueur() const
-    {
-        return nbJoueur;
-    }
+
     int State::GetPhase() const
     {
         return phase;
+    }
+    
+    int State::GetPriority() const
+    {
+        return priorite;
     }
     
     std::shared_ptr<Objet> State::GetTopPile () const
@@ -123,4 +120,25 @@ namespace Etat
     {
         return battlefield;
     }
+    
+    
+    std::string State::GetPhaseName() const
+    {
+        switch (phase)
+        {
+            case 0:
+                return "Upkeep";
+            case 1:
+                return "Pre-Combat Main";
+            case 2:
+                return "Combat";
+            case 3:
+                return "Post-Combat Main";
+            case 4:
+                return "Clean-up";
+            default :
+                return "Unknow";
+        }
+    }
+    
 };

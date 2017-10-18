@@ -50,6 +50,5 @@ namespace Etat
         permanent = std::max(Permanent,0);
         exile = std::max(Exile,0);
         meule = std::max(Meule,0);
-    }
-    
+    }    
 };

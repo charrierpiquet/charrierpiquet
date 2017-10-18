@@ -34,16 +34,17 @@ namespace Etat {
     State (int nb = 2);
     void IncrPriority ();
     void IncrPhase ();
-    std::shared_ptr<Joueur>  JoueurActif ();
     void AddCardPile (Objet card);
     void AddCardBattlefield (Carte card);
     int GetNbJoueur () const;
-    std::shared_ptr<Joueur>  GetJoueur (int i) const;
+    std::vector<std::shared_ptr<Joueur> >  GetJoueurs() const;
     void DelCardBattlefield (Carte card);
     void DelCardPile (Objet card);
     std::shared_ptr<Objet>  GetTopPile () const;
     std::vector<std::shared_ptr<Carte> > GetBattlefield () const;
     int GetPhase () const;
+    std::string GetPhaseName() const;
+    int GetPriority() const;
     bool GetPileEmpty () const;
     // Setters and Getters
   };

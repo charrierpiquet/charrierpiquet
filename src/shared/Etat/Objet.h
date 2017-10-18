@@ -19,6 +19,7 @@ namespace Etat {
     std::weak_ptr<Objet> target;
     int indJoueur;
     int idObj;
+    std::string oracle;
     // Operations
   public:
     Objet (bool capa, int id, int prop);
@@ -27,6 +28,8 @@ namespace Etat {
     bool GetIsCapacite () const;
     int GetIndJoueur () const;
     int GetIdObj () const;
+    void SetOracle(std::string txt);
+    std::string GetOracle() const;
     // Setters and Getters
   };
 

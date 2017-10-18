@@ -29,6 +29,14 @@ namespace Etat
     {
         return idObj;
     }
+    void Objet::SetOracle(std::string txt)
+    {
+        oracle = txt;
+    }
+    std::string Objet::GetOracle() const
+    {
+        return oracle;
+    }
     
 };
 

@@ -11,44 +11,39 @@ namespace Test
 
             Etat::State* state = new Etat::State();
 
-            if(2!=state->GetNbJoueur())
-                    return 1;
-            else
-                    ret = 0;
-            std::cout<<"Etat creer"<<std::endl;
-            if(20!=state->JoueurActif()->GetPv())
+            if(20!=state->GetJoueurs()[state->GetPriority()]->GetPv())
                     return 2;
             else
                     ret = 0;
             std::cout<<"Nombre de point de vie Ok"<<std::endl;                
     
-            state->JoueurActif()->SetPv(state->JoueurActif()->GetPv()+2);
+            state->GetJoueurs()[state->GetPriority()]->SetPv(state->GetJoueurs()[state->GetPriority()]->GetPv()+2);
 
-            if (22!=state->JoueurActif()->GetPv())
+            if (22!=state->GetJoueurs()[state->GetPriority()]->GetPv())
                     return 3;
             else
                     ret = 0;
             std::cout<<"Modification PV Ok"<<std::endl;
-            state->JoueurActif()->SetPv(-8);
+            state->GetJoueurs()[state->GetPriority()]->SetPv(-8);
 
-            if (0!=state->JoueurActif()->GetPv())
+            if (0!=state->GetJoueurs()[state->GetPriority()]->GetPv())
                     return 4;
             else
                     ret = 0;
             std::cout<<"Les Pv ne peuvent pas être negatif Ok"<<std::endl;
             
-            if (0!=state->JoueurActif()->GetManaPool()->GetInc())
+            if (0!=state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetInc())
                     return 5;
             else
                     ret = 0;
             
             std::cout<<"La ManaPool est vide Ok"<<std::endl;
 
-            state->JoueurActif()->GetManaPool()->AddInc();
-            state->JoueurActif()->GetManaPool()->AddInc();
-            state->JoueurActif()->GetManaPool()->AddInc();
-            state->JoueurActif()->GetManaPool()->AddInc();
-            if (4!=state->JoueurActif()->GetManaPool()->GetInc())
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            if (4!=state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetInc())
                 return 6;
             else
                 ret = 0;
@@ -57,7 +52,7 @@ namespace Test
 
             
             state->IncrPhase();
-            if (state->GetPhase() != 1 && state->JoueurActif()->GetManaPool()->GetInc() != 0)
+            if (state->GetPhase() != 1 && state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetInc() != 0)
                 return 7;
             else
                 ret = 0;
@@ -79,12 +74,12 @@ namespace Test
                 ret = 0;
             std::cout<<"modification cout Ok"<<std::endl;
             
-            state->JoueurActif()->GetManaPool()->AddInc();
-            state->JoueurActif()->GetManaPool()->AddInc();
-            state->JoueurActif()->GetManaPool()->AddInc();
-            state->JoueurActif()->GetManaPool()->AddInc();
-            state->JoueurActif()->GetManaPool()->Payer(*cost);
-            if (state->JoueurActif()->GetManaPool()->GetInc() != 1)
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->Payer(*cost);
+            if (state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetInc() != 1)
                 return 10;
             else
                 ret = 0;

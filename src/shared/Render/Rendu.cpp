@@ -3,7 +3,7 @@
 
 namespace Render {
     
-    Rendu::Rendu (std::weak_ptr<Etat::State> etat, int x, int y):
+    Rendu::Rendu (std::shared_ptr<Etat::State> etat, int x, int y):
         cimetiere1("Cimetiere 1", true,0,0,x/4,y/3),
         cimetiere2("Cimetiere 2", true,0,2*y/3,x/4,y/3),
         bf21("BF Terrain 2", false,x/4,0,x/2,y/6),
@@ -91,11 +91,29 @@ namespace Render {
     {
         // afficher notre texture
         target->draw(sprite);
-        // afficher les textes
+        
+        // afficher les textes d'etat
         txt_etat.setString(
-        ""
+        "PV : " + state->GetJoueurs()[1-state->GetPriority()]->GetPv() + "\n" +
+        "Main : " + state->GetJoueurs()[1-state->GetPriority()]->GetHand()->size() + "\n" +
+        "Deck : " + state->GetJoueurs()[1-state->GetPriority()]->GetLibrary()->size() +  "\n" +
+        "Phase : " + state->GetPhaseName()+ "\n"+        
+        "Deck : " + state->GetJoueurs()[state->GetPriority()]->GetLibrary()->size()+  "\n" +
+        "Main : " + state->GetJoueurs()[state->GetPriority()]->GetHand()->size() + "\n" +
+        "PV : " + state->GetJoueurs()[state->GetPriority()]->GetPv() + "\n"
         );
+        target.draw(txt_etat);
         // afficher la selectedCard
+        if (!selectedCard->GetIsCapacite())
+            txt_nomSelect.setString(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetName());
+        else
+            txt_nomSelect.setString("");
+        target.draw(txt_nomSelect);
+        // afficher le cout
+        
+        // afficher le texte oracle
+        txt_Oracle.setString(selectedCard->GetOracle());
+        target.draw(txt_Oracle);
         
         // draw les autres elements
         cimetiere1.Draw(target);

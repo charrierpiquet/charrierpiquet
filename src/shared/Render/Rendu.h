@@ -28,8 +28,8 @@ namespace Render {
     Editeur bf22;
     Editeur hand;
     Editeur listCapa;
-    std::weak_ptr<Etat::State> state;
-    std::weak_ptr<Etat::Objet> selectedCard;
+    std::shared_ptr<Etat::State> state;
+    std::shared_ptr<Etat::Objet> selectedCard;
     
     sf::Sprite sprite;
     
@@ -39,10 +39,10 @@ namespace Render {
     sf::Text txt_instruction;
     // Operations
   public:
-    Rendu (std::weak_ptr<Etat::State> etat, int x, int y);
+    Rendu (std::shared_ptr<Etat::State> etat, int x, int y);
     void Click (int x, int y);
     void Draw (sf::RenderTarget&  target);
-    void Actu ();
+    //void Actu ();
     Editeur GetGrv1 () const;
     Editeur GetGrv2 () const;
     Editeur GetBf11 () const;
