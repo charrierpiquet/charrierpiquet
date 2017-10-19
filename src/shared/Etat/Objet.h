@@ -20,9 +20,10 @@ namespace Etat {
     int indJoueur;
     int idObj;
     std::string oracle;
+    std::string name;
     // Operations
   public:
-    Objet (bool capa, int id, int prop);
+    Objet (bool capa, int id, int prop, std::string nom);
     void SetTarget (std::weak_ptr<Objet> cible);
     std::weak_ptr<Objet> GetTarget () const;
     bool GetIsCapacite () const;
@@ -30,6 +31,7 @@ namespace Etat {
     int GetIdObj () const;
     void SetOracle(std::string txt);
     std::string GetOracle() const;
+    std::string GetName () const;
     // Setters and Getters
   };
 

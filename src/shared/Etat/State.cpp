@@ -112,9 +112,9 @@ namespace Etat
         return priorite;
     }
     
-    std::shared_ptr<Objet> State::GetTopPile () const
+    std::vector<std::shared_ptr<Objet> > State::GetPile () const
     {
-        return pile[pile.size()-1];
+        return pile;
     }
     std::vector<std::shared_ptr<Carte> > State::GetBattlefield () const
     {

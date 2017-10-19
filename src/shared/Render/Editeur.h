@@ -12,6 +12,7 @@ namespace Render {
 
 #include "RenduCarte.h"
 
+
 namespace Render {
 
   /// class Editeur - 
@@ -26,14 +27,17 @@ namespace Render {
     int ind_dbt;
     int nb_elem;
     bool isVertical;
-    std::string nom;
-    std::vector<RenduCarte> listeCartes;
+    sf::Text nom;
+    std::vector<std::shared_ptr<Etat::Objet> >  listeCartes;
+    std::vector<sf::Sprite> spriteCarte;
+    sf::Sprite b1;
+    sf::Sprite b2;
     // Operations
   public:
     Editeur (std::string nom, bool orientation, int x, int y, int width, int height);
-    std::weak_ptr<Etat::Objet> Click ();
+    Etat::Objet Click ();
     void Draw (sf::RenderTarget& target);
-    void Actu (std::vector<std::weak_ptr<Etat::Objet> > list_carte);
+    void Actu (std::vector<std::shared_ptr<Etat::Objet> >  list_carte);
     int GetX () const;
     int GetY () const;
     int GetWidth () const;
@@ -42,7 +46,7 @@ namespace Render {
     int GetNbElem () const;
     bool GetIsVertical () const;
     std::string GetNom () const;
-    std::Vector<RenduCarte> GetCartes () const;
+    std::vector<std::shared_ptr<Etat::Objet> > GetCartes () const;
     void SetIndDbt (int value);
     // Setters and Getters
   };

@@ -104,10 +104,7 @@ namespace Render {
         );
         target.draw(txt_etat);
         // afficher la selectedCard
-        if (!selectedCard->GetIsCapacite())
-            txt_nomSelect.setString(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetName());
-        else
-            txt_nomSelect.setString("");
+        txt_nomSelect.setString(selectedCard->GetName());
         target.draw(txt_nomSelect);
         // afficher le cout
         
@@ -116,14 +113,49 @@ namespace Render {
         target.draw(txt_Oracle);
         
         // draw les autres elements
-        cimetiere1.Draw(target);
-        cimetiere2.Draw(target);
+        cimetiere1.Actu(state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard())
+        cimetiere1.Draw(target);        
+        
+        std::vector<std::shared_ptr<Etat::Objet> > bf1, bf2;
+        for (int i = 0 ; i < state->GetBattlefield().size() ; i++)
+            if (state->GetBattlefield()[i]->GetIndJoueur() == 1-state->GetPriority())
+            {
+                if (state->GetBattlefield()[i]->GetIsCreature())
+                    bf2.push_back(state->GetBattlefield()[i]);
+                else
+                    bf1.push_back(state->GetBattlefield()[i]);
+            }
+        bf21.Actu(bf1);
         bf21.Draw(target);
+        bf22.Actu(bf2);
         bf22.Draw(target);
+        
+        stack.Actu(state->GetPile());
         stack.Draw(target);
+        
+        bf1.clear(); bf2.clear();
+        for (int i = 0 ; i < state->GetBattlefield().size() ; i++)
+            if (state->GetBattlefield()[i]->GetIndJoueur() == state->GetPriority())
+            {
+                if (state->GetBattlefield()[i]->GetIsCreature())
+                    bf2.push_back(state->GetBattlefield()[i]);
+                else
+                    bf1.push_back(state->GetBattlefield()[i]);
+            }
+        
+        bf12.Actu(bf2);
         bf12.Draw(target);
+         
+        bf11.Actu(bf1);
         bf11.Draw(target);
+        
+        hand.Actu(state->GetJoueurs()[state->GetPriority()]->GetHand());
         hand.Draw(target);
+        
+        cimetiere2.Actu(state->GetJoueurs()[state->GetPriority()]->GetGraveyard())
+        cimetiere2.Draw(target);
+        
+        listCapa.Actu(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility());
         listCapa.Draw(target);
     }
 

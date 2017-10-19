@@ -40,7 +40,7 @@ namespace Etat {
     std::vector<std::shared_ptr<Joueur> >  GetJoueurs() const;
     void DelCardBattlefield (Carte card);
     void DelCardPile (Objet card);
-    std::shared_ptr<Objet>  GetTopPile () const;
+    std::vector<std::shared_ptr<Objet> >  GetPile () const;
     std::vector<std::shared_ptr<Carte> > GetBattlefield () const;
     int GetPhase () const;
     std::string GetPhaseName() const;
