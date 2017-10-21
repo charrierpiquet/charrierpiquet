@@ -6,11 +6,8 @@
 #include <vector>
 #include <memory>
 
-namespace Render {
-  class RenduCarte;
-}
-
-#include "RenduCarte.h"
+#include "Etat.h"
+#include <SFML/Graphics.hpp>
 
 
 namespace Render {
@@ -29,13 +26,13 @@ namespace Render {
     bool isVertical;
     sf::Text nom;
     std::vector<std::shared_ptr<Etat::Objet> >  listeCartes;
-    std::vector<sf::Sprite> spriteCarte;
+    std::vector<std::shared_ptr<sf::Drawable> > spriteCarte;
     sf::Sprite b1;
     sf::Sprite b2;
     // Operations
   public:
     Editeur (std::string nom, bool orientation, int x, int y, int width, int height);
-    Etat::Objet Click ();
+    std::shared_ptr<Etat::Objet> Click (int x, int y);
     void Draw (sf::RenderTarget& target);
     void Actu (std::vector<std::shared_ptr<Etat::Objet> >  list_carte);
     int GetX () const;
@@ -45,7 +42,6 @@ namespace Render {
     int GetIndDbt () const;
     int GetNbElem () const;
     bool GetIsVertical () const;
-    std::string GetNom () const;
     std::vector<std::shared_ptr<Etat::Objet> > GetCartes () const;
     void SetIndDbt (int value);
     // Setters and Getters

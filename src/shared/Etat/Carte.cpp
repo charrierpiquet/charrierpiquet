@@ -9,8 +9,7 @@ namespace Etat
         isPermanent = permanent;
         isLand = land;
         isCreature = creature;
-        isToken = token;
-        name = nom;        
+        isToken = token;       
         
         counters =0;
         isTap = false;

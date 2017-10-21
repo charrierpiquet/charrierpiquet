@@ -1,5 +1,5 @@
 #include "Rendu.h"
-#include "State.h"
+#include "Etat.h"
 
 namespace Render {
     
@@ -28,7 +28,7 @@ namespace Render {
         sprite.setPosition(0,0);
         
         sf::Font font;
-        if (!=font.loadFromFile("..\\..\\..\\res\\police.ttf"))
+        if (!font.loadFromFile("..\\..\\..\\res\\police.ttf"))
         {
             // erreur
         }
@@ -50,58 +50,57 @@ namespace Render {
     
     void Rendu::Click(int x, int y)
     {
-        if (x >= cimetiere1.GetX() && x <= cimetiere1.GetX + cimetiere1.GetWidth()
-         && y >= cimetiere1.GetY() && y <= cimetiere1.GetY + cimetiere1.GetHeight())
+        if (x >= cimetiere1.GetX() && x <= cimetiere1.GetX() + cimetiere1.GetWidth()
+         && y >= cimetiere1.GetY() && y <= cimetiere1.GetY() + cimetiere1.GetHeight())
             selectedCard = cimetiere1.Click(x,y);
         
-        else if (x >= cimetiere2.GetX() && x <= cimetiere2.GetX + cimetiere2.GetWidth()
-         && y >= cimetiere2.GetY() && y <= cimetiere2.GetY + cimetiere2.GetHeight())
+        else if (x >= cimetiere2.GetX() && x <= cimetiere2.GetX() + cimetiere2.GetWidth()
+         && y >= cimetiere2.GetY() && y <= cimetiere2.GetY() + cimetiere2.GetHeight())
             selectedCard = cimetiere2.Click(x,y);
         
-        else if (x >= bf21.GetX() && x <= bf21.GetX + bf21.GetWidth()
-         && y >= bf21.GetY() && y <= bf21.GetY + bf21.GetHeight())
+        else if (x >= bf21.GetX() && x <= bf21.GetX() + bf21.GetWidth()
+         && y >= bf21.GetY() && y <= bf21.GetY() + bf21.GetHeight())
             selectedCard = bf21.Click(x,y);
         
-        else if (x >= bf22.GetX() && x <= bf22.GetX + bf22.GetWidth()
-         && y >= bf22.GetY() && y <= bf22.GetY + bf22.GetHeight())
+        else if (x >= bf22.GetX() && x <= bf22.GetX() + bf22.GetWidth()
+         && y >= bf22.GetY() && y <= bf22.GetY() + bf22.GetHeight())
             selectedCard = bf22.Click(x,y);
         
-        else if (x >= stack.GetX() && x <= stack.GetX + stack.GetWidth()
-         && y >= stack.GetY() && y <= stack.GetY + stack.GetHeight())
+        else if (x >= stack.GetX() && x <= stack.GetX() + stack.GetWidth()
+         && y >= stack.GetY() && y <= stack.GetY() + stack.GetHeight())
             selectedCard = stack.Click(x,y);
         
-        else if (x >= bf12.GetX() && x <= bf12.GetX + bf12.GetWidth()
-         && y >= bf12.GetY() && y <= bf12.GetY + bf12.GetHeight())
+        else if (x >= bf12.GetX() && x <= bf12.GetX() + bf12.GetWidth()
+         && y >= bf12.GetY() && y <= bf12.GetY() + bf12.GetHeight())
             selectedCard = bf12.Click(x,y);
         
-        else if (x >= bf11.GetX() && x <= bf11.GetX + bf11.GetWidth()
-         && y >= bf11.GetY() && y <= bf11.GetY + bf11.GetHeight())
+        else if (x >= bf11.GetX() && x <= bf11.GetX() + bf11.GetWidth()
+         && y >= bf11.GetY() && y <= bf11.GetY() + bf11.GetHeight())
             selectedCard = bf11.Click(x,y);
         
-        else if (x >= hand.GetX() && x <= hand.GetX + hand.GetWidth()
-         && y >= hand.GetY() && y <= hand.GetY + hand.GetHeight())
+        else if (x >= hand.GetX() && x <= hand.GetX() + hand.GetWidth()
+         && y >= hand.GetY() && y <= hand.GetY() + hand.GetHeight())
             selectedCard = hand.Click(x,y);
         
-        else if (x >= listCapa.GetX() && x <= listCapa.GetX + listCapa.GetWidth()
-         && y >= listCapa.GetY() && y <= listCapa.GetY + listCapa.GetHeight())
+        else if (x >= listCapa.GetX() && x <= listCapa.GetX() + listCapa.GetWidth()
+         && y >= listCapa.GetY() && y <= listCapa.GetY() + listCapa.GetHeight())
             selectedCard = listCapa.Click(x,y);
     }
     
     void Rendu::Draw(sf::RenderTarget& target)
     {
         // afficher notre texture
-        target->draw(sprite);
+        target.draw(sprite);
         
         // afficher les textes d'etat
-        txt_etat.setString(
-        "PV : " + state->GetJoueurs()[1-state->GetPriority()]->GetPv() + "\n" +
-        "Main : " + state->GetJoueurs()[1-state->GetPriority()]->GetHand()->size() + "\n" +
-        "Deck : " + state->GetJoueurs()[1-state->GetPriority()]->GetLibrary()->size() +  "\n" +
-        "Phase : " + state->GetPhaseName()+ "\n"+        
-        "Deck : " + state->GetJoueurs()[state->GetPriority()]->GetLibrary()->size()+  "\n" +
-        "Main : " + state->GetJoueurs()[state->GetPriority()]->GetHand()->size() + "\n" +
-        "PV : " + state->GetJoueurs()[state->GetPriority()]->GetPv() + "\n"
-        );
+        txt_etat.setString( 
+        "PV : " + state->GetJoueurs()[1-state->GetPriority()]->GetPv() +
+        std::string("\nMain : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size()) +
+        std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size()) + 
+        std::string("\nPhase : ") +state->GetPhaseName() + 
+        std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetLibrary().size())+
+        std::string("\nMain : ") +std::to_string(state->GetJoueurs()[state->GetPriority()]->GetHand().size()) + 
+        std::string("\nPV : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetPv()) + std::string("\n"));
         target.draw(txt_etat);
         // afficher la selectedCard
         txt_nomSelect.setString(selectedCard->GetName());
@@ -113,7 +112,10 @@ namespace Render {
         target.draw(txt_Oracle);
         
         // draw les autres elements
-        cimetiere1.Actu(state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard())
+        std::vector<std::shared_ptr<Etat::Objet> > tampon(
+                state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard().begin(),
+                state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard().end());
+        cimetiere1.Actu(tampon);
         cimetiere1.Draw(target);        
         
         std::vector<std::shared_ptr<Etat::Objet> > bf1, bf2;
@@ -149,13 +151,16 @@ namespace Render {
         bf11.Actu(bf1);
         bf11.Draw(target);
         
-        hand.Actu(state->GetJoueurs()[state->GetPriority()]->GetHand());
+        tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetHand().begin(),state->GetJoueurs()[state->GetPriority()]->GetHand().end());       
+        hand.Actu(tampon);
         hand.Draw(target);
         
-        cimetiere2.Actu(state->GetJoueurs()[state->GetPriority()]->GetGraveyard())
+        tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetGraveyard().begin(),state->GetJoueurs()[state->GetPriority()]->GetGraveyard().end());     
+        cimetiere2.Actu(tampon);
         cimetiere2.Draw(target);
         
-        listCapa.Actu(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility());
+        tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
+        listCapa.Actu(tampon);
         listCapa.Draw(target);
     }
 
