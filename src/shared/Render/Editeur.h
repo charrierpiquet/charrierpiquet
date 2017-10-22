@@ -21,8 +21,8 @@ namespace Render {
     int y;
     int width;
     int height;
-    int ind_dbt;
-    int nb_elem;
+    unsigned int ind_dbt;
+    unsigned int nb_elem;
     bool isVertical;
     sf::Text nom;
     std::vector<std::shared_ptr<Etat::Objet> >  listeCartes;

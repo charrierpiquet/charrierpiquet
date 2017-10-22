@@ -1,5 +1,6 @@
 #include "Rendu.h"
 #include "Etat.h"
+#include <iostream>
 
 namespace Render {
     
@@ -20,7 +21,7 @@ namespace Render {
         
         // init du fond
         sf::Texture texture;
-        if (!texture.loadFromFile("..\\..\\..\\res\\Fond.png"))
+        if (!texture.loadFromFile(".\\res\\Fond.png"))
         {
             // erreur
         }
@@ -28,7 +29,7 @@ namespace Render {
         sprite.setPosition(0,0);
         
         sf::Font font;
-        if (!font.loadFromFile("..\\..\\..\\res\\police.ttf"))
+        if (!font.loadFromFile(".\\res\\police.ttf"))
         {
             // erreur
         }
@@ -91,17 +92,18 @@ namespace Render {
     {
         // afficher notre texture
         target.draw(sprite);
-        
         // afficher les textes d'etat
         txt_etat.setString( 
-        "PV : " + state->GetJoueurs()[1-state->GetPriority()]->GetPv() +
-        std::string("\nMain : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size()) +
-        std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size()) + 
-        std::string("\nPhase : ") +state->GetPhaseName() + 
-        std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetLibrary().size())+
-        std::string("\nMain : ") +std::to_string(state->GetJoueurs()[state->GetPriority()]->GetHand().size()) + 
-        std::string("\nPV : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetPv()) + std::string("\n"));
+            "PV : " + state->GetJoueurs()[1-state->GetPriority()]->GetPv() +
+            std::string("\nMain : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size()) +
+            std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size()) + 
+            std::string("\nPhase : ") +state->GetPhaseName() + 
+            std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetLibrary().size())+
+            std::string("\nMain : ") +std::to_string(state->GetJoueurs()[state->GetPriority()]->GetHand().size()) + 
+            std::string("\nPV : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetPv()) + std::string("\n"));
         target.draw(txt_etat);
+                std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+        
         // afficher la selectedCard
         txt_nomSelect.setString(selectedCard->GetName());
         target.draw(txt_nomSelect);
@@ -119,7 +121,7 @@ namespace Render {
         cimetiere1.Draw(target);        
         
         std::vector<std::shared_ptr<Etat::Objet> > bf1, bf2;
-        for (int i = 0 ; i < state->GetBattlefield().size() ; i++)
+        for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
             if (state->GetBattlefield()[i]->GetIndJoueur() == 1-state->GetPriority())
             {
                 if (state->GetBattlefield()[i]->GetIsCreature())
@@ -136,7 +138,7 @@ namespace Render {
         stack.Draw(target);
         
         bf1.clear(); bf2.clear();
-        for (int i = 0 ; i < state->GetBattlefield().size() ; i++)
+        for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
             if (state->GetBattlefield()[i]->GetIndJoueur() == state->GetPriority())
             {
                 if (state->GetBattlefield()[i]->GetIsCreature())

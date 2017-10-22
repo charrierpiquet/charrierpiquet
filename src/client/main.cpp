@@ -32,18 +32,17 @@ int main(int argc,char* argv[])
         {                
             int sortie = TestEtat();   
             if (sortie != 0)
-                cout << "Il y a des erreurs, voir sortie : " << sortie <<endl;
+                cout << "Il y a des erreurs, voir sortie : " << sortie << endl;
             else
                 cout << "Tout c'est bien déroulé."<< endl;
         }
-        else if ((string)argv[2] == "render")
+        else if ((string)argv[1] == "render")
         {
-            std::shared_ptr<Etat::State> state(new Etat::State());
-            Render::Rendu rendu(state,800,600);
-            
-            // initialiser un etat pour faire des tests
+            std::shared_ptr<Etat::State> state( new Etat::State());
+            Render::Rendu rendu(state,800,600);            
             
             sf::RenderWindow window(sf::VideoMode(800,600),"Sorcelerie, le Regroupement");
+            window.setFramerateLimit(60);
             while (window.isOpen())
             {
                 sf::Event event;
@@ -54,11 +53,10 @@ int main(int argc,char* argv[])
                     //tester le click;
                 }
                 window.clear(sf::Color::Black);
-                
                 rendu.Draw(window);
-                
                 window.display();
             }
+            
         }
         else
             cout << "\"" << argv[1] << "\" n'est pas une commande implémentée."<<endl;

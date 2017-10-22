@@ -21,11 +21,11 @@ namespace Render {
     int dimensionY;
     Editeur cimetiere1;
     Editeur cimetiere2;
-    Editeur bf11;
-    Editeur bf12;
-    Editeur stack;
     Editeur bf21;
     Editeur bf22;
+    Editeur stack;
+    Editeur bf12;
+    Editeur bf11;
     Editeur hand;
     Editeur listCapa;
     std::shared_ptr<Etat::State> state;

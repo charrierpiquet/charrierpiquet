@@ -12,7 +12,6 @@ namespace Etat
         
         for (int i = 0 ; i < nbJoueur ; i++)
             joueurs.push_back((std::shared_ptr<Joueur>)new Joueur());
-        
         joueur = 0; phase = 0;
     }
     
