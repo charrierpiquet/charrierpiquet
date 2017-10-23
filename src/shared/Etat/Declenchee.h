@@ -19,7 +19,7 @@ namespace Etat {
     int event;
     // Operations
   public:
-    Declenchee (int evnt, std::string motclef, int id, int prop);
+    Declenchee (int evnt, std::string motclef, int id, int prop, std::string nom);
     int GetEvent ();
     // Setters and Getters
   };

@@ -6,11 +6,9 @@
 #include <vector>
 #include <memory>
 
-namespace Render {
-  class RenduCarte;
-}
+#include "Etat.h"
+#include <SFML/Graphics.hpp>
 
-#include "RenduCarte.h"
 
 namespace Render {
 
@@ -19,30 +17,32 @@ namespace Render {
     // Associations
     // Attributes
   private:
-    int dimX;
-    int dimY;
-    int sizeX;
-    int sizeY;
-    int ind_dbt;
-    int nb_elem;
+    int x;
+    int y;
+    int width;
+    int height;
+    unsigned int ind_dbt;
+    unsigned int nb_elem;
     bool isVertical;
-    std::string nom;
-    std::vector<RenduCarte> listeCartes;
+    sf::Text nom;
+    std::vector<std::shared_ptr<Etat::Objet> >  listeCartes;
+    std::vector<std::shared_ptr<sf::Drawable> > spriteCarte;
+    sf::Sprite b1;
+    sf::Sprite b2;
     // Operations
   public:
-    Editeur (string nom);
-    std::weak_ptr<Etat::Objet> Click ();
+    Editeur (std::string nom, bool orientation, int x, int y, int width, int height);
+    std::shared_ptr<Etat::Objet> Click (int x, int y);
     void Draw (sf::RenderTarget& target);
-    void Actu (std::vector<std::weak_ptr<Etat::Objet> > list_carte);
-    int GetDimX () const;
-    int GetDimY () const;
-    int GetSizeX () const;
-    int GetSizeY () const;
+    void Actu (std::vector<std::shared_ptr<Etat::Objet> >  list_carte);
+    int GetX () const;
+    int GetY () const;
+    int GetWidth () const;
+    int GetHeight () const;
     int GetIndDbt () const;
     int GetNbElem () const;
     bool GetIsVertical () const;
-    std::string GetNom () const;
-    std::Vector<RenduCarte> GetCartes () const;
+    std::vector<std::shared_ptr<Etat::Objet> > GetCartes () const;
     void SetIndDbt (int value);
     // Setters and Getters
   };

@@ -11,6 +11,7 @@ void testSFML() {
 
 #include "Etat.h"
 #include "Test.h"
+#include "Render.h"
 #include <iostream>
 
 using namespace std;
@@ -31,19 +32,35 @@ int main(int argc,char* argv[])
         {                
             int sortie = TestEtat();   
             if (sortie != 0)
-                cout << "Il y a des erreurs, voir sortie : " << sortie <<endl;
+                cout << "Il y a des erreurs, voir sortie : " << sortie << endl;
             else
                 cout << "Tout c'est bien déroulé."<< endl;
         }
+        else if ((string)argv[1] == "render")
+        {
+            std::shared_ptr<Etat::State> state( new Etat::State());
+            Render::Rendu rendu(state,800,600);            
+            
+            sf::RenderWindow window(sf::VideoMode(800,600),"Sorcelerie, le Regroupement");
+            window.setFramerateLimit(60);
+            while (window.isOpen())
+            {
+                sf::Event event;
+                while(window.pollEvent(event))
+                {
+                    if (event.type == sf::Event::Closed)
+                        window.close();
+                    //tester le click;
+                }
+                window.clear(sf::Color::Black);
+                rendu.Draw(window);
+                window.display();
+            }
+            
+        }
         else
             cout << "\"" << argv[1] << "\" n'est pas une commande implémentée."<<endl;
-                
-    
-        
-//        if ((string)argv[1] == "hello")
-//            cout << "Bonjour le monde !"<< endl;
-//        else
-//            cout << "\"" << argv[1] << "\" n'est pas une commande implémentée."<<endl;
+               
     }
     else
         cout << "trop d'arguments" <<endl;

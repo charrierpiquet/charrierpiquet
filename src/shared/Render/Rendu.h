@@ -21,19 +21,28 @@ namespace Render {
     int dimensionY;
     Editeur cimetiere1;
     Editeur cimetiere2;
-    Editeur bf11;
-    Editeur bf12;
-    Editeur stack;
     Editeur bf21;
     Editeur bf22;
+    Editeur stack;
+    Editeur bf12;
+    Editeur bf11;
+    Editeur hand;
     Editeur listCapa;
-    std::weak_ptr<Etat::State> state;
+    std::shared_ptr<Etat::State> state;
+    std::shared_ptr<Etat::Objet> selectedCard;
+    
+    sf::Sprite sprite;
+    
+    sf::Text txt_etat;
+    sf::Text txt_nomSelect;
+    sf::Text txt_Oracle;
+    sf::Text txt_instruction;
     // Operations
   public:
-    Rendu (std::weak_ptr<State> etat);
+    Rendu (std::shared_ptr<Etat::State> etat, int x, int y);
     void Click (int x, int y);
     void Draw (sf::RenderTarget&  target);
-    void Actu ();
+    //void Actu ();
     Editeur GetGrv1 () const;
     Editeur GetGrv2 () const;
     Editeur GetBf11 () const;
@@ -41,6 +50,7 @@ namespace Render {
     Editeur GetStack () const;
     Editeur GetBf21 () const;
     Editeur GetBf22 () const;
+    Editeur GetHand () const;
     int GetDimX () const;
     int GetDimY () const;
     // Setters and Getters

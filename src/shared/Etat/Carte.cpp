@@ -4,22 +4,16 @@ namespace Etat
 {
     Carte::Carte(bool permanent,bool land,bool creature,bool token,
             std::string nom,Cout cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):
-    Objet(false, id, prop), cost(cout),ability(capa)
+    Objet(false, id, prop, nom), cost(cout),ability(capa)
     {
         isPermanent = permanent;
         isLand = land;
         isCreature = creature;
-        isToken = token;
-        name = nom;        
+        isToken = token;       
         
         counters =0;
         isTap = false;
         
-    }
-    
-    std::string Carte::GetName() const
-    {
-        return name;
     }
     
     Cout Carte::GetCost() const

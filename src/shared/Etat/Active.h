@@ -22,7 +22,7 @@ namespace Etat {
     Cout cost;
     // Operations
   public:
-    Active (Cout cout, std::string motclef, int id, int prop);
+    Active (Cout cout, std::string motclef, int id, int prop, std::string nom);
     Cout GetCost () const;
     // Setters and Getters
   };

@@ -2,11 +2,12 @@
 
 namespace Etat
 {
-    Objet::Objet(bool capa, int id, int prop)
+    Objet::Objet(bool capa, int id, int prop, std::string nom)
     {
         isCapacite = capa;
         idObj = id;
         indJoueur = prop;
+        name = nom;
     }
     
     void Objet::SetTarget(std::weak_ptr<Objet> cible)
@@ -28,6 +29,18 @@ namespace Etat
     int Objet::GetIdObj() const
     {
         return idObj;
+    }
+    void Objet::SetOracle(std::string txt)
+    {
+        oracle = txt;
+    }
+    std::string Objet::GetOracle() const
+    {
+        return oracle;
+    }
+    std::string Objet::GetName() const
+    {
+        return name;
     }
     
 };

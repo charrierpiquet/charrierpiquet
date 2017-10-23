@@ -28,14 +28,14 @@ namespace Etat {
     bool isTap;
     bool isCreature;
     bool isToken;
-    std::string name;
+    
     Cout cost;
     int counters;
     std::vector<std::shared_ptr<Capacite> > ability;
     // Operations
   public:
     Carte (bool permanent, bool land, bool creature, bool token, std::string nom, Cout cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
-    std::string GetName () const;
+    
     Cout GetCost () const;
     int GetCounter () const;
     bool GetIsLand () const;
