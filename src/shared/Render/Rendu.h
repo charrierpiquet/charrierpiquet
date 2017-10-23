@@ -56,6 +56,7 @@ namespace Render {
     Editeur GetHand () const;
     int GetDimX () const;
     int GetDimY () const;
+    template<typename T> std::vector<std::shared_ptr<Etat::Objet> > Conv(std::vector<std::shared_ptr<T> > data);
     // Setters and Getters
   };
 

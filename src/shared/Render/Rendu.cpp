@@ -34,17 +34,21 @@ namespace Render {
         }
         
         txt_etat.setFont(font);
-        txt_etat.setPosition(0, 1/3*y);
+        txt_etat.setPosition(10, (1./3.)*dimensionY);
+        txt_etat.setCharacterSize(12);
         
         txt_nomSelect.setFont(font);
-        txt_nomSelect.setPosition(3/4*x, 0);
+        txt_nomSelect.setPosition((3./4.)*dimensionX+10, 0);
+        txt_nomSelect.setCharacterSize(12);
         
         txt_Oracle.setFont(font);
-        txt_Oracle.setPosition(3/4*x, 1/6*y);
+        txt_Oracle.setPosition((3./4.)*dimensionX+10, (1./6.)*dimensionY);
+        txt_Oracle.setCharacterSize(12);
         
         txt_instruction.setFont(font);
-        txt_instruction.setPosition(3/4*x, 3/6*y);
-        
+        txt_instruction.setPosition((3./4.)*dimensionX+10, (3./6.)*dimensionY);
+        txt_instruction.setCharacterSize(12);
+              
         
     }
     
@@ -91,8 +95,10 @@ namespace Render {
     {
         // afficher notre texture
         target.draw(sprite);
+
         // afficher les textes d'etat
-        sf::String str = "PV" + state->GetJoueurs()[1-state->GetPriority()]->GetPv();   
+        sf::String str = "";
+        str += "\nPV :" + state->GetJoueurs()[1-state->GetPriority()]->GetPv();   
         str += "\nMain : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size());
         str += "\nDeck : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size());
         str += "\nPhase : " +state->GetPhaseName();
@@ -114,14 +120,10 @@ namespace Render {
             // afficher le texte oracle
             txt_Oracle.setString(selectedCard->GetOracle());
             target.draw(txt_Oracle);
-        }
-        
+        }  
         // draw les autres elements
-        std::vector<std::shared_ptr<Etat::Objet> > tampon(
-                state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard().begin(),
-                state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard().end());
-        cimetiere1.Actu(tampon);
-        cimetiere1.Draw(target);   
+        cimetiere1.Actu(Conv<Etat::Carte>(state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard()));
+        cimetiere1.Draw(target);
         
         std::vector<std::shared_ptr<Etat::Objet> > bf1, bf2;
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
@@ -156,20 +158,29 @@ namespace Render {
          
         bf11.Actu(bf1);
         bf11.Draw(target);
+
+        //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetHand().begin(),state->GetJoueurs()[state->GetPriority()]->GetHand().end());       
+        hand.Actu(Conv<Etat::Carte>(state->GetJoueurs()[state->GetPriority()]->GetHand()));
+        hand.Draw(target);        
         
-        tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetHand().begin(),state->GetJoueurs()[state->GetPriority()]->GetHand().end());       
-        hand.Actu(tampon);
-        hand.Draw(target);
-        
-        tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetGraveyard().begin(),state->GetJoueurs()[state->GetPriority()]->GetGraveyard().end());     
-        cimetiere2.Actu(tampon);
+        //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetGraveyard().begin(),state->GetJoueurs()[state->GetPriority()]->GetGraveyard().end());     
+        cimetiere2.Actu(Conv<Etat::Carte>(state->GetJoueurs()[state->GetPriority()]->GetGraveyard()));
         cimetiere2.Draw(target);
         
-        tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
-        listCapa.Actu(tampon);
-        listCapa.Draw(target);
-        
+        if (selectedCard != nullptr)
+        {
+            //tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
+            listCapa.Actu(Conv<Etat::Capacite>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
+            listCapa.Draw(target);
+        }
         // ajouter les manaPool et les couts
+    }
+    
+    template<typename T>
+    std::vector<std::shared_ptr<Etat::Objet> > Rendu::Conv(std::vector<std::shared_ptr<T> > data)
+    {
+        std::vector<std::shared_ptr<Etat::Objet> > tampon (data.begin(),data.end());
+        return tampon;        
     }
 
 }

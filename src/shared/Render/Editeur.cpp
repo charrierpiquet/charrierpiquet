@@ -62,43 +62,42 @@ namespace Render
             for(unsigned int i=0 ; i < listeCartes.size(); i++)
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {
-                    std::shared_ptr<sf::Texture> tt;
-                    if (!tt->loadFromFile("res/cartes/" + listeCartes[i]->GetName() + ".png"))            
+                    sf::Texture tt;
+                    if (!tt.loadFromFile("res/cartes/" + listeCartes[i]->GetName() + ".png"))            
                     {
                         // erreur
                     }
-                    texture.push_back(tt);
-                                       
-                    std::shared_ptr<sf::Sprite> sprite;
-                    
-                    std::cout<<texture.size()<< " " << i<< " "<< in_dbt << std::endl; 
-                    sprite->setTexture(*(texture[i-ind_dbt]));
-                    
-                    if (!listeCartes[i]->GetIsCapacite())
-                        if (std::static_pointer_cast<Etat::Carte>(listeCartes[i])->GetIsTap())
-                            sprite->rotate(90);
-                    // setScale ?
-                    
-                    sprite->setPosition(x + 40 + height*(i-ind_dbt), y);
-                    
-                    spriteCarte.push_back(sprite);
-                            
+                    else
+                    {
+                        texture.push_back(tt);
+
+                        std::shared_ptr<sf::Sprite> sprite (new sf::Sprite());
+                        
+                        sprite->setTexture(texture[texture.size()-1]);                
+
+                        if (!listeCartes[i]->GetIsCapacite())
+                            if (std::static_pointer_cast<Etat::Carte>(listeCartes[i])->GetIsTap())
+                                sprite->rotate(90);
+                        // setScale ?
+
+                        sprite->setPosition(x + 40 + height*(i-ind_dbt), y);
+                        spriteCarte.push_back(sprite);
+                    }        
                 }
         }
         else
-        {
+        { 
             for(unsigned int i=0 ; i < listeCartes.size(); i++)
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {
-                    std::shared_ptr<sf::Text> txt;
-                    txt->setFont(font);
-                    txt->setString(listeCartes[i]->GetName());
-                    txt->setPosition(x,y+40 + 20*(i - ind_dbt));
+                    std::shared_ptr<sf::Text> txt(new sf::Text());
+                    txt->setFont(font); 
+                    txt->setString(listeCartes[i]->GetName()); 
+                    txt->setPosition(x,y+40 + 20*(i - ind_dbt)); 
                     spriteCarte.push_back(txt);
                 }
-        }
-               
-    }
+        }         
+    }    
     
     void Editeur::Draw(sf::RenderTarget& target)
     {

@@ -45,41 +45,42 @@ int main(int argc,char* argv[])
             
             // Creation d'une carte
 				//création d'Iles (terrains de base)
-			int identifiant = 0;
-			cout<<identifiant<<endl;
-            std::shared_ptr<Etat::Cout> coutIle (new Etat::Cout); cost->SetCost();
-            std::vector<std::shared_ptr<Etat::Capacite> > capa;
-            std::shared_ptr<Etat::Carte> Ile1(new Etat::Carte(true,true,false,false,"Ile",*coutIle,capa,identifiant++,0));
-            state->AddCardBattlefield(*Ile1);				
-            cout<<identifiant<<endl; //Jusqu'ici tout va bien
-            std::shared_ptr<Etat::Carte> Ile2(new Etat::Carte(true,true,false,false,"Ile",*coutIle,capa,identifiant++,1));
+            int identifiant = 0;
+            
+            shared_ptr<Cout> coutIle (new Cout);
+            vector<shared_ptr<Capacite> > capa;
+            
+            shared_ptr<Carte> Ile1(new Carte(true,true,false,false,"Ile",*coutIle,capa,identifiant++,0));
+            state->AddCardBattlefield(*Ile1);
+            
+            shared_ptr<Carte> Ile2(new Etat::Carte(true,true,false,false,"Ile",*coutIle,capa,identifiant++,1));
             state->AddCardBattlefield(*Ile2);
             Ile2->SetIsTap(true);
-            std::shared_ptr<Etat::Carte> Ile3(new Etat::Carte(true,true,false,false,"Ile",*coutIle,capa,identifiant++,0));
-            state->GetJoueurs(0)->AddCardHand(Ile3);
+            
+            shared_ptr<Carte> Ile3(new Etat::Carte(true,true,false,false,"Ile",*coutIle,capa,identifiant++,0));
+            state->GetJoueurs()[0]->AddCardHand(*Ile3);
 
 
-				//Création d'Ours (Créatures de base)
-			std::shared_ptr<Etat::Cout> coutOurs (new Etat::Cout); cost->SetCost(1,0,0,1,0,0,0,0,0);
-            std::shared_ptr<Etat::Creature> Ours1(new Etat::Creature(2,2,false,"Ours",*coutOurs,,identifiant++,0));
+            //Création d'Ours (Créatures de base)
+            shared_ptr<Cout> coutOurs (new Cout); coutOurs->SetCost(1,0,0,1,0,0,0,0,0);
+            shared_ptr<Creature> Ours1(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
             state->AddCardBattlefield(*Ours1);
-            std::shared_ptr<Etat::Creature> Ours2(new Etat::Creature(2,2,false,"Ours",*coutOurs,,identifiant++,0));
+            
+            shared_ptr<Creature> Ours2(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
             state->AddCardBattlefield(*Ours2);
             Ours2->SetIsTap(true);
-            std::shared_ptr<Etat::Creature> Ours3(new Etat::Creature(2,2,false,"Ours",*coutOurs,,identifiant++,1));
+            
+            shared_ptr<Creature> Ours3(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,1));
             state->AddCardBattlefield(*Ours3);
             Ours3->SetCounter(2);
-            std::shared_ptr<Etat::Creature> Ours4(new Etat::Creature(2,2,false,"Ours",*coutOurs,,identifiant++,0));
-            state->GetJoueurs(0)->AddCardGraveyard(Ours4);
-            std::shared_ptr<Etat::Creature> Ours5(new Etat::Creature(2,2,false,"Ours",*coutOurs,,identifiant++,1));
-            state->GetJoueurs(1)->AddCardGraveyard(Ours5);
-
-
             
-				
-				
-				
-			//Rendu	
+            shared_ptr<Creature> Ours4(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
+            state->GetJoueurs()[0]->AddCardGraveyard(*Ours4);
+            
+            shared_ptr<Creature> Ours5(new Etat::Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,1));
+            state->GetJoueurs()[1]->AddCardGraveyard(*Ours5);
+            
+            //Rendu	
             sf::RenderWindow window(sf::VideoMode(800,600),"Sorcellerie, le Regroupement");
             window.setFramerateLimit(60);
             while (window.isOpen())
