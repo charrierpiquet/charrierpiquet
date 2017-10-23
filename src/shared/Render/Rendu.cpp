@@ -1,6 +1,7 @@
 #include "Rendu.h"
 #include "Etat.h"
 #include <iostream>
+#include <cstddef>
 
 namespace Render {
     
@@ -20,16 +21,14 @@ namespace Render {
         dimensionY = y;
         
         // init du fond
-        sf::Texture texture;
-        if (!texture.loadFromFile(".\\res\\Fond.png"))
+        if (!texture.loadFromFile("res/Fond.png"))
         {
             // erreur
         }
         sprite.setTexture(texture);
         sprite.setPosition(0,0);
         
-        sf::Font font;
-        if (!font.loadFromFile(".\\res\\police.ttf"))
+        if (!font.loadFromFile("res/police.ttf"))
         {
             // erreur
         }
@@ -93,32 +92,36 @@ namespace Render {
         // afficher notre texture
         target.draw(sprite);
         // afficher les textes d'etat
-        txt_etat.setString( 
-            "PV : " + state->GetJoueurs()[1-state->GetPriority()]->GetPv() +
-            std::string("\nMain : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size()) +
-            std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size()) + 
-            std::string("\nPhase : ") +state->GetPhaseName() + 
-            std::string("\nDeck : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetLibrary().size())+
-            std::string("\nMain : ") +std::to_string(state->GetJoueurs()[state->GetPriority()]->GetHand().size()) + 
-            std::string("\nPV : ") + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetPv()) + std::string("\n"));
+        sf::String str = "PV" + state->GetJoueurs()[1-state->GetPriority()]->GetPv();   
+        str += "\nMain : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size());
+        str += "\nDeck : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size());
+        str += "\nPhase : " +state->GetPhaseName();
+        str += "\nDeck : " + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetLibrary().size());
+        str += "\nMain : " +std::to_string(state->GetJoueurs()[state->GetPriority()]->GetHand().size());
+        str += "\nPV : " + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetPv());
+        txt_etat.setString(str);
+        
         target.draw(txt_etat);
-                std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-        
+                    
         // afficher la selectedCard
-        txt_nomSelect.setString(selectedCard->GetName());
-        target.draw(txt_nomSelect);
-        // afficher le cout
-        
-        // afficher le texte oracle
-        txt_Oracle.setString(selectedCard->GetOracle());
-        target.draw(txt_Oracle);
+        if (selectedCard != nullptr)
+        {
+            txt_nomSelect.setString(selectedCard->GetName());
+            target.draw(txt_nomSelect);
+
+            // afficher le cout
+
+            // afficher le texte oracle
+            txt_Oracle.setString(selectedCard->GetOracle());
+            target.draw(txt_Oracle);
+        }
         
         // draw les autres elements
         std::vector<std::shared_ptr<Etat::Objet> > tampon(
                 state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard().begin(),
                 state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard().end());
         cimetiere1.Actu(tampon);
-        cimetiere1.Draw(target);        
+        cimetiere1.Draw(target);   
         
         std::vector<std::shared_ptr<Etat::Objet> > bf1, bf2;
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
@@ -129,6 +132,7 @@ namespace Render {
                 else
                     bf1.push_back(state->GetBattlefield()[i]);
             }
+        
         bf21.Actu(bf1);
         bf21.Draw(target);
         bf22.Actu(bf2);
@@ -164,6 +168,8 @@ namespace Render {
         tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
         listCapa.Actu(tampon);
         listCapa.Draw(target);
+        
+        // ajouter les manaPool et les couts
     }
 
 }

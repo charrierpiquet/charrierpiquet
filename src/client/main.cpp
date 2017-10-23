@@ -39,7 +39,15 @@ int main(int argc,char* argv[])
         else if ((string)argv[1] == "render")
         {
             std::shared_ptr<Etat::State> state( new Etat::State());
-            Render::Rendu rendu(state,800,600);            
+            Render::Rendu rendu(state,800,600);
+           
+            // creer l'etat
+            
+            // Creation d'une carte
+            std::shared_ptr<Etat::Cout> cost (new Etat::Cout); cost->SetCost();
+            std::vector<std::shared_ptr<Etat::Capacite> > capa;
+            std::shared_ptr<Etat::Carte> carte(new Etat::Carte(true,true,false,false,"ile",*cost,capa,1,0));
+            state->AddCardBattlefield(*carte);
             
             sf::RenderWindow window(sf::VideoMode(800,600),"Sorcelerie, le Regroupement");
             window.setFramerateLimit(60);

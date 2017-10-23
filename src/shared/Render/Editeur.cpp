@@ -20,9 +20,8 @@ namespace Render
             nb_elem = (width -60)/ height;
         else
             nb_elem = (height -60) / 20;
-        
-        sf::Font font;
-        if (!font.loadFromFile(".\\res\\police.ttf"))
+       
+        if (!font.loadFromFile("res/police.ttf"))
         {
             // erreur
         }
@@ -32,13 +31,12 @@ namespace Render
         if(!isVertical)
             this->nom.rotate(90);
         
-        sf::Texture texture;
-        if (!texture.loadFromFile(".\\res\\Bouton.png"))
+        if (!textureB.loadFromFile("res/Bouton.png"))
         {
             // erreur
         }
-        b1.setTexture(texture);
-        b2.setTexture(texture);
+        b1.setTexture(textureB);
+        b2.setTexture(textureB);
         if (!isVertical)
         {
             b1.setPosition(this->x+20,this->y);
@@ -58,20 +56,24 @@ namespace Render
     {
         spriteCarte.clear();
         listeCartes = list_carte;
+        texture.clear();
         if (!isVertical)
         {
             for(unsigned int i=0 ; i < listeCartes.size(); i++)
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {
-                    sf::Texture texture;
-                    if (!texture.loadFromFile(".\\res\\" + 
-                                listeCartes[i]->GetName() + ".png"))            
+                    std::shared_ptr<sf::Texture> tt;
+                    if (!tt->loadFromFile("res/cartes/" + listeCartes[i]->GetName() + ".png"))            
                     {
                         // erreur
                     }
-
+                    texture.push_back(tt);
+                                       
                     std::shared_ptr<sf::Sprite> sprite;
-                    sprite->setTexture(texture);
+                    
+                    std::cout<<texture.size()<< " " << i<< " "<< in_dbt << std::endl; 
+                    sprite->setTexture(*(texture[i-ind_dbt]));
+                    
                     if (!listeCartes[i]->GetIsCapacite())
                         if (std::static_pointer_cast<Etat::Carte>(listeCartes[i])->GetIsTap())
                             sprite->rotate(90);
@@ -80,16 +82,11 @@ namespace Render
                     sprite->setPosition(x + 40 + height*(i-ind_dbt), y);
                     
                     spriteCarte.push_back(sprite);
+                            
                 }
         }
         else
         {
-            sf::Font font;
-            if (!font.loadFromFile(".\\res\\police.ttf"))
-            {
-                // erreur
-                    
-            }
             for(unsigned int i=0 ; i < listeCartes.size(); i++)
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {

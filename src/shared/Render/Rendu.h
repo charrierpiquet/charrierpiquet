@@ -37,6 +37,9 @@ namespace Render {
     sf::Text txt_nomSelect;
     sf::Text txt_Oracle;
     sf::Text txt_instruction;
+    
+    sf::Texture texture;
+    sf::Font font;
     // Operations
   public:
     Rendu (std::shared_ptr<Etat::State> etat, int x, int y);

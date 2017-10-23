@@ -26,9 +26,12 @@ namespace Render {
     bool isVertical;
     sf::Text nom;
     std::vector<std::shared_ptr<Etat::Objet> >  listeCartes;
+    std::vector<std::shared_ptr<sf::Texture> > texture;
     std::vector<std::shared_ptr<sf::Drawable> > spriteCarte;
     sf::Sprite b1;
     sf::Sprite b2;
+    sf::Font font;
+    sf::Texture textureB;
     // Operations
   public:
     Editeur (std::string nom, bool orientation, int x, int y, int width, int height);
