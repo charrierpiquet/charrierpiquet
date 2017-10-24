@@ -98,10 +98,10 @@ int main(int argc,char* argv[])
             shared_ptr<Creature> Ours6(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
             Ours6->SetIsTap(true);
             state->AddCardBattlefield(*Ours6);
-            //shared_ptr<Creature> Ours7(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
-            //state->AddCardBattlefield(*Ours7);
-            //shared_ptr<Creature> Ours8(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
-            //state->AddCardBattlefield(*Ours8);
+            shared_ptr<Creature> Ours7(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
+            state->AddCardBattlefield(*Ours7);
+            shared_ptr<Creature> Ours8(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
+            state->AddCardBattlefield(*Ours8);
             
             //Rendu	
             sf::RenderWindow window(sf::VideoMode(800,600),"Sorcellerie, le Regroupement");
@@ -114,6 +114,9 @@ int main(int argc,char* argv[])
                     if (event.type == sf::Event::Closed)
                         window.close();
                     //tester le click;
+                    if (event.type == sf::Event::MouseButtonPressed)
+                        if (event.mouseButton.button == sf::Mouse::Left)
+                            rendu.Click(event.mouseButton.x,event.mouseButton.y);
                 }
                 window.clear(sf::Color::Black);
                 rendu.Draw(window);
