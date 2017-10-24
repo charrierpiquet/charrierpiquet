@@ -74,11 +74,24 @@ namespace Render
                         std::shared_ptr<sf::Sprite> sprite (new sf::Sprite());
                         
                         sprite->setTexture(texture[texture.size()-1]);                
-
+						
+						//setScale ?
+                        sprite->setScale(0.3f,0.3f);
+                        sprite->setOrigin((sprite->getTextureRect().width)/2,(sprite->getTextureRect().height)-(sprite->getTextureRect().width)/2);
+                        
+                        
                         if (!listeCartes[i]->GetIsCapacite())
+                        {
                             if (std::static_pointer_cast<Etat::Carte>(listeCartes[i])->GetIsTap())
-                                sprite->rotate(90);
-                        // setScale ?
+                            {
+                                sprite->setRotation(90);
+                            }
+                            else
+							{
+								sprite->setRotation(0);
+							}
+						}
+                        
 
                         sprite->setPosition(x + 40 + height*(i-ind_dbt), y);
                         spriteCarte.push_back(sprite);
@@ -87,11 +100,12 @@ namespace Render
         }
         else
         { 
-            for(unsigned int i=0 ; i < listeCartes.size(); i++)
+            for(unsigned int i=0 ; i < listeCartes.size(); i++) //Affichage du cimetière?
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {
                     std::shared_ptr<sf::Text> txt(new sf::Text());
-                    txt->setFont(font); 
+                    txt->setFont(font);
+                    txt->setCharacterSize(12);
                     txt->setString(listeCartes[i]->GetName()); 
                     txt->setPosition(x,y+40 + 20*(i - ind_dbt)); 
                     spriteCarte.push_back(txt);
