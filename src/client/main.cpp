@@ -79,7 +79,6 @@ int main(int argc,char* argv[])
 
 
             shared_ptr<Creature> Ours2(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
-            Ours2->SetIsTap(true);
             state->AddCardBattlefield(*Ours2);
 
             
@@ -98,8 +97,10 @@ int main(int argc,char* argv[])
             shared_ptr<Creature> Ours6(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
             Ours6->SetIsTap(true);
             state->AddCardBattlefield(*Ours6);
+            
             shared_ptr<Creature> Ours7(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
             state->AddCardBattlefield(*Ours7);
+            
             shared_ptr<Creature> Ours8(new Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
             state->AddCardBattlefield(*Ours8);
             

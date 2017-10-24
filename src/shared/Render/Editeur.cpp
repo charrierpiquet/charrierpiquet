@@ -28,6 +28,8 @@ namespace Render
         
         this->nom.setFont(font);
         this->nom.setPosition(this->x, this->y);
+        this->nom.setString(nom);
+        this->nom.setCharacterSize(12);
         if(!isVertical)
             this->nom.rotate(90);
         
@@ -38,22 +40,27 @@ namespace Render
         b1.setTexture(textureB);
         b2.setTexture(textureB);
         if (!isVertical)
-        {
-            b1.setPosition(this->x+b1.getTextureRect().height, this->y);
-            b1.setOrigin(b1.getTextureRect().width/2,b1.getTextureRect().height/2);
-            b1.setRotation(270);
-            b2.setPosition(this->x+this->width-b2.getTextureRect().height, this->y);
-            b2.setOrigin(b2.getTextureRect().width/2, b2.getTextureRect().height/2);
+        {   b1.setRotation(270);
+            b1.setPosition(this->x+20 -b1.getLocalBounds().height, this->y +b1.getLocalBounds().width);
+            //b1.setOrigin(b1.getLocalBounds().width/2., b1.getLocalBounds().height/2.);
+            
+            //b1.move(b1.getLocalBounds().width/2.,b1.getLocalBounds().height/2. );
             b2.setRotation(90);
+            b2.setPosition(this->x+this->width-b2.getLocalBounds().width + b2.getLocalBounds().width/2., this->y );
+            //b2.setOrigin(b2.getLocalBounds().width/2.,b2.getLocalBounds().height/2.);
+            
+            //b2.move(b2.getLocalBounds().width/2.,b2.getLocalBounds().height/2. );
         }
         else
         {
-            b1.setPosition(this->x, this->y+b1.getTextureRect().height);
-            b1.setOrigin(b1.getTextureRect().width/2,b1.getTextureRect().height/2);
-
-            b2.setPosition(this->x, this->y+this->height-b2.getTextureRect().height);
-            b2.setOrigin(b2.getTextureRect().width/2,b2.getTextureRect().height/2);
+            b1.setPosition(this->x, this->y+20);
+            //b1.setOrigin(b1.getLocalBounds().left + b1.getLocalBounds().width/2.,b1.getLocalBounds().top + b1.getLocalBounds().height/2.);
+            //b1.move(b1.getLocalBounds().width/2.,b1.getLocalBounds().height/2. );
             b2.setRotation(180);
+            b2.setPosition(this->x + b2.getLocalBounds().width, this->y+this->height);
+            //b2.setOrigin(b2.getLocalBounds().left + b2.getLocalBounds().width/2.,b2.getLocalBounds().top + b2.getLocalBounds().height/2.);
+            
+            //b2.move(b2.getLocalBounds().width/2.,b2.getLocalBounds().height/2. );
         }        
     }
     
@@ -79,24 +86,17 @@ namespace Render
                         std::shared_ptr<sf::Sprite> sprite (new sf::Sprite());
                         
                         sprite->setTexture(texture[texture.size()-1]);                
-						
-						//setScale ?
+                        
+                        sprite->setPosition(x -40 + height*(i-ind_dbt)+ sprite->getLocalBounds().width/2., y+height/2.);
                         sprite->setScale(0.3f,0.3f);
-                        sprite->setOrigin((sprite->getTextureRect().width)/2,(sprite->getTextureRect().height)-(sprite->getTextureRect().width)/2);
+                        sprite->setOrigin(sprite->getLocalBounds().width/2.,sprite->getLocalBounds().height/2.);
                         
                         
                         if (!listeCartes[i]->GetIsCapacite())
-                        {
                             if (std::static_pointer_cast<Etat::Carte>(listeCartes[i])->GetIsTap())
-                            {
                                 sprite->setRotation(90);
-                            }
-                            else
-                            {
-                                sprite->setRotation(0);
-                            }
-                        }
-                        sprite->setPosition(x + 40 + height*(i-ind_dbt), y);
+
+                        //sprite->move(sprite->getLocalBounds().width/2.,sprite->getLocalBounds().height/2. );
                         spriteCarte.push_back(sprite);
                     }        
                 }
@@ -110,7 +110,8 @@ namespace Render
                     txt->setFont(font);
                     txt->setCharacterSize(12);
                     txt->setString(listeCartes[i]->GetName()); 
-                    txt->setPosition(x,y+40 + 20*(i - ind_dbt)); 
+                    txt->setPosition(x,y+40 + 20*(i - ind_dbt));
+                    spriteCarte.push_back(txt);
                 }
         }         
     }    
@@ -126,29 +127,26 @@ namespace Render
     
     std::shared_ptr<Etat::Objet> Editeur::Click(int x, int y)
     {
-        if (isVertical)
-        {
-            if (y > 20 && y < 40)
+        std::cout<<x << " "<< y << " " <<b1.getPosition().x <<" "<< b1.getPosition().x + b1.getLocalBounds().width<< " "<<b1.getPosition().y + b1.getLocalBounds().height<< " "<< b1.getPosition().y<<" "  <<b2.getPosition().x << " "<< b2.getPosition().y<<" " << b2.getPosition().x + b2.getLocalBounds().width<< " "<<b2.getPosition().y + b2.getLocalBounds().height<< " "<< std::endl;
+        
+        if (y > b1.getPosition().y && y < b1.getPosition().y + b1.getLocalBounds().height
+            && x > b1.getPosition().x && x < b1.getPosition().x + b1.getLocalBounds().width)
                 SetIndDbt(ind_dbt - 1);
-            else if (y > height - 20 && y < height)
+        else if (y > b2.getPosition().y && y < b2.getPosition().y + b2.getLocalBounds().height
+            && x > b2.getPosition().x && x < b2.getPosition().x + b2.getLocalBounds().width)
                 SetIndDbt(ind_dbt + 1);
-            else
+        
+        if (isVertical && (y-this->y - 40)/20 < (int)listeCartes.size())
                 return listeCartes[(y - this->y - 40)/20];
-        }
-        else
-        {
-            if (x > 20 && x < 40)
-                SetIndDbt(ind_dbt - 1);
-            else if (x > width - 20 && x < width)
-                SetIndDbt(ind_dbt + 1);
-            else
+        else if ( !isVertical && (x - this->x - 40)/height < (int)listeCartes.size())
                 return listeCartes[(x - this->x - 40)/height];
-        }
+        
         return nullptr;
     }
     
     void Editeur::SetIndDbt(int value)
     {
+        std::cout<<"click"<<std::endl;
         if (listeCartes.size() < nb_elem)
             ind_dbt = 0;
         else if (value < 0)
