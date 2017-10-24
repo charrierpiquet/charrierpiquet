@@ -98,7 +98,7 @@ namespace Render {
 
         // afficher les textes d'etat
         sf::String str = "";
-        str += "\nPV :" + state->GetJoueurs()[1-state->GetPriority()]->GetPv();   
+        str += "\nPV : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetPv());   
         str += "\nMain : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size());
         str += "\nDeck : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size());
         str += "\nPhase : " +state->GetPhaseName();
