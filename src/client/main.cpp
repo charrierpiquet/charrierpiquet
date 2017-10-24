@@ -91,6 +91,9 @@ int main(int argc,char* argv[])
                     if (event.type == sf::Event::Closed)
                         window.close();
                     //tester le click;
+                    if (event.type == sf::Event::MouseButtonPressed)
+                        if (event.mouseButton.button == sf::Mouse::Left)
+                            rendu.Click(event.mouseButton.x,event.mouseButton.y);
                 }
                 window.clear(sf::Color::Black);
                 rendu.Draw(window);

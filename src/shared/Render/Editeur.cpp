@@ -39,16 +39,21 @@ namespace Render
         b2.setTexture(textureB);
         if (!isVertical)
         {
-            b1.setPosition(this->x+20,this->y);
-            b2.setPosition(this->x+this->width-20,this->y);
-            b2.rotate(180);
+            b1.setPosition(this->x+b1.getTextureRect().height, this->y);
+            b1.setOrigin(b1.getTextureRect().width/2,b1.getTextureRect().height/2);
+            b1.setRotation(270);
+            b2.setPosition(this->x+this->width-b2.getTextureRect().height, this->y);
+            b2.setOrigin(b2.getTextureRect().width/2, b2.getTextureRect().height/2);
+            b2.setRotation(90);
         }
         else
         {
-            b1.setPosition(this->x,this->y+20);
-            b1.rotate(90);
-            b2.setPosition(this->x,this->y+this->height-20);
-            b2.rotate(270);
+            b1.setPosition(this->x, this->y+b1.getTextureRect().height);
+            b1.setOrigin(b1.getTextureRect().width/2,b1.getTextureRect().height/2);
+
+            b2.setPosition(this->x, this->y+this->height-b2.getTextureRect().height);
+            b2.setOrigin(b2.getTextureRect().width/2,b2.getTextureRect().height/2);
+            b2.setRotation(180);
         }        
     }
     
@@ -78,7 +83,6 @@ namespace Render
                         if (!listeCartes[i]->GetIsCapacite())
                             if (std::static_pointer_cast<Etat::Carte>(listeCartes[i])->GetIsTap())
                                 sprite->rotate(90);
-                        // setScale ?
 
                         sprite->setPosition(x + 40 + height*(i-ind_dbt), y);
                         spriteCarte.push_back(sprite);
@@ -94,13 +98,15 @@ namespace Render
                     txt->setFont(font); 
                     txt->setString(listeCartes[i]->GetName()); 
                     txt->setPosition(x,y+40 + 20*(i - ind_dbt)); 
-                    spriteCarte.push_back(txt);
                 }
         }         
     }    
     
     void Editeur::Draw(sf::RenderTarget& target)
     {
+        target.draw(b1);
+        target.draw(b2);
+        target.draw(nom);
         for(unsigned int i = 0 ; i < spriteCarte.size() ; i ++)
             target.draw(*spriteCarte[i]);
     }
