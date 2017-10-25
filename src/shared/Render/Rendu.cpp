@@ -6,15 +6,15 @@
 namespace Render {
     
     Rendu::Rendu (std::shared_ptr<Etat::State> etat, int x, int y):
-        cimetiere1("Cimetiere 1", true,0,0,100,y/3),
-        cimetiere2("Cimetiere 2", true,0,2*y/3,100,y/3),
-        bf21("BF Terrain 2", false,x/4,0,x/2,y/6),
-        bf22("BF Creatures 2", false, x/4,y/6,x/2,y/6), 
+        cimetiere1("Cimetiere 2", true,0,0,x/6,y/3),
+        cimetiere2("Cimetiere 1", true,0,2*y/3,x/6,y/3),
+        bf21("Terrain 2", false,x/4,0,x/2,y/6),
+        bf22("Creatures 2", false, x/4,y/6,x/2,y/6), 
         stack("Pile", false, x/4,2*y/6,x/2,y/6), 
-        bf12("BF Creatures 1", false,x/4,3*y/6,x/2,y/6),
-        bf11("BF Terrains 1", false,x/4,4*y/6,x/2,y/6),
+        bf12("Creatures 1", false,x/4,3*y/6,x/2,y/6),
+        bf11("Terrains 1", false,x/4,4*y/6,x/2,y/6),
         hand("Hand", false,x/4,5*y/6,x/2,y/6),
-        listCapa("Capacites",true,7*x/8,2*y/3,100,y/3)
+        listCapa("Capacites",true,7*x/8,2*y/3,x/8,y/3)
     {
         state = etat;
         dimensionX = x;
@@ -26,6 +26,7 @@ namespace Render {
             // erreur
         }
         sprite.setTexture(texture);
+        sprite.setScale(dimensionX/sprite.getLocalBounds().width, dimensionY/sprite.getLocalBounds().height);
         sprite.setPosition(0,0);
         
         if (!font.loadFromFile("res/police.ttf"))
@@ -35,21 +36,26 @@ namespace Render {
         
         txt_etat.setFont(font);
         txt_etat.setPosition(10, (1./3.)*dimensionY);
-        txt_etat.setCharacterSize(12);
+        txt_etat.setCharacterSize(18);
         
         txt_nomSelect.setFont(font);
         txt_nomSelect.setPosition((3./4.)*dimensionX+10, 0);
-        txt_nomSelect.setCharacterSize(12);
+        txt_nomSelect.setCharacterSize(18);
         
         txt_Oracle.setFont(font);
         txt_Oracle.setPosition((3./4.)*dimensionX+10, (1./6.)*dimensionY);
-        txt_Oracle.setCharacterSize(12);
+        txt_Oracle.setCharacterSize(18);
         
         txt_instruction.setFont(font);
         txt_instruction.setPosition((3./4.)*dimensionX+10, (3./6.)*dimensionY);
-        txt_instruction.setCharacterSize(12);
+        txt_instruction.setCharacterSize(18);
               
-        
+        txt_instruction.setString(
+            "ici se trouveront les instructions\n "
+            " cliquez sur une carte pour plus de\n"
+            "precision\n"
+            " cliquez sur les boutons pour\n"
+            "acceder aux cartes suivantes");
     }
     
     void Rendu::Click(int x, int y)
@@ -108,6 +114,7 @@ namespace Render {
         txt_etat.setString(str);
         
         target.draw(txt_etat);
+        target.draw(txt_instruction);
                     
         // afficher la selectedCard
         if (selectedCard != nullptr)
@@ -115,9 +122,8 @@ namespace Render {
             txt_nomSelect.setString(selectedCard->GetName());
             target.draw(txt_nomSelect);
 
-            // afficher le cout
-
             // afficher le texte oracle
+            //std::cout<<selectedCard->GetOracle()<<std::endl;
             txt_Oracle.setString(selectedCard->GetOracle());
             target.draw(txt_Oracle);
         }  
@@ -180,86 +186,91 @@ namespace Render {
                 sf::Texture ttCout;
                 
                 if (!ttCout.loadFromFile("res/mana_noir.png"))
-                {
-                }
+                {   }
                 cout.setTexture(ttCout);
-                cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
-                for(int i = 1 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetBlack();i++)
+                cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);
+                for(int i = 0 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetBlack();i++)
                 {
-                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    cout.setPosition(3./4.*dimensionX + 20*compteur,20);
                     compteur++;
                     target.draw(cout);
                 }
                 if (!ttCout.loadFromFile("res/mana_bleu.png"))
                 {   }
                 cout.setTexture(ttCout);
-                cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
-                for(int i = 1 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetBlue();i++)
+                cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);
+                for(int i = 0 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetBlue();i++)
                 {
-                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    cout.setPosition(3./4.*dimensionX + 20*compteur,20);
                     compteur++;
                     target.draw(cout);
                 }
                 if (!ttCout.loadFromFile("res/mana_vert.png"))
                 {   }
                 cout.setTexture(ttCout);
-                cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
-                for(int i = 1 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetGreen();i++)
+                cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);
+                for(int i = 0 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetGreen();i++)
                 {
-                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    cout.setPosition(3./4.*dimensionX + 20*compteur,20);
                     compteur++;
                     target.draw(cout);
                 }
+                
                 if(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetInc() > 0)
                 {
                     if(!ttCout.loadFromFile("res/"+std::to_string(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetInc())+".png"))
                     {   }
                     cout.setTexture(ttCout);
-                    cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
-                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);
+                    cout.setPosition(3./4.*dimensionX + 20*compteur,20);
                     target.draw(cout);
                 }
             }
         }
         // affichage manapools pas opti mais plus pratique
         nb.setFont(font);
-        nb.setCharacterSize(18);
+        nb.setCharacterSize(20);
         
         for (int i = 0 ; i < 2 ; i++)
-        {        
+        {   
+            int j = 0;
             if(!ttMp.loadFromFile("res/multi.png"))
             {   }
             mp.setTexture(ttMp);
-            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
-            mp.setPosition(110,10 + i*2./3.*dimensionY);
+            mp.setScale(20./mp.getTextureRect().width,20./mp.getTextureRect().height);
+            mp.setPosition(dimensionX*1/6 +10 ,10 +j*24+ i*2./3.*dimensionY);
             target.draw(mp);
+            j++;
             
             if(!ttMp.loadFromFile("res/mana_noir.png"))
             {   }
             mp.setTexture(ttMp);
-            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
-            mp.setPosition(110,30+ i*2./3.*dimensionY);
+            mp.setScale(20./mp.getTextureRect().width,20./mp.getTextureRect().height);
+            mp.setPosition(dimensionX*1/6 +10 ,10 +j*24+ i*2./3.*dimensionY);
             target.draw(mp);
+            j++;
             
             if(!ttMp.loadFromFile("res/mana_bleu.png"))
             {   }
             mp.setTexture(ttMp);
-            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
-            mp.setPosition(110,50 +i*2./3.*dimensionY);
+            mp.setScale(20./mp.getTextureRect().width,20./mp.getTextureRect().height);
+            mp.setPosition(dimensionX*1/6 +10 ,10 +j*24+ i*2./3.*dimensionY);
             target.draw(mp);
+            j++;
             
             if(!ttMp.loadFromFile("res/mana_vert.png"))
             {   }
             mp.setTexture(ttMp);
-            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
-            mp.setPosition(110,70 +i*2./3.*dimensionY);
+            mp.setScale(20./mp.getTextureRect().width,20./mp.getTextureRect().height);
+            mp.setPosition(dimensionX*1/6 +10 ,10 +j*24+ i*2./3.*dimensionY);
             target.draw(mp);
+            j++;
             
-            if(!ttMp.loadFromFile("res/1.png"))
+            if(!ttMp.loadFromFile("res/inc.png"))
             {   }
             mp.setTexture(ttMp);
-            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
-            mp.setPosition(110,90 +i*2./3.*dimensionY);
+            mp.setScale(20./mp.getTextureRect().width,20./mp.getTextureRect().height);
+            mp.setPosition(dimensionX*1/6 +10 ,10 +j*24+ i*2./3.*dimensionY);
             target.draw(mp);
             
             nb.setString(
@@ -268,7 +279,7 @@ namespace Render {
             std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlue())+"\n"+
             std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetGreen())+"\n"+
             std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetInc()));
-            nb.setPosition(135,10 + i*2./3.*dimensionY);
+            nb.setPosition(dimensionX*1/6 + 30,10 + i*2./3.*dimensionY);
             target.draw(nb);
         }
                 
