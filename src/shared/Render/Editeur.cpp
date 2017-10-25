@@ -121,32 +121,91 @@ namespace Render
         target.draw(b1);
         target.draw(b2);
         target.draw(nom);
+        
+        sf::Text marqueurs;
+        marqueurs.setCharacterSize(18);
+        marqueurs.setFont(font);
+        std::string str = "";
         for(unsigned int i = 0 ; i < spriteCarte.size() ; i ++)
+        {
             target.draw(*spriteCarte[i]);
+            // c'est pas opti mais c'étais plus pratique de faire ça ici une fois le reste fait
+            if(!listeCartes[i+ind_dbt]->GetIsCapacite())
+            {
+                if (std::static_pointer_cast<Etat::Carte>(listeCartes[i+ind_dbt])->GetCounter() > 0)
+                {
+                    str = std::to_string(std::static_pointer_cast<Etat::Carte>(listeCartes[i+ind_dbt])->GetCounter());
+                    marqueurs.setString(str);
+                    marqueurs.setColor(sf::Color::Blue);
+                    //marqueurs.setPosition(0,0);
+                    marqueurs.setPosition(std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left+5,std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2 );
+                    target.draw(marqueurs);
+                    //std::cout<<"on a "<<str<<"  marqueurs "<< std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left << " " << std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2<<std::endl;
+                }
+                if (std::static_pointer_cast<Etat::Carte>(listeCartes[i+ind_dbt])->GetIsCreature())
+                    if (std::static_pointer_cast<Etat::Creature>(listeCartes[i+ind_dbt])->GetBonusEOT() > 0)
+                    {
+                        str = std::to_string(std::static_pointer_cast<Etat::Creature>(listeCartes[i+ind_dbt])->GetBonusEOT());
+                        marqueurs.setString(str);
+                        marqueurs.setColor(sf::Color::Green);
+                        marqueurs.setPosition(std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left +25,std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2 );
+                        target.draw(marqueurs);
+                        str = std::to_string(std::static_pointer_cast<Etat::Creature>(listeCartes[i+ind_dbt])->GetBlessure());
+                        marqueurs.setString(str);
+                        marqueurs.setColor(sf::Color::Red);
+                        marqueurs.setPosition(std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left +45,std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2 );
+                        target.draw(marqueurs);
+                    }
+            }
+        }
     }
     
     std::shared_ptr<Etat::Objet> Editeur::Click(int x, int y)
     {
-        std::cout<<x << " "<< y << " " <<b1.getPosition().x <<" "<< b1.getPosition().x + b1.getLocalBounds().width<< " "<<b1.getPosition().y + b1.getLocalBounds().height<< " "<< b1.getPosition().y<<" "  <<b2.getPosition().x << " "<< b2.getPosition().y<<" " << b2.getPosition().x + b2.getLocalBounds().width<< " "<<b2.getPosition().y + b2.getLocalBounds().height<< " "<< std::endl;
+        /*std::cout<< "x : "<< x ;
+        std::cout<< "  y : "<< y ;
+        std::cout<<std::endl;
+        std::cout<< "  b1x : " << b1.getPosition().x ;
+        std::cout<< "  b1y : " << b1.getPosition().y;
+        std::cout<< "  b1w : " << b1.getLocalBounds().width;
+        std::cout<< "  b1h : " << b1.getLocalBounds().height;
+        std::cout<<std::endl;
+        std::cout<< "  b2x : " << b2.getPosition().x ;
+        std::cout<< "  b2y : " << b2.getPosition().y;
+        std::cout<< "  b2w : " << b2.getLocalBounds().width;
+        std::cout<< "  b2h : " << b2.getLocalBounds().height;
+        std::cout<<std::endl;*/
+      
         
-        if (y > b1.getPosition().y && y < b1.getPosition().y + b1.getLocalBounds().height
-            && x > b1.getPosition().x && x < b1.getPosition().x + b1.getLocalBounds().width)
+        if (isVertical)
+        {
+            if (y > b1.getPosition().y && y < b1.getPosition().y + b1.getLocalBounds().height
+                && x > b1.getPosition().x && x < b1.getPosition().x + b1.getLocalBounds().width)
                 SetIndDbt(ind_dbt - 1);
-        else if (y > b2.getPosition().y && y < b2.getPosition().y + b2.getLocalBounds().height
-            && x > b2.getPosition().x && x < b2.getPosition().x + b2.getLocalBounds().width)
+            else if (y < b2.getPosition().y && y > b2.getPosition().y - b2.getLocalBounds().height
+                && x < b2.getPosition().x && x > b2.getPosition().x - b2.getLocalBounds().width)
                 SetIndDbt(ind_dbt + 1);
-        
-        if (isVertical && (y-this->y - 40)/20 < (int)listeCartes.size())
+            else if ((y-this->y - 40)/20 < (int)listeCartes.size())
                 return listeCartes[(y - this->y - 40)/20];
-        else if ( !isVertical && (x - this->x - 40)/height < (int)listeCartes.size())
+        }
+        else
+        {
+            if (y < b1.getPosition().y && y > b1.getPosition().y - b1.getLocalBounds().width
+                && x > b1.getPosition().x && x < b1.getPosition().x + b1.getLocalBounds().height)
+                SetIndDbt(ind_dbt - 1);
+            else if (y > b2.getPosition().y && y < b2.getPosition().y + b2.getLocalBounds().width
+                && x < b2.getPosition().x && x > b2.getPosition().x - b2.getLocalBounds().height)
+                SetIndDbt(ind_dbt + 1);
+            else if ( !isVertical && (x - this->x - 40)/height < (int)listeCartes.size() && (x - this->x - 40)/height >= 0)
                 return listeCartes[(x - this->x - 40)/height];
+        }
         
         return nullptr;
     }
     
     void Editeur::SetIndDbt(int value)
     {
-        std::cout<<"click"<<std::endl;
+        //std::cout<<"click"<<std::endl;   
         if (listeCartes.size() < nb_elem)
             ind_dbt = 0;
         else if (value < 0)
@@ -154,7 +213,7 @@ namespace Render
         else if (value > (int)(listeCartes.size() - nb_elem))
             ind_dbt = listeCartes.size() - nb_elem;
         else
-            nb_elem = value;
+            ind_dbt = value;
     }
     
     

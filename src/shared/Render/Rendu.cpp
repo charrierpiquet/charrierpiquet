@@ -6,15 +6,15 @@
 namespace Render {
     
     Rendu::Rendu (std::shared_ptr<Etat::State> etat, int x, int y):
-        cimetiere1("Cimetiere 1", true,0,0,x/4,y/3),
-        cimetiere2("Cimetiere 2", true,0,2*y/3,x/4,y/3),
+        cimetiere1("Cimetiere 1", true,0,0,100,y/3),
+        cimetiere2("Cimetiere 2", true,0,2*y/3,100,y/3),
         bf21("BF Terrain 2", false,x/4,0,x/2,y/6),
         bf22("BF Creatures 2", false, x/4,y/6,x/2,y/6), 
         stack("Pile", false, x/4,2*y/6,x/2,y/6), 
         bf12("BF Creatures 1", false,x/4,3*y/6,x/2,y/6),
         bf11("BF Terrains 1", false,x/4,4*y/6,x/2,y/6),
-        hand("BF Terrains 1", false,x/4,5*y/6,x/2,y/6),
-        listCapa("Capacites",true,7*x/8,2*y/3,x/8,y/3)
+        hand("Hand", false,x/4,5*y/6,x/2,y/6),
+        listCapa("Capacites",true,7*x/8,2*y/3,100,y/3)
     {
         state = etat;
         dimensionX = x;
@@ -172,8 +172,106 @@ namespace Render {
             //tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
             listCapa.Actu(Conv<Etat::Capacite>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
             listCapa.Draw(target);
+            // on affiche le cout que pour les cartes
+            if (!selectedCard->GetIsCapacite())
+            {
+                int compteur = 0;
+                sf::Sprite cout;
+                sf::Texture ttCout;
+                
+                if (!ttCout.loadFromFile("res/mana_noir.png"))
+                {
+                }
+                cout.setTexture(ttCout);
+                cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
+                for(int i = 1 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetBlack();i++)
+                {
+                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    compteur++;
+                    target.draw(cout);
+                }
+                if (!ttCout.loadFromFile("res/mana_bleu.png"))
+                {   }
+                cout.setTexture(ttCout);
+                cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
+                for(int i = 1 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetBlue();i++)
+                {
+                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    compteur++;
+                    target.draw(cout);
+                }
+                if (!ttCout.loadFromFile("res/mana_vert.png"))
+                {   }
+                cout.setTexture(ttCout);
+                cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
+                for(int i = 1 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetGreen();i++)
+                {
+                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    compteur++;
+                    target.draw(cout);
+                }
+                if(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetInc() > 0)
+                {
+                    if(!ttCout.loadFromFile("res/"+std::to_string(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost().GetInc())+".png"))
+                    {   }
+                    cout.setTexture(ttCout);
+                    cout.setScale(12./cout.getTextureRect().width,12./cout.getTextureRect().height);
+                    cout.setPosition(3./4.*dimensionX + 15*compteur,20);
+                    target.draw(cout);
+                }
+            }
         }
-        // ajouter les manaPool et les couts
+        // affichage manapools pas opti mais plus pratique
+        nb.setFont(font);
+        nb.setCharacterSize(18);
+        
+        for (int i = 0 ; i < 2 ; i++)
+        {        
+            if(!ttMp.loadFromFile("res/multi.png"))
+            {   }
+            mp.setTexture(ttMp);
+            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
+            mp.setPosition(110,10 + i*2./3.*dimensionY);
+            target.draw(mp);
+            
+            if(!ttMp.loadFromFile("res/mana_noir.png"))
+            {   }
+            mp.setTexture(ttMp);
+            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
+            mp.setPosition(110,30+ i*2./3.*dimensionY);
+            target.draw(mp);
+            
+            if(!ttMp.loadFromFile("res/mana_bleu.png"))
+            {   }
+            mp.setTexture(ttMp);
+            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
+            mp.setPosition(110,50 +i*2./3.*dimensionY);
+            target.draw(mp);
+            
+            if(!ttMp.loadFromFile("res/mana_vert.png"))
+            {   }
+            mp.setTexture(ttMp);
+            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
+            mp.setPosition(110,70 +i*2./3.*dimensionY);
+            target.draw(mp);
+            
+            if(!ttMp.loadFromFile("res/1.png"))
+            {   }
+            mp.setTexture(ttMp);
+            mp.setScale(18./mp.getTextureRect().width,18./mp.getTextureRect().height);
+            mp.setPosition(110,90 +i*2./3.*dimensionY);
+            target.draw(mp);
+            
+            nb.setString(
+            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetMulti())+"\n"+
+            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlack())+"\n"+
+            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlue())+"\n"+
+            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetGreen())+"\n"+
+            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetInc()));
+            nb.setPosition(135,10 + i*2./3.*dimensionY);
+            target.draw(nb);
+        }
+                
     }
     
     template<typename T>

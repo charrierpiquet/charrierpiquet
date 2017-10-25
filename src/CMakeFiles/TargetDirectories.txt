@@ -1,3 +1,0 @@
-/home/sebachar/Documents/Projet3A/charrierpiquet/charrierpiquet/src/CMakeFiles/rebuild_cache.dir
-/home/sebachar/Documents/Projet3A/charrierpiquet/charrierpiquet/src/CMakeFiles/edit_cache.dir
-/home/sebachar/Documents/Projet3A/charrierpiquet/charrierpiquet/src/CMakeFiles/client.dir

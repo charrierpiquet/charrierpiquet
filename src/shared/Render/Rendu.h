@@ -40,6 +40,10 @@ namespace Render {
     
     sf::Texture texture;
     sf::Font font;
+    
+    sf::Texture ttMp;
+    sf::Sprite mp;
+    sf::Text nb;
     // Operations
   public:
     Rendu (std::shared_ptr<Etat::State> etat, int x, int y);
