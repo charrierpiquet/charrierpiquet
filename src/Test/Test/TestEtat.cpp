@@ -87,8 +87,8 @@ namespace Test
             
             std::string nom = "foret";
             std::vector<std::shared_ptr<Etat::Capacite> > capa;
-            Etat::Carte* card = new Etat::Carte(true,true,false,false,nom,*cost,capa,1,0);
-            state->AddCardBattlefield(*card);
+            std::shared_ptr<Etat::Carte> card (new Etat::Carte(true,true,false,false,nom,*cost,capa,1,0));
+            state->AddCardBattlefield(card);
             if (state->GetBattlefield().size() != 1)
                 return 11;
             else

@@ -68,9 +68,9 @@ namespace Etat
         aJoueTerrain = value;
     }
     
-    void Joueur::AddCardGraveyard(Carte card)
+    void Joueur::AddCardGraveyard(std::shared_ptr<Carte> card)
     {
-        graveyard.push_back((std::shared_ptr<Carte>)&card);
+        graveyard.push_back(card);
     }
     void Joueur::DelCardGraveyard(Carte card)
     {
@@ -83,9 +83,9 @@ namespace Etat
             graveyard.erase(graveyard.begin() + ind);
     }
     
-    void Joueur::AddCardLibrary(Carte card)
+    void Joueur::AddCardLibrary(std::shared_ptr<Carte> card)
     {
-        library.push_back((std::shared_ptr<Carte>)&card);
+        library.push_back(card);
     }
     void Joueur::DelCardLibrary(Carte card)
     {
@@ -98,9 +98,9 @@ namespace Etat
             library.erase(library.begin() + ind);
     }
     
-    void Joueur::AddCardHand(Carte card)
+    void Joueur::AddCardHand(std::shared_ptr<Carte> card)
     {
-        hand.push_back((std::shared_ptr<Carte>)&card);
+        hand.push_back(card);
     }
     void Joueur::DelCardHand(Carte card)
     {

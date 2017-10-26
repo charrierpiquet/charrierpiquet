@@ -68,13 +68,13 @@ namespace Etat
             priorite = 0;
     }
     
-    void State::AddCardBattlefield(Carte card)
+    void State::AddCardBattlefield(std::shared_ptr<Carte> card)
     {
-        battlefield.push_back((std::shared_ptr<Carte>)&card);
+        battlefield.push_back(card);
     }
-    void State::AddCardPile(Objet card)
+    void State::AddCardPile(std::shared_ptr<Objet> card)
     {
-        pile.push_back((std::shared_ptr<Objet>)&card);
+        pile.push_back(card);
     }
     void State::DelCardBattlefield(Carte card)
     {

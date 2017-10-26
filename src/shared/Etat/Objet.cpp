@@ -8,6 +8,7 @@ namespace Etat
         idObj = id;
         indJoueur = prop;
         name = nom;
+        //oracle = std::shared_ptr<std::string>(new std::string());
     }
     
     void Objet::SetTarget(std::weak_ptr<Objet> cible)

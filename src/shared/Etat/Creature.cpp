@@ -1,4 +1,5 @@
 #include "Creature.h"
+#include <iostream>
 
 namespace Etat
 {
@@ -8,8 +9,11 @@ namespace Etat
         force = strengh;
         endurance = thougness;
         
-        blessure = 0;
-        bonusEOT = 0;
+        //bonusEOT = std::shared_ptr<int>(new int(0));
+        //blessure = std::shared_ptr<int>(new int(0));
+        
+        bonusEOT = 0; blessure = 0;
+       
         malInvoc = true;
     }
     
@@ -20,11 +24,12 @@ namespace Etat
     
     int Creature::GetEndurance() const
     {
-        return endurance + GetCounter() + bonusEOT;
+        return endurance + GetCounter() + bonusEOT - blessure;
     }
     
-    int Creature::GetBlessure() const
+    int Creature::GetBlessure()
     {
+        //std::cout<<*blessure<<std::endl;
         return blessure;
     }
     
@@ -33,7 +38,7 @@ namespace Etat
         return malInvoc;
     }
     
-    int Creature::GetBonusEOT() const
+    int Creature::GetBonusEOT() 
     {
         return bonusEOT;
     }

@@ -41,9 +41,9 @@ namespace Etat {
     std::vector<std::shared_ptr<Carte> > GetLibrary () const;
     std::vector<std::shared_ptr<Carte> > GetGraveyard () const;
     std::shared_ptr<ManaPool> GetManaPool () const;
-    void AddCardLibrary (Carte card);
-    void AddCardHand (Carte card);
-    void AddCardGraveyard (Carte card);
+    void AddCardLibrary (std::shared_ptr<Carte> card);
+    void AddCardHand (std::shared_ptr<Carte> card);
+    void AddCardGraveyard (std::shared_ptr<Carte> card);
     void DelCardHand (Carte card);
     void DelCardLibrary (Carte card);
     void DelCardGraveyard (Carte card);
