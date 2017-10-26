@@ -29,7 +29,7 @@ namespace Render
         this->nom.setFont(font);
         this->nom.setPosition(this->x, this->y);
         this->nom.setString(nom);
-        this->nom.setCharacterSize(12);
+        this->nom.setCharacterSize(18);
         if(!isVertical)
             this->nom.rotate(90);
         
@@ -40,27 +40,37 @@ namespace Render
         b1.setTexture(textureB);
         b2.setTexture(textureB);
         if (!isVertical)
-        {   b1.setRotation(270);
-            b1.setPosition(this->x+20 -b1.getLocalBounds().height, this->y +b1.getLocalBounds().width);
-            //b1.setOrigin(b1.getLocalBounds().width/2., b1.getLocalBounds().height/2.);
+        {   
+            b1.setRotation(270);
+            b1.setScale(this->height/b1.getGlobalBounds().height,1);
+            b1.setPosition(this->x+this->nom.getCharacterSize()*1.5 - b1.getGlobalBounds().width, this->y +b1.getGlobalBounds().height);
             
-            //b1.move(b1.getLocalBounds().width/2.,b1.getLocalBounds().height/2. );
+            //b1.setOrigin(b1.getGlobalBounds().width/2., b1.getGlobalBounds().height/2.);
+            
+            //b1.move(b1.getGlobalBounds().width/2.,b1.getGlobalBounds().height/2. );
             b2.setRotation(90);
-            b2.setPosition(this->x+this->width-b2.getLocalBounds().width + b2.getLocalBounds().width/2., this->y );
-            //b2.setOrigin(b2.getLocalBounds().width/2.,b2.getLocalBounds().height/2.);
+            b2.setScale(this->height/b2.getGlobalBounds().height,1);
+            b2.setPosition(this->x+this->width-b2.getGlobalBounds().width, this->y );
             
-            //b2.move(b2.getLocalBounds().width/2.,b2.getLocalBounds().height/2. );
+            //b2.setOrigin(b2.getGlobalBounds().width/2.,b2.getGlobalBounds().height/2.);
+            
+            //b2.move(b2.getGlobalBounds().width/2.,b2.getGlobalBounds().height/2. );
         }
         else
         {
+            b1.setScale(this->width/b1.getGlobalBounds().width,1);
             b1.setPosition(this->x, this->y+20);
-            //b1.setOrigin(b1.getLocalBounds().left + b1.getLocalBounds().width/2.,b1.getLocalBounds().top + b1.getLocalBounds().height/2.);
-            //b1.move(b1.getLocalBounds().width/2.,b1.getLocalBounds().height/2. );
-            b2.setRotation(180);
-            b2.setPosition(this->x + b2.getLocalBounds().width, this->y+this->height);
-            //b2.setOrigin(b2.getLocalBounds().left + b2.getLocalBounds().width/2.,b2.getLocalBounds().top + b2.getLocalBounds().height/2.);
             
-            //b2.move(b2.getLocalBounds().width/2.,b2.getLocalBounds().height/2. );
+            //b1.setOrigin(b1.getGlobalBounds().left + b1.getGlobalBounds().width/2.,b1.getGlobalBounds().top + b1.getGlobalBounds().height/2.);
+            //b1.move(b1.getGlobalBounds().width/2.,b1.getGlobalBounds().height/2. );
+            
+            b2.setRotation(180);
+            b2.setScale(this->width/b2.getGlobalBounds().width,1);
+            b2.setPosition(this->x + b2.getGlobalBounds().width, this->y+this->height);
+            
+            //b2.setOrigin(b2.getGlobalBounds().left + b2.getGlobalBounds().width/2.,b2.getGlobalBounds().top + b2.getGlobalBounds().height/2.);
+            
+            //b2.move(b2.getGlobalBounds().width/2.,b2.getGlobalBounds().height/2. );
         }        
     }
     
@@ -86,17 +96,20 @@ namespace Render
                         std::shared_ptr<sf::Sprite> sprite (new sf::Sprite());
                         
                         sprite->setTexture(texture[texture.size()-1]);                
+                        sprite->setScale(height/sprite->getGlobalBounds().height,height/sprite->getGlobalBounds().height);
+                        sprite->setPosition(b1.getGlobalBounds().left + b1.getGlobalBounds().width + height*(i-ind_dbt), y);
                         
-                        sprite->setPosition(x -40 + height*(i-ind_dbt)+ sprite->getLocalBounds().width/2., y+height/2.);
-                        sprite->setScale(0.3f,0.3f);
-                        sprite->setOrigin(sprite->getLocalBounds().width/2.,sprite->getLocalBounds().height/2.);
+                        //sprite->setOrigin(sprite->getGlobalBounds().width/2.,sprite->getGlobalBounds().height/2.);
                         
                         
                         if (!listeCartes[i]->GetIsCapacite())
                             if (std::static_pointer_cast<Etat::Carte>(listeCartes[i])->GetIsTap())
+                            {
                                 sprite->setRotation(90);
+                                sprite->move(sprite->getGlobalBounds().width,height - sprite->getGlobalBounds().height);
+                            }
 
-                        //sprite->move(sprite->getLocalBounds().width/2.,sprite->getLocalBounds().height/2. );
+                        //sprite->move(sprite->getGlobalBounds().width/2.,sprite->getGlobalBounds().height/2. );
                         spriteCarte.push_back(sprite);
                     }        
                 }
@@ -108,9 +121,9 @@ namespace Render
                 {
                     std::shared_ptr<sf::Text> txt(new sf::Text());
                     txt->setFont(font);
-                    txt->setCharacterSize(12);
+                    txt->setCharacterSize(18);
                     txt->setString(listeCartes[i]->GetName()); 
-                    txt->setPosition(x,y+40 + 20*(i - ind_dbt));
+                    txt->setPosition(x,b1.getGlobalBounds().top + b1.getGlobalBounds().height+ txt->getCharacterSize()*(i - ind_dbt)*1.5);
                     spriteCarte.push_back(txt);
                 }
         }         
@@ -118,14 +131,17 @@ namespace Render
     
     void Editeur::Draw(sf::RenderTarget& target)
     {
+        std::string str = nom.getString();
+        nom.setString(nom.getString() + " : " + std::to_string(listeCartes.size()));
         target.draw(b1);
         target.draw(b2);
         target.draw(nom);
+        nom.setString(str);
         
         sf::Text marqueurs;
-        marqueurs.setCharacterSize(18);
+        marqueurs.setCharacterSize(25);
         marqueurs.setFont(font);
-        std::string str = "";
+        str = " ";
         for(unsigned int i = 0 ; i < spriteCarte.size() ; i ++)
         {
             target.draw(*spriteCarte[i]);
@@ -167,38 +183,26 @@ namespace Render
         std::cout<<std::endl;
         std::cout<< "  b1x : " << b1.getPosition().x ;
         std::cout<< "  b1y : " << b1.getPosition().y;
-        std::cout<< "  b1w : " << b1.getLocalBounds().width;
-        std::cout<< "  b1h : " << b1.getLocalBounds().height;
+        std::cout<< "  b1w : " << b1.getGlobalBounds().width;
+        std::cout<< "  b1h : " << b1.getGlobalBounds().height;
         std::cout<<std::endl;
         std::cout<< "  b2x : " << b2.getPosition().x ;
         std::cout<< "  b2y : " << b2.getPosition().y;
-        std::cout<< "  b2w : " << b2.getLocalBounds().width;
-        std::cout<< "  b2h : " << b2.getLocalBounds().height;
+        std::cout<< "  b2w : " << b2.getGlobalBounds().width;
+        std::cout<< "  b2h : " << b2.getGlobalBounds().height;
         std::cout<<std::endl;*/
-      
         
-        if (isVertical)
-        {
-            if (y > b1.getPosition().y && y < b1.getPosition().y + b1.getLocalBounds().height
-                && x > b1.getPosition().x && x < b1.getPosition().x + b1.getLocalBounds().width)
-                SetIndDbt(ind_dbt - 1);
-            else if (y < b2.getPosition().y && y > b2.getPosition().y - b2.getLocalBounds().height
-                && x < b2.getPosition().x && x > b2.getPosition().x - b2.getLocalBounds().width)
-                SetIndDbt(ind_dbt + 1);
-            else if ((y-this->y - 40)/20 < (int)listeCartes.size())
-                return listeCartes[(y - this->y - 40)/20];
-        }
-        else
-        {
-            if (y < b1.getPosition().y && y > b1.getPosition().y - b1.getLocalBounds().width
-                && x > b1.getPosition().x && x < b1.getPosition().x + b1.getLocalBounds().height)
-                SetIndDbt(ind_dbt - 1);
-            else if (y > b2.getPosition().y && y < b2.getPosition().y + b2.getLocalBounds().width
-                && x < b2.getPosition().x && x > b2.getPosition().x - b2.getLocalBounds().height)
-                SetIndDbt(ind_dbt + 1);
-            else if ( !isVertical && (x - this->x - 40)/height < (int)listeCartes.size() && (x - this->x - 40)/height >= 0)
-                return listeCartes[(x - this->x - 40)/height];
-        }
+        if (y > b1.getGlobalBounds().top && y < b1.getGlobalBounds().top + b1.getGlobalBounds().height
+            && x > b1.getGlobalBounds().left && x < b1.getGlobalBounds().left + b1.getGlobalBounds().width)
+            SetIndDbt(ind_dbt - 1);
+        else if (y > b2.getGlobalBounds().top && y < b2.getGlobalBounds().top + b2.getGlobalBounds().height
+            && x > b2.getGlobalBounds().left && x < b2.getGlobalBounds().left + b2.getGlobalBounds().width)
+            SetIndDbt(ind_dbt + 1);
+        else if (isVertical && (y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/height < (int)listeCartes.size())
+            return listeCartes[(y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/height];
+        else if ( !isVertical && (x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height < (int)listeCartes.size() 
+            && ((x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height >= 0))
+            return listeCartes[(x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height];
         
         return nullptr;
     }
