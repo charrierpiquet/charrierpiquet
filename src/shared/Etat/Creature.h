@@ -32,8 +32,8 @@ namespace Etat {
     int GetForce () const;
     int GetEndurance () const;
     bool GetMalInvoc () const;
-    int GetBonusEOT () const;
-    int GetBlessure () const;
+    int GetBonusEOT () ;
+    int GetBlessure () ;
     void SetBonusEOT (int value);
     void SetBlessure (int value);
     void SetMalInvoc (bool value);

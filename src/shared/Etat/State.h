@@ -34,8 +34,8 @@ namespace Etat {
     State (int nb = 2);
     void IncrPriority ();
     void IncrPhase ();
-    void AddCardPile (Objet card);
-    void AddCardBattlefield (Carte card);
+    void AddCardPile (std::shared_ptr<Objet> card);
+    void AddCardBattlefield (std::shared_ptr<Carte> card);
     std::vector<std::shared_ptr<Joueur> >  GetJoueurs() const;
     void DelCardBattlefield (Carte card);
     void DelCardPile (Objet card);

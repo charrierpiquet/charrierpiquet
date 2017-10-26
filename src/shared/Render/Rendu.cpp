@@ -1,13 +1,13 @@
 #include "Rendu.h"
-#include "Etat.h"
+//#include "Etat.h"
 #include <iostream>
 #include <cstddef>
 
 namespace Render {
     
     Rendu::Rendu (std::shared_ptr<Etat::State> etat, int x, int y):
-        cimetiere1("Cimetiere 2", true,0,0,x/6,y/3),
-        cimetiere2("Cimetiere 1", true,0,2*y/3,x/6,y/3),
+        cimetiere2("Cimetiere 2", true,0,0,x/6,y/3),
+        cimetiere1("Cimetiere 1", true,0,2*y/3,x/6,y/3),
         bf21("Terrain 2", false,x/4,0,x/2,y/6),
         bf22("Creatures 2", false, x/4,y/6,x/2,y/6), 
         stack("Pile", false, x/4,2*y/6,x/2,y/6), 
@@ -36,25 +36,25 @@ namespace Render {
         
         txt_etat.setFont(font);
         txt_etat.setPosition(10, (1./3.)*dimensionY);
-        txt_etat.setCharacterSize(18);
+        txt_etat.setCharacterSize(12);
         
         txt_nomSelect.setFont(font);
         txt_nomSelect.setPosition((3./4.)*dimensionX+10, 0);
-        txt_nomSelect.setCharacterSize(18);
+        txt_nomSelect.setCharacterSize(12);
         
         txt_Oracle.setFont(font);
         txt_Oracle.setPosition((3./4.)*dimensionX+10, (1./6.)*dimensionY);
-        txt_Oracle.setCharacterSize(18);
+        txt_Oracle.setCharacterSize(12);
         
         txt_instruction.setFont(font);
         txt_instruction.setPosition((3./4.)*dimensionX+10, (3./6.)*dimensionY);
-        txt_instruction.setCharacterSize(18);
+        txt_instruction.setCharacterSize(12);
               
         txt_instruction.setString(
             "ici se trouveront les instructions\n "
-            " cliquez sur une carte pour plus de\n"
+            "cliquez sur une carte pour plus de\n"
             "precision\n"
-            " cliquez sur les boutons pour\n"
+            "cliquez sur les boutons pour\n"
             "acceder aux cartes suivantes");
     }
     
@@ -101,7 +101,9 @@ namespace Render {
     {
         // afficher notre texture
         target.draw(sprite);
-
+        
+        // surlignage de la selected card
+        
         // afficher les textes d'etat
         sf::String str = "";
         str += "\nPV : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetPv());   
@@ -112,7 +114,7 @@ namespace Render {
         str += "\nMain : " +std::to_string(state->GetJoueurs()[state->GetPriority()]->GetHand().size());
         str += "\nPV : " + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetPv());
         txt_etat.setString(str);
-        
+          
         target.draw(txt_etat);
         target.draw(txt_instruction);
                     
@@ -126,10 +128,13 @@ namespace Render {
             //std::cout<<selectedCard->GetOracle()<<std::endl;
             txt_Oracle.setString(selectedCard->GetOracle());
             target.draw(txt_Oracle);
-        }  
+        } 
         // draw les autres elements
         cimetiere1.Actu(Conv<Etat::Carte>(state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard()));
+        
         cimetiere1.Draw(target);
+        
+        
         
         std::vector<std::shared_ptr<Etat::Objet> > bf1, bf2;
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
@@ -141,6 +146,7 @@ namespace Render {
                     bf1.push_back(state->GetBattlefield()[i]);
             }
         
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
         bf21.Actu(bf1);
         bf21.Draw(target);
         bf22.Actu(bf2);
@@ -159,6 +165,7 @@ namespace Render {
                     bf1.push_back(state->GetBattlefield()[i]);
             }
         
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
         bf12.Actu(bf2);
         bf12.Draw(target);
          
@@ -172,7 +179,7 @@ namespace Render {
         //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetGraveyard().begin(),state->GetJoueurs()[state->GetPriority()]->GetGraveyard().end());     
         cimetiere2.Actu(Conv<Etat::Carte>(state->GetJoueurs()[state->GetPriority()]->GetGraveyard()));
         cimetiere2.Draw(target);
-        
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
         if (selectedCard != nullptr)
         {
             //tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
@@ -227,6 +234,7 @@ namespace Render {
                 }
             }
         }
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
         // affichage manapools pas opti mais plus pratique
         nb.setFont(font);
         nb.setCharacterSize(20);
@@ -274,14 +282,15 @@ namespace Render {
             target.draw(mp);
             
             nb.setString(
-            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetMulti())+"\n"+
-            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlack())+"\n"+
-            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlue())+"\n"+
-            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetGreen())+"\n"+
-            std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetInc()));
+                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetMulti())+"\n"+
+                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlack())+"\n"+
+                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlue())+"\n"+
+                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetGreen())+"\n"+
+                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetInc()));
             nb.setPosition(dimensionX*1/6 + 30,10 + i*2./3.*dimensionY);
             target.draw(nb);
         }
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
                 
     }
     

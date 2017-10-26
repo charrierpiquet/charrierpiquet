@@ -19,8 +19,8 @@ namespace Render {
   private:
     int dimensionX;
     int dimensionY;
-    Editeur cimetiere1;
     Editeur cimetiere2;
+    Editeur cimetiere1;
     Editeur bf21;
     Editeur bf22;
     Editeur stack;

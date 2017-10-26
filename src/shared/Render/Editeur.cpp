@@ -1,6 +1,6 @@
 #include "Editeur.h"
-#include "Etat/Objet.h"
-#include "Etat/Carte.h"
+//#include "Etat/Objet.h"
+//#include "Etat/Carte.h"
 #include <cstddef>
 #include <iostream>
 
@@ -29,7 +29,7 @@ namespace Render
         this->nom.setFont(font);
         this->nom.setPosition(this->x, this->y);
         this->nom.setString(nom);
-        this->nom.setCharacterSize(18);
+        this->nom.setCharacterSize(12);
         if(!isVertical)
             this->nom.rotate(90);
         
@@ -121,7 +121,7 @@ namespace Render
                 {
                     std::shared_ptr<sf::Text> txt(new sf::Text());
                     txt->setFont(font);
-                    txt->setCharacterSize(18);
+                    txt->setCharacterSize(12);
                     txt->setString(listeCartes[i]->GetName()); 
                     txt->setPosition(x,b1.getGlobalBounds().top + b1.getGlobalBounds().height+ txt->getCharacterSize()*(i - ind_dbt)*1.5);
                     spriteCarte.push_back(txt);
@@ -138,42 +138,52 @@ namespace Render
         target.draw(nom);
         nom.setString(str);
         
-        sf::Text marqueurs;
-        marqueurs.setCharacterSize(25);
-        marqueurs.setFont(font);
-        str = " ";
         for(unsigned int i = 0 ; i < spriteCarte.size() ; i ++)
         {
+            //std::cout<<i<<" "<<ind_dbt<<" "<<listeCartes.size()<<" "<<spriteCarte.size()<<std::endl;
             target.draw(*spriteCarte[i]);
             // c'est pas opti mais c'étais plus pratique de faire ça ici une fois le reste fait
+            //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
             if(!listeCartes[i+ind_dbt]->GetIsCapacite())
             {
-                if (std::static_pointer_cast<Etat::Carte>(listeCartes[i+ind_dbt])->GetCounter() > 0)
+                Etat::Carte* carteTampon = (Etat::Carte*)listeCartes[i+ind_dbt].get();
+                
+                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                if (carteTampon->GetCounter() != 0)
+                    Bonus(std::to_string(carteTampon->GetCounter()),i,0,sf::Color::Blue,target);
+                if (carteTampon->GetIsCreature())
                 {
-                    str = std::to_string(std::static_pointer_cast<Etat::Carte>(listeCartes[i+ind_dbt])->GetCounter());
-                    marqueurs.setString(str);
-                    marqueurs.setColor(sf::Color::Blue);
-                    //marqueurs.setPosition(0,0);
-                    marqueurs.setPosition(std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left+5,std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2 );
-                    target.draw(marqueurs);
-                    //std::cout<<"on a "<<str<<"  marqueurs "<< std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left << " " << std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2<<std::endl;
-                }
-                if (std::static_pointer_cast<Etat::Carte>(listeCartes[i+ind_dbt])->GetIsCreature())
-                    if (std::static_pointer_cast<Etat::Creature>(listeCartes[i+ind_dbt])->GetBonusEOT() > 0)
-                    {
-                        str = std::to_string(std::static_pointer_cast<Etat::Creature>(listeCartes[i+ind_dbt])->GetBonusEOT());
-                        marqueurs.setString(str);
-                        marqueurs.setColor(sf::Color::Green);
-                        marqueurs.setPosition(std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left +25,std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2 );
-                        target.draw(marqueurs);
-                        str = std::to_string(std::static_pointer_cast<Etat::Creature>(listeCartes[i+ind_dbt])->GetBlessure());
-                        marqueurs.setString(str);
-                        marqueurs.setColor(sf::Color::Red);
-                        marqueurs.setPosition(std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().left +45,std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().top +std::static_pointer_cast<sf::Sprite>(spriteCarte[i])->getGlobalBounds().height/2 );
-                        target.draw(marqueurs);
-                    }
+                    Etat::Creature* creatureTampon = (Etat::Creature*)listeCartes[i+ind_dbt].get();
+                    //std::cout<<creatureTampon->GetBonusEOT()<<std::endl;
+                    //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                    if (creatureTampon->GetBonusEOT() != 0)
+                        Bonus(std::to_string(creatureTampon->GetBonusEOT()),i,20,sf::Color::Green,target);
+                    //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                    if (creatureTampon->GetBlessure() > 0)
+                        Bonus(std::to_string(creatureTampon->GetBlessure()),i,40,sf::Color::Red,target);
+                    //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                }   
             }
         }
+    }
+    
+    void Editeur::Bonus(std::string str, int ind_sprite, int offset, sf::Color couleur, sf::RenderTarget& target)
+    {
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+        sf::Text marqueurs;
+        marqueurs.setCharacterSize(18);
+        marqueurs.setFont(font);
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+        marqueurs.setString(str);
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+        marqueurs.setColor(couleur);
+        marqueurs.setPosition(
+            std::static_pointer_cast<sf::Sprite>(spriteCarte[ind_sprite])->getGlobalBounds().left+5 + offset,
+            std::static_pointer_cast<sf::Sprite>(spriteCarte[ind_sprite])->getGlobalBounds().top +
+            std::static_pointer_cast<sf::Sprite>(spriteCarte[ind_sprite])->getGlobalBounds().height/2 );
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+        target.draw(marqueurs);
+           
     }
     
     std::shared_ptr<Etat::Objet> Editeur::Click(int x, int y)
@@ -198,11 +208,12 @@ namespace Render
         else if (y > b2.getGlobalBounds().top && y < b2.getGlobalBounds().top + b2.getGlobalBounds().height
             && x > b2.getGlobalBounds().left && x < b2.getGlobalBounds().left + b2.getGlobalBounds().width)
             SetIndDbt(ind_dbt + 1);
-        else if (isVertical && (y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/height < (int)listeCartes.size())
-            return listeCartes[(y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/height];
+        
+        else if (isVertical && (y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/12 < (int)listeCartes.size())
+            return listeCartes[(y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/18 + ind_dbt];
         else if ( !isVertical && (x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height < (int)listeCartes.size() 
             && ((x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height >= 0))
-            return listeCartes[(x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height];
+            return listeCartes[(x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height + ind_dbt];
         
         return nullptr;
     }

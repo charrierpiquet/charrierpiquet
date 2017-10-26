@@ -47,6 +47,7 @@ namespace Render {
     bool GetIsVertical () const;
     std::vector<std::shared_ptr<Etat::Objet> > GetCartes () const;
     void SetIndDbt (int value);
+    void Bonus(std::string str,int ind_sprite,int offset, sf::Color couleur, sf::RenderTarget& target);
     // Setters and Getters
   };
 
