@@ -19,6 +19,7 @@ namespace Render {
   private:
     int dimensionX;
     int dimensionY;
+    
     Editeur cimetiere2;
     Editeur cimetiere1;
     Editeur bf21;
@@ -28,6 +29,7 @@ namespace Render {
     Editeur bf11;
     Editeur hand;
     Editeur listCapa;
+    
     std::shared_ptr<Etat::State> state;
     std::shared_ptr<Etat::Objet> selectedCard;
     
@@ -49,17 +51,10 @@ namespace Render {
     Rendu (std::shared_ptr<Etat::State> etat, int x, int y);
     void Click (int x, int y);
     void Draw (sf::RenderTarget&  target);
+    void DrawSelectedCard(sf::RenderTarget& target);
+    void DrawManaPool(sf::RenderTarget& target, int i);
+    void DrawBf(sf::RenderTarget& target, int joueur, Render::Editeur& bf1, Render::Editeur& bf2);
     //void Actu ();
-    Editeur GetGrv1 () const;
-    Editeur GetGrv2 () const;
-    Editeur GetBf11 () const;
-    Editeur GetBf12 () const;
-    Editeur GetStack () const;
-    Editeur GetBf21 () const;
-    Editeur GetBf22 () const;
-    Editeur GetHand () const;
-    int GetDimX () const;
-    int GetDimY () const;
     template<typename T> std::vector<std::shared_ptr<Etat::Objet> > Conv(std::vector<std::shared_ptr<T> > data);
     // Setters and Getters
   };

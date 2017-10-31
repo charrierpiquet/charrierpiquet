@@ -209,10 +209,9 @@ namespace Render
             && x > b2.getGlobalBounds().left && x < b2.getGlobalBounds().left + b2.getGlobalBounds().width)
             SetIndDbt(ind_dbt + 1);
         
-        else if (isVertical && (y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/12 < (int)listeCartes.size())
+        else if (isVertical && (y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/18 < (int)listeCartes.size())
             return listeCartes[(y - b1.getGlobalBounds().top - b1.getGlobalBounds().height)/18 + ind_dbt];
-        else if ( !isVertical && (x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height < (int)listeCartes.size() 
-            && ((x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height >= 0))
+        else if ( !isVertical && (x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height < (int)listeCartes.size() )
             return listeCartes[(x - b1.getGlobalBounds().left - b1.getGlobalBounds().width)/height + ind_dbt];
         
         return nullptr;

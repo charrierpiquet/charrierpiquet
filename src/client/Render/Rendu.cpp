@@ -118,59 +118,19 @@ namespace Render {
         target.draw(txt_etat);
         target.draw(txt_instruction);
                     
-        // afficher la selectedCard
-        if (selectedCard != nullptr)
-        {
-            txt_nomSelect.setString(selectedCard->GetName());
-            target.draw(txt_nomSelect);
-
-            // afficher le texte oracle
-            //std::cout<<selectedCard->GetOracle()<<std::endl;
-            txt_Oracle.setString(selectedCard->GetOracle());
-            target.draw(txt_Oracle);
-        } 
         // draw les autres elements
         cimetiere1.Actu(Conv<Etat::Carte>(state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard()));
         
         cimetiere1.Draw(target);
         
+        DrawBf(target, 1 - state->GetPriority(), bf21,bf22);
+        DrawBf(target, state->GetPriority(),bf11,bf12);
         
-        
-        std::vector<std::shared_ptr<Etat::Objet> > bf1, bf2;
-        for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
-            if (state->GetBattlefield()[i]->GetIndJoueur() == 1-state->GetPriority())
-            {
-                if (state->GetBattlefield()[i]->GetIsCreature())
-                    bf2.push_back(state->GetBattlefield()[i]);
-                else
-                    bf1.push_back(state->GetBattlefield()[i]);
-            }
-        
-        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-        bf21.Actu(bf1);
-        bf21.Draw(target);
-        bf22.Actu(bf2);
-        bf22.Draw(target);
         
         stack.Actu(state->GetPile());
         stack.Draw(target);
         
-        bf1.clear(); bf2.clear();
-        for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
-            if (state->GetBattlefield()[i]->GetIndJoueur() == state->GetPriority())
-            {
-                if (state->GetBattlefield()[i]->GetIsCreature())
-                    bf2.push_back(state->GetBattlefield()[i]);
-                else
-                    bf1.push_back(state->GetBattlefield()[i]);
-            }
-        
-        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-        bf12.Actu(bf2);
-        bf12.Draw(target);
-         
-        bf11.Actu(bf1);
-        bf11.Draw(target);
+     
 
         //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetHand().begin(),state->GetJoueurs()[state->GetPriority()]->GetHand().end());       
         hand.Actu(Conv<Etat::Carte>(state->GetJoueurs()[state->GetPriority()]->GetHand()));
@@ -182,6 +142,36 @@ namespace Render {
         //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
         if (selectedCard != nullptr)
         {
+            DrawSelectedCard(target);
+        }
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+        // affichage manapools pas opti mais plus pratique
+        nb.setFont(font);
+        nb.setCharacterSize(20);
+        
+        for (int i = 0 ; i < 2 ; i++)
+            DrawManaPool(target, i);
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                
+    }
+    
+    template<typename T>
+    std::vector<std::shared_ptr<Etat::Objet> > Rendu::Conv(std::vector<std::shared_ptr<T> > data)
+    {
+        std::vector<std::shared_ptr<Etat::Objet> > tampon (data.begin(),data.end());
+        return tampon;        
+    }
+    
+    void Rendu::DrawSelectedCard(sf::RenderTarget& target)
+    {
+        txt_nomSelect.setString(selectedCard->GetName());
+        target.draw(txt_nomSelect);
+
+            // afficher le texte oracle
+            //std::cout<<selectedCard->GetOracle()<<std::endl;
+            txt_Oracle.setString(selectedCard->GetOracle());
+            target.draw(txt_Oracle);
+            
             //tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
             listCapa.Actu(Conv<Etat::Capacite>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
             listCapa.Draw(target);
@@ -233,15 +223,11 @@ namespace Render {
                     target.draw(cout);
                 }
             }
-        }
-        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-        // affichage manapools pas opti mais plus pratique
-        nb.setFont(font);
-        nb.setCharacterSize(20);
-        
-        for (int i = 0 ; i < 2 ; i++)
-        {   
-            int j = 0;
+    }
+
+    void Rendu::DrawManaPool(sf::RenderTarget& target, int i)
+    {
+        int j = 0;
             if(!ttMp.loadFromFile("res/multi.png"))
             {   }
             mp.setTexture(ttMp);
@@ -289,16 +275,24 @@ namespace Render {
                 std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetInc()));
             nb.setPosition(dimensionX*1/6 + 30,10 + i*2./3.*dimensionY);
             target.draw(nb);
-        }
-        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-                
     }
     
-    template<typename T>
-    std::vector<std::shared_ptr<Etat::Objet> > Rendu::Conv(std::vector<std::shared_ptr<T> > data)
+    void Rendu::DrawBf(sf::RenderTarget& target, int joueur, Render::Editeur& bf1, Render::Editeur& bf2   )
     {
-        std::vector<std::shared_ptr<Etat::Objet> > tampon (data.begin(),data.end());
-        return tampon;        
+        std::vector<std::shared_ptr<Etat::Objet> > bf_1, bf_2;
+        for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
+            if (state->GetBattlefield()[i]->GetIndJoueur() == joueur)
+            {
+                if (state->GetBattlefield()[i]->GetIsCreature())
+                    bf_2.push_back(state->GetBattlefield()[i]);
+                else
+                    bf_1.push_back(state->GetBattlefield()[i]);
+            }
+        
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+        bf1.Actu(bf_1);
+        bf1.Draw(target);
+        bf2.Actu(bf_2);
+        bf2.Draw(target);
     }
-
 }
