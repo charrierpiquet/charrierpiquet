@@ -20,9 +20,9 @@ namespace Etat {
     int categorie;
     // Operations
   public:
-    std::string GetKeyWord ();
-    int GetCategorie ();
-    Capacite (std::string motclef, int type, int id, int prop);
+    Capacite (std::string motclef, int type, int id, int prop, std::string nom);
+    std::string GetKeyWord () const;
+    int GetCategorie () const;
     // Setters and Getters
   };
 

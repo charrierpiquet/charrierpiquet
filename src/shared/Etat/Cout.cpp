@@ -2,39 +2,39 @@
 #include <algorithm>
 namespace Etat
 {
-    int Cout::GetBlack()
+    int Cout::GetBlack() const
     {
         return black;
     }
-    int Cout::GetLife()
+    int Cout::GetLife() const
     {
         return life;
     }
-    int Cout::GetBlue()
+    int Cout::GetBlue() const
     {
         return blue;
     }
-    int Cout::GetGreen()
+    int Cout::GetGreen() const
     {
         return green;
     }
-    int Cout::GetDiscard()
+    int Cout::GetDiscard() const
     {
         return discard;
     }
-    int Cout::GetMeule()
+    int Cout::GetMeule() const
     {
         return meule;
     }
-    int Cout::GetExile()
+    int Cout::GetExile() const
     {
         return exile;
     }
-    int Cout::GetInc()
+    int Cout::GetInc() const
     {
         return inc;
     }
-    int Cout::GetPermanent()
+    int Cout::GetPermanent() const
     {
         return permanent;
     }
@@ -50,6 +50,5 @@ namespace Etat
         permanent = std::max(Permanent,0);
         exile = std::max(Exile,0);
         meule = std::max(Meule,0);
-    }
-    
+    }    
 };

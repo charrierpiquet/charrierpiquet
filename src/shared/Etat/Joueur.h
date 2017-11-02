@@ -2,6 +2,7 @@
 #ifndef ETAT__JOUEUR__H
 #define ETAT__JOUEUR__H
 
+#include <memory>
 #include <vector>
 
 namespace Etat {
@@ -21,28 +22,28 @@ namespace Etat {
     // Associations
     // Attributes
   private:
-    ManaPool manaPool;
+    std::shared_ptr<ManaPool> manaPool;
     int pv;
     bool aJoueTerrain;
-    std::vector<Carte*> hand;
-    std::vector<Carte*> graveyard;
-    std::vector<Carte*> library;
+    std::vector<std::shared_ptr<Carte> > hand;
+    std::vector<std::shared_ptr<Carte> > graveyard;
+    std::vector<std::shared_ptr<Carte> > library;
     // Operations
   public:
-    int GetPv ();
+    Joueur ();
+    int GetPv () const;
     void SetPv (int Pv);
     void Draw ();
     void Discard ();
-    std::vector<Carte*> GetHand ();
-    bool GetAJoueTerrain ();
+    std::vector<std::shared_ptr<Carte> > GetHand () const;
+    bool GetAJoueTerrain () const;
     void SetAJoueTerrain (bool value);
-    Joueur ();
-    std::vector<Carte*> GetLibrary ();
-    std::vector<Carte*> GetGraveyard ();
-    ManaPool GetManaPool ();
-    void AddCardLibrary (Carte card);
-    void AddCardHand (Carte card);
-    void AddCardGraveyard (Carte card);
+    std::vector<std::shared_ptr<Carte> > GetLibrary () const;
+    std::vector<std::shared_ptr<Carte> > GetGraveyard () const;
+    std::shared_ptr<ManaPool> GetManaPool () const;
+    void AddCardLibrary (std::shared_ptr<Carte> card);
+    void AddCardHand (std::shared_ptr<Carte> card);
+    void AddCardGraveyard (std::shared_ptr<Carte> card);
     void DelCardHand (Carte card);
     void DelCardLibrary (Carte card);
     void DelCardGraveyard (Carte card);

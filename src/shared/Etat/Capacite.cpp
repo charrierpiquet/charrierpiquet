@@ -4,7 +4,7 @@
 
 namespace Etat
 {
-    Capacite::Capacite(std::string motclef, int type, int id, int prop):Objet(true, id, prop)
+    Capacite::Capacite(std::string motclef, int type, int id, int prop, std::string nom):Objet(true, id, prop, nom)
     {
         keyWord = motclef;
         
@@ -14,12 +14,12 @@ namespace Etat
             std::cout<<"erreur, ce type de capacite n'existe pas"<<std::endl;
     }  
     
-    int Capacite::GetCategorie()
+    int Capacite::GetCategorie() const
     {
         return categorie;
     }
     
-    std::string Capacite::GetKeyWord()
+    std::string Capacite::GetKeyWord() const
     {
         return keyWord;
     }

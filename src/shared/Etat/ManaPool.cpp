@@ -32,7 +32,7 @@ namespace Etat
         multi =0;
     }
     
-    void ManaPool::Payer(Cout cost)
+    bool ManaPool::Payer(Cout cost)
     {
         int I=cost.GetInc(),B=cost.GetBlack(),U=cost.GetBlue(),G=cost.GetGreen();
         int tamponI = inc, tamponB = black, tamponU = blue, tamponG = green, tamponM = multi;
@@ -139,32 +139,33 @@ namespace Etat
 
         if (I>0 || B >0 || U >0 || G>0)
         {
-            std::cout<<"impossible de payer le cout"<<std::endl;
+            return false;
             inc = tamponI;
             black = tamponB;
             blue = tamponU;
             green = tamponG;
             multi = tamponM;
         }
+        return true;
     }
     
-    int ManaPool::GetInc()
+    int ManaPool::GetInc() const
     {
         return inc;
     }
-    int ManaPool::GetBlack()
+    int ManaPool::GetBlack() const
     {
         return black;
     }
-    int ManaPool::GetBlue()
+    int ManaPool::GetBlue() const
     {
         return blue;
     }
-    int ManaPool::GetGreen()
+    int ManaPool::GetGreen() const
     {
         return green;
     }
-    int ManaPool::GetMulti()
+    int ManaPool::GetMulti() const
     {
         return multi;
     }

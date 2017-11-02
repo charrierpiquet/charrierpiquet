@@ -3,61 +3,55 @@
 namespace Etat
 {
     Carte::Carte(bool permanent,bool land,bool creature,bool token,
-            std::string nom,Cout cout, std::vector<Capacite> capa, int id, int prop):
-    Objet(false, id, prop), cost(cout),ability(capa)
+            std::string nom,Cout cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):
+    Objet(false, id, prop, nom), cost(cout),ability(capa)
     {
         isPermanent = permanent;
         isLand = land;
         isCreature = creature;
-        isToken = token;
-        name = nom;        
+        isToken = token;       
         
         counters =0;
         isTap = false;
         
     }
     
-    std::string Carte::GetName()
-    {
-        return name;
-    }
-    
-    Cout Carte::GetCost()
+    Cout Carte::GetCost() const
     {
         return cost;
     }
     
-    bool Carte::GetIsLand()
+    bool Carte::GetIsLand() const
     {
         return isLand;
     }
     
-    bool Carte::GetIsPermanent()
+    bool Carte::GetIsPermanent() const
     {
         return isPermanent;
     }
     
-    bool Carte::GetIsCreature()
+    bool Carte::GetIsCreature() const
     {
         return isCreature;
     }
     
-    bool Carte::GetIsToken()
+    bool Carte::GetIsToken() const
     {
         return isToken;
     }
-    
-    bool Carte::GetIsTap()
+     
+    bool Carte::GetIsTap() const
     {
         return isTap;
     }
     
-    int Carte::GetCounter()
+    int Carte::GetCounter() const
     {
         return counters;
     }
     
-    std::vector<Capacite> Carte::GetAbility()
+    std::vector<std::shared_ptr<Capacite> > Carte::GetAbility() const
     {
         return ability;
     }

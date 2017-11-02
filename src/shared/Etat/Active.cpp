@@ -2,12 +2,12 @@
 
 namespace Etat
 {
-    Active::Active(Cout cout, std::string motclef, int id, int prop):Capacite(motclef,1, id, prop)
+    Active::Active(Cout cout, std::string motclef, int id, int prop, std::string nom):Capacite(motclef,1, id, prop, nom)
     {
         cost = cout;
     }
     
-    Cout Active::GetCost()
+    Cout Active::GetCost() const
     {
         return cost;
     }
