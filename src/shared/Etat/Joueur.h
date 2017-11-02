@@ -44,9 +44,9 @@ namespace Etat {
     void AddCardLibrary (std::shared_ptr<Carte> card);
     void AddCardHand (std::shared_ptr<Carte> card);
     void AddCardGraveyard (std::shared_ptr<Carte> card);
-    void DelCardHand (Carte card);
-    void DelCardLibrary (Carte card);
-    void DelCardGraveyard (Carte card);
+    void DelCardHand (int ind);
+    void DelCardLibrary (int ind);
+    void DelCardGraveyard (int ind);
     // Setters and Getters
   };
 

@@ -1,4 +1,6 @@
 #include "CastCommand.h"
+#include "Etat/State.h"
+#include "Etat/Active.h"
 
 namespace Engine
 {
@@ -6,20 +8,47 @@ namespace Engine
     {
         obj = o;
         src = s;
-        target = t;
+        target = t; // est ce que c'est vraiment utile ?
     }
     
     void CastCommand::Execute(Etat::State& state)
     {
-        // si payer les couts.
-            // si src != null && objet est une capacite
-                // si src est degager
-                    // engager src
-                    // creer une capacite sur la pile
-            // sinon 
-                // si obj est une carte et objet est dans la main placer objet sur la pile
-        // afficher un message d'erreur
+        // si c'est une capacite
+        if (obj->GetIsCapacite())
+            if (src != nullptr)           
+                if (!src->GetIsTap())     
+                    if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 3)
+                        if (state.GetJoueurs()[state.GetPriority()]->GetManaPool()->Payer(std::static_pointer_cast<Etat::Active>(obj)->GetCost()))
+                        {
+                            // on engage la source de la capa
+                            src->SetIsTap(true);
+                            // on met une capa sur la pile
+                            state.AddCardPile(obj);
+                        }
         
+        // si c'est une carte
+        else
+        {
+            // si la carte est dans la main
+            bool inHand = false;
+            int ind = -1;
+            for (int i = 0; i<state.GetJoueurs()[state.GetPriority()]->GetHand().size();i++)
+                if (state.GetJoueurs()[state.GetPriority()]->GetHand()[i]->GetIdObj() == obj->GetIdObj())
+                {
+                    inHand = true;
+                    ind = i;
+                }
+            
+            if (inHand)
+                // si payer les couts.
+                if (state.GetJoueurs()[state.GetPriority()]->GetManaPool()->Payer(std::static_pointer_cast<Etat::Carte>(obj)->GetCost()))
+                {
+                    //state.GetJoueurs()[state.GetPriority()]->GetHand().erase(state.GetJoueurs()[state.GetPriority()]->GetHand().begin() + ind);
+                    state.GetJoueurs()[state.GetPriority()]->DelCardHand(ind)
+                    state.AddCardPile(obj);
+                }
+        }
+            
     }
     
 }

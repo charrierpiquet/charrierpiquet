@@ -72,14 +72,9 @@ namespace Etat
     {
         graveyard.push_back(card);
     }
-    void Joueur::DelCardGraveyard(Carte card)
+    void Joueur::DelCardGraveyard(int ind)
     {
-        int ind =-1;
-        for(int i=0 ; (unsigned)i < graveyard.size() ; i++)
-            if (graveyard[i]->GetIdObj() == card.GetIdObj())
-                ind = i;
-        
-        if (ind >= 0)
+        if (ind >= 0 && ind < (int)graveyard.size())
             graveyard.erase(graveyard.begin() + ind);
     }
     
@@ -87,29 +82,20 @@ namespace Etat
     {
         library.push_back(card);
     }
-    void Joueur::DelCardLibrary(Carte card)
+    void Joueur::DelCardLibrary(int ind)
     {
-        int ind =-1;
-        for(int i=0 ; (unsigned)i<library.size() ; i++)
-            if (library[i]->GetIdObj() == card.GetIdObj())
-                ind = i;
-        
-        if (ind >= 0)
+        if (ind >= 0 && ind < (int)library.size())
             library.erase(library.begin() + ind);
     }
+    
     
     void Joueur::AddCardHand(std::shared_ptr<Carte> card)
     {
         hand.push_back(card);
     }
-    void Joueur::DelCardHand(Carte card)
+    void Joueur::DelCardHand(int ind)
     {
-        int ind =-1;
-        for(int i=0 ; (unsigned)i<hand.size() ; i++)
-            if (hand[i]->GetIdObj() == card.GetIdObj())
-                ind = i;
-        
-        if (ind >= 0)
+        if (ind >= 0 && ind < (int)hand.size())
             hand.erase(hand.begin() + ind);
     }
 };

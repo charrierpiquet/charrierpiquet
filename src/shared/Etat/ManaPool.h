@@ -28,7 +28,7 @@ namespace Etat {
     void AddGreen ();
     void AddMulti ();
     void Vider ();
-    void Payer (Cout cost);
+    bool Payer (Cout cost);
     int GetInc () const;
     int GetBlue () const;
     int GetBlack () const;

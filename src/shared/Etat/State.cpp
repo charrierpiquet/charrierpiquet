@@ -76,24 +76,14 @@ namespace Etat
     {
         pile.push_back(card);
     }
-    void State::DelCardBattlefield(Carte card)
+    void State::DelCardBattlefield(int ind)
     {
-        int ind =-1;
-        for(int i=0 ; (unsigned)i<battlefield.size() ; i++)
-            if (battlefield[i]->GetIdObj() == card.GetIdObj())
-                ind = i;
-        
-        if (ind >= 0)
+        if (ind >= 0 && ind < (int)battlefield.size())
             battlefield.erase(battlefield.begin() + ind);
     }
-    void State::DelCardPile(Objet card)
+    void State::DelCardPile(int ind)
     {
-        int ind =-1;
-        for(int i=0 ; (unsigned)i<pile.size() ; i++)
-            if (pile[i]->GetIdObj() == card.GetIdObj())
-                ind = i;
-        
-        if (ind >= 0)
+        if (ind >= 0 && ind < (int)pile.size())
             pile.erase(pile.begin() + ind);
     }
     std::vector<std::shared_ptr<Joueur> > State::GetJoueurs() const
