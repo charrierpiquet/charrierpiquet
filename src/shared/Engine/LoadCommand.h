@@ -19,7 +19,7 @@ namespace Engine {
     std::string nom_fichier;
     // Operations
   public:
-    LoadCommand (std::string str);
+    LoadCommand (std::string deck1,std::string deck2);
     void Execute (Etat::State& state);
     // Setters and Getters
   };
