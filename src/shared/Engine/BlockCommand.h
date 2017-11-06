@@ -17,11 +17,13 @@ namespace Engine {
   class BlockCommand : public Engine::Command {
     // Attributes
   private:
-    std::vector<std::shared_ptr<Etat::Creature> > crea_bloque;
+    std::vector<std::shared_ptr<Etat::Creature> > attaquant;
+    std::vector<std::shared_ptr<Etat::Creature> > bloque;
     std::vector<std::shared_ptr<Etat::Creature> > bloqueur;
     // Operations
   public:
-    BlockCommand ();
+    BlockCommand (std::vector<std::shared_ptr<Etat::Creature> > attaq);
+    void SupprBloqueur (std::shared_ptr<Etat::Creature> crea);
     void AddBloqueur (std::shared_ptr<Etat::Creature> bloqueur, std::shared_ptr<Etat::Creature> bloque);
     void Execute (Etat::State& state);
     // Setters and Getters

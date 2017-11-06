@@ -20,7 +20,8 @@ namespace Engine {
     std::vector<std::shared_ptr<Etat::Creature> > attaquant;
     // Operations
   public:
-    AttackCommand ();
+    //AttackCommand ();
+    void SupprAttaquant (std::shared_ptr<Etat::Creature> crea);
     void AddAttaquant (std::shared_ptr<Etat::Creature> crea);
     void Execute (Etat::State& state);
     // Setters and Getters

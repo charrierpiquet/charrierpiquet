@@ -13,6 +13,8 @@ namespace Engine
     
     void CastCommand::Execute(Etat::State& state)
     {
+        // actuellement on ne peux gerer que les couts simple (juste du mana)
+        
         // si c'est une capacite
         if (obj->GetIsCapacite())
             if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 3) // si c'est une capacite active
