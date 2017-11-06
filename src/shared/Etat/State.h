@@ -44,7 +44,7 @@ namespace Etat {
     int GetPhase () const;
     std::string GetPhaseName() const;
     int GetPriority() const;
-    bool GetPileEmpty () const;
+    int GetJoueurTour() const;
     // Setters and Getters
   };
 

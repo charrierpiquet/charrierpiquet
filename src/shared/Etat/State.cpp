@@ -130,4 +130,9 @@ namespace Etat
         }
     }
     
+    int State::GetJoueurTour() const
+    {
+        return joueur;
+    }
+    
 };

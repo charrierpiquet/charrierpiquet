@@ -15,9 +15,9 @@ namespace Engine
     {
         // si c'est une capacite
         if (obj->GetIsCapacite())
-            if (src != nullptr)           
-                if (!src->GetIsTap())     
-                    if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 3)
+            if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 3) // si c'est une capacite active
+                if (src != nullptr)           
+                    if (!src->GetIsTap())     
                         if (state.GetJoueurs()[state.GetPriority()]->GetManaPool()->Payer(std::static_pointer_cast<Etat::Active>(obj)->GetCost()))
                         {
                             // on engage la source de la capa

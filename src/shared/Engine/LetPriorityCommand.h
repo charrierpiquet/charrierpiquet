@@ -16,6 +16,7 @@ namespace Engine {
     // Operations
   public:
     void Execute (Etat::State& state);
+    void Resolve(std::string keyword, Etat::State &state);
     // Setters and Getters
   };
 
