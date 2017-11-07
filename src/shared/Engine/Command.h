@@ -2,6 +2,7 @@
 #ifndef ENGINE__COMMAND__H
 #define ENGINE__COMMAND__H
 
+#include "Etat/State.h"
 
 namespace Engine {
 
@@ -9,7 +10,9 @@ namespace Engine {
   class Command {
     // Operations
   public:
-    virtual void Execute (Etat::State& state) = 0;
+    Command (void) { } ;
+    ~Command (void) { };
+    virtual void Execute (Etat::State &state) = 0;
     // Setters and Getters
   };
 

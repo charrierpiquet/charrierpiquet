@@ -10,6 +10,8 @@ namespace Engine {
 }
 
 #include "Command.h"
+#include "Etat/State.h"
+#include "Etat/Creature.h"
 
 namespace Engine {
 

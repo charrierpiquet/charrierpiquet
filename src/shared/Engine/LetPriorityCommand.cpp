@@ -1,5 +1,7 @@
 #include "LetPriorityCommand.h"
 #include "Etat/State.h"
+#include "Etat/Creature.h"
+#include <iostream>
 
 namespace Engine
 {
@@ -20,7 +22,7 @@ namespace Engine
                 if (!state.GetPile()[state.GetPile().size()-1]->GetIsCapacite())
                 {
                     if (std::static_pointer_cast<Etat::Carte>(state.GetPile()[state.GetPile().size()-1])->GetIsPermanent())
-                        state.AddCardBattlefield(state.GetPile()[state.GetPile().size()-1]);
+                        state.AddCardBattlefield(std::static_pointer_cast<Etat::Carte>(state.GetPile()[state.GetPile().size()-1]));
                 }
                 else
                 {
@@ -28,8 +30,8 @@ namespace Engine
                     // et on resout les capacites
                     if (!state.GetPile()[state.GetPile().size()-1]->GetIsCapacite())
                     {
-                        state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->AddCardGraveyard(state.GetPile()[state.GetPile().size()-1]);
-                        for (int i = 0 ; i< std::static_pointer_cast<Etat::Carte>(state.GetPile()[state.GetPile().size()-1])->GetAbility().size() ; i++)
+                        state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(state.GetPile()[state.GetPile().size()-1]));
+                        for (int i = 0 ; i< (int)std::static_pointer_cast<Etat::Carte>(state.GetPile()[state.GetPile().size()-1])->GetAbility().size() ; i++)
                             Resolve( std::static_pointer_cast<Etat::Carte>(state.GetPile()[state.GetPile().size()-1])->GetAbility()[i]->GetKeyWord(), state);
                     }
                     else
@@ -41,35 +43,39 @@ namespace Engine
         state.DelCardPile(state.GetPile().size()-1);
         // on passe au joueur suivant
         state.IncrPriority();
+       
+        // on kill les creatures qui ont 0 d'endurance
+        for (int i = 0 ; i < (int)state.GetBattlefield().size() ; i++ )
+            if (state.GetBattlefield()[i]->GetIsCreature())
+                if (std::static_pointer_cast<Etat::Creature>(state.GetBattlefield()[i])->GetEndurance() <= 0)
+                {
+                    state.GetJoueurs()[state.GetBattlefield()[i]->GetIndJoueur()]->AddCardGraveyard(state.GetBattlefield()[i]);
+                    state.DelCardBattlefield(i);
+                }
   
     }
     
     void LetPriorityCommand::Resolve(std::string keyword, Etat::State &state)
     {
-        switch (keyword)
-        {
-            case "multi":
-                state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetManaPool()->AddMulti();
-                break;
-            case "blue":
+        if (keyword == "multi")
+            state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetManaPool()->AddMulti();
+        else if (keyword =="blue")
                 state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetManaPool()->AddBlue();
-                break;
-            case "green":
+            else if (keyword == "green")
                 state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetManaPool()->AddGreen();
-                break;
-            case "black":
+            else if (keyword == "black")
                 state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetManaPool()->AddBlack();
-                break;
-            case "inc":
+            else if (keyword == "inc")
                 state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetManaPool()->AddInc();
-                break;
-            case "burn" :
-                state.GetJoueurs()[1-state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->SetPv( state.GetJoueurs()[1-state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]-1);
-                break;
-            default :
+            else if (keyword == "burn" )
+                state.GetJoueurs()[1-state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->SetPv( state.GetJoueurs()[1-state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetPv()-1);
+            else if (keyword == "draw" )
+            {
+                state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->AddCardHand(state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetLibrary()[state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1]);
+                state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->DelCardLibrary( state.GetJoueurs()[state.GetPile()[state.GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1);
+            }
+            else
                 std::cout<<"impossible de resoudre la capacite : "<<keyword<<std::endl;
-                break;
-        }
     }
 }
 

@@ -12,7 +12,7 @@ namespace Engine
     void AttackCommand::SupprAttaquant (std::shared_ptr<Etat::Creature> crea)
     {
         int ind=-1;
-        for ( int i = 0 ; i < attaquant.size() ; i++ )
+        for ( int i = 0 ; i < (int)attaquant.size() ; i++ )
             if ( crea == attaquant[i] )
                 ind = i;
         if (ind != -1)
@@ -22,7 +22,7 @@ namespace Engine
     void AttackCommand::Execute (Etat::State& state)
     {
         //on engage les creatures attaquantes
-        for ( int i = 0 ; i < attaquant.size() ; i++ )
+        for ( int i = 0 ; i < (int)attaquant.size() ; i++ )
             attaquant[i]->SetIsTap(true);
     }
 }

@@ -17,6 +17,7 @@ namespace Engine
         
         // si c'est une capacite
         if (obj->GetIsCapacite())
+        {
             if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 3) // si c'est une capacite active
                 if (src != nullptr)           
                     if (!src->GetIsTap())     
@@ -27,14 +28,14 @@ namespace Engine
                             // on met une capa sur la pile
                             state.AddCardPile(obj);
                         }
-        
+        }
         // si c'est une carte
         else
         {
             // si la carte est dans la main
             bool inHand = false;
             int ind = -1;
-            for (int i = 0; i<state.GetJoueurs()[state.GetPriority()]->GetHand().size();i++)
+            for (int i = 0; i<(int)state.GetJoueurs()[state.GetPriority()]->GetHand().size();i++)
                 if (state.GetJoueurs()[state.GetPriority()]->GetHand()[i]->GetIdObj() == obj->GetIdObj())
                 {
                     inHand = true;
@@ -46,7 +47,7 @@ namespace Engine
                 if (state.GetJoueurs()[state.GetPriority()]->GetManaPool()->Payer(std::static_pointer_cast<Etat::Carte>(obj)->GetCost()))
                 {
                     //state.GetJoueurs()[state.GetPriority()]->GetHand().erase(state.GetJoueurs()[state.GetPriority()]->GetHand().begin() + ind);
-                    state.GetJoueurs()[state.GetPriority()]->DelCardHand(ind)
+                    state.GetJoueurs()[state.GetPriority()]->DelCardHand(ind);
                     state.AddCardPile(obj);
                 }
         }
