@@ -9,6 +9,7 @@ namespace Engine {
 }
 
 #include "Command.h"
+#include "../Etat.h"
 
 namespace Engine {
 
@@ -16,10 +17,11 @@ namespace Engine {
   class LoadCommand : public Engine::Command {
     // Attributes
   public:
-    std::string nom_fichier;
+    std::string deck1;
+    std::string deck2;
     // Operations
   public:
-    LoadCommand (std::string deck1,std::string deck2);
+    LoadCommand (std::string Deck1,std::string Deck2);
     void Execute (Etat::State& state);
     // Setters and Getters
   };
