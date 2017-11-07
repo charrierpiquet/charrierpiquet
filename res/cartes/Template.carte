@@ -1,9 +1,12 @@
-Type (créature, terrain, invocation, sort, pas de majuscule)
+Type (creature, terrain, invocation, sort, pas de majuscule ni d'accent)
 Nom (de la carte, sans accent)
-Coût (Inco Noir Bleu Vert, entiers, dans cet ordre, séparés par des espaces)
+Coût (Inco Noir Bleu Vert Défausse PV Sacrifice Exile Mill, entiers, dans cet ordre, séparés par des espaces)
 force (osef pour un noncréa, dans le doute met 0)
 endurance (de même)
-Texte oracle (Répéter ce qu'il y a d'écrit sur la carte)
+Nombre de capacités (nombre de capacités ci dessous)
 capacité 1 (coût + mot clé)
 capa 2
 ...
+Texte oracle (Répéter ce qu'il y a d'écrit sur la carte)
+Suite du texte oracle (Revenir à la ligne avant 40 caractères)
+

@@ -1,7 +1,10 @@
 terrain
 Marais
-0 0 0 0
+0 0 0 0 0 0 0 0 0
 0
 0
-T: Ajoutez 1 mana noir à votre réserve
-0 0 0 0 black
+1
+0 0 0 0 0 0 0 0 0 black
+T: Ajoutez 1 mana noir à
+votre réserve de mana.
+
