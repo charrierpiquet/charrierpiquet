@@ -26,7 +26,7 @@ namespace Engine
         //    it++;
         //}
         for (int i = 0 ; i < (int)commands.size() ; i++ )
-            commands[i]->Execute(currentState);
+            commands[i]->Execute(*currentState);
     }
     
 }

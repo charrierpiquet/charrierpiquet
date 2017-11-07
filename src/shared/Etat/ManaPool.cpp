@@ -139,12 +139,12 @@ namespace Etat
 
         if (I>0 || B >0 || U >0 || G>0)
         {
-            return false;
             inc = tamponI;
             black = tamponB;
             blue = tamponU;
             green = tamponG;
             multi = tamponM;
+            return false;
         }
         return true;
     }

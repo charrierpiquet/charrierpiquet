@@ -32,14 +32,14 @@ namespace Engine
 {
 	LoadCommand::LoadCommand(std::string Deck1, std::string Deck2)
 	{
-		deck1 = Deck1;
-		deck2 = Deck2;
+		//deck1 = Deck1;
+		//deck2 = Deck2;
 	}
 	
 	void LoadCommand::Execute(Etat::State& state)
 	{
-		std::ifstream FichierJ1(deck1 + ".deck");
-		std::string NomCarte;
+		//std::ifstream FichierJ1(deck1 + ".deck");
+		//std::string NomCarte;
 		
 		
 		

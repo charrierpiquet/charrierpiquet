@@ -5,7 +5,7 @@ namespace Engine
 {
     void AttackCommand::AddAttaquant (std::shared_ptr<Etat::Creature> crea)
     {
-        if (!crea->GetIsTap())
+        if (!crea->GetIsTap() && !crea->GetMalInvoc())
             attaquant.push_back(crea);
     }
     

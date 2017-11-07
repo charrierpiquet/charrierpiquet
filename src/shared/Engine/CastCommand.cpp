@@ -43,13 +43,37 @@ namespace Engine
                 }
             
             if (inHand)
-                // si payer les couts.
-                if (state.GetJoueurs()[state.GetPriority()]->GetManaPool()->Payer(std::static_pointer_cast<Etat::Carte>(obj)->GetCost()))
+            {
+                bool cast = false;
+                // si c'est un permanent et que la pile est vide
+                if (std::static_pointer_cast<Etat::Carte>(obj)->GetIsPermanent())
                 {
-                    //state.GetJoueurs()[state.GetPriority()]->GetHand().erase(state.GetJoueurs()[state.GetPriority()]->GetHand().begin() + ind);
-                    state.GetJoueurs()[state.GetPriority()]->DelCardHand(ind);
-                    state.AddCardPile(obj);
+                    if (state.GetPile().empty())
+                    {
+                        // si c'est un terrain et que l'on a pas jouer de terrain
+                        if (std::static_pointer_cast<Etat::Carte>(obj)->GetIsLand() )
+                        {
+                            if(!state.GetJoueurs()[state.GetJoueurTour()]->GetAJoueTerrain() && state.GetJoueurTour() == state.GetPriority())
+                                cast = true;
+                        }
+                        else
+                            cast = true;
+                    }
                 }
+                else
+                    cast = true;
+                
+                if (cast)
+                {
+                    // si payer les couts.
+                    if (state.GetJoueurs()[state.GetPriority()]->GetManaPool()->Payer(std::static_pointer_cast<Etat::Carte>(obj)->GetCost()))
+                    {
+                        //state.GetJoueurs()[state.GetPriority()]->GetHand().erase(state.GetJoueurs()[state.GetPriority()]->GetHand().begin() + ind);
+                        state.GetJoueurs()[state.GetPriority()]->DelCardHand(ind);
+                        state.AddCardPile(obj);
+                    }
+                }
+            }
         }
             
     }

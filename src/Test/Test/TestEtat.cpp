@@ -2,7 +2,6 @@
 #include "TestEtat.h"
 #include <iostream>
 
-
 namespace Test
 {
     int TestEtat()

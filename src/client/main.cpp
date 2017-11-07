@@ -45,7 +45,7 @@ int main(int argc,char* argv[])
         }
         else if ((string)argv[1] == "engine")
         {
-            
+            TestEngine();
         }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
