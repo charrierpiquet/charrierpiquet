@@ -3,7 +3,7 @@
 
 namespace Test
 {
-    int TestEngine();
+    void TestEngine();
 
 };
 #endif /* TESTETAT_H */

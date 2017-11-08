@@ -49,13 +49,13 @@ namespace Engine
 		std::string Ability;
 		std::string Texte;
 		std::string Ligne;
-		std::vector<Etat::Capacite> Capacites;
+		std::vector<std::shared_ptr<Etat::Capacite> > Capacites;
 		int id=-1;
 		int Joueur;
 		int TailleDeck=0;
 		
 		
-		for(Joueur=0;Joueur<state.GetJoueurs().size();Joueur++)
+		for(Joueur=0;Joueur<(int)state.GetJoueurs().size();Joueur++)
 		{
 			std::ifstream FichierDeck;
 			if(Joueur==0)
@@ -94,18 +94,18 @@ namespace Engine
 					std::getline(Card, Ability);
 					auto CostAbility = new Etat::Cout();
 					CostAbility->SetCost(Ability[0],Ability[4],Ability[2],Ability[6],Ability[8],Ability[10],Ability[12],Ability[14],Ability[16]);
-					Capacites.push_back(new Etat::Active(*CostAbility,Ability.substr(18,Ability.size()-18),id++,Joueur,Ability.substr(18,Ability.size()-18)));
+					Capacites.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*CostAbility,Ability.substr(18,Ability.size()-18),id++,Joueur,Ability.substr(18,Ability.size()-18))));
 				}
 				
 				auto Cost = new Etat::Cout();
 				Cost->SetCost(Cout[0],Cout[4],Cout[2],Cout[6],Cout[8],Cout[10],Cout[12],Cout[14],Cout[16]);
 				if (std::strcmp(Type.data(), "creature")==0)
 				{
-					state.GetJoueurs()[Joueur]->AddCardLibrary(new Etat::Creature(std::stoi(Force),std::stoi(Endurance),false,Nom,Cost,Capacites,id++,Joueur);
+					state.GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(std::stoi(Force),std::stoi(Endurance),false,Nom,*Cost,Capacites,id++,Joueur)));
 				}
 				else
 				{
-					state.GetJoueurs()[Joueur]->AddCardLibrary(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,Cost,Capacites,id++,Joueur);
+					state.GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
 				}
 				
 				Texte="";

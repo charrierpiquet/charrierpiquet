@@ -7,7 +7,7 @@
 
 namespace Test
 {
-    int TestEngine()
+    void TestEngine()
     {
         std::shared_ptr<Etat::State> state( new Etat::State());
         std::shared_ptr<Render::Rendu> rendu (new Render::Rendu(state,800,600));
@@ -33,13 +33,13 @@ namespace Test
         Ours3->SetOracle("ours Allie n°2 2/2");
         state->AddCardBattlefield(Ours3);
         
-        capa.push_back(new Etat::Active(*coutnull,(std::string)"green",identifiant++,0,(std::string)"green"));
+        capa.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,(std::string)"green",identifiant++,0,(std::string)"green")));
         std::shared_ptr<Etat::Carte> Foret1(new Etat::Carte(true,true,false,false,"Foret",*coutnull,capa,identifiant++,0));
         Foret1->SetOracle("T : add G to manapool");
         state->AddCardBattlefield(Foret1);
         
         capa.clear();
-        capa.push_back(new Etat::Active(*coutnull,"blue",identifiant++,0,"blue"));
+        capa.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,"blue",identifiant++,0,"blue")));
         std::shared_ptr<Etat::Carte> Ile1(new Etat::Carte(true,true,false,false,"Ile",*coutnull,capa,identifiant++,0));
         Ile1->SetOracle("T : add U to manapool");
         state->AddCardBattlefield(Ile1);
