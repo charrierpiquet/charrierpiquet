@@ -37,7 +37,7 @@ namespace Render {
     Editeur (std::string nom, bool orientation, int x, int y, int width, int height);
     std::shared_ptr<Etat::Objet> Click (int x, int y);
     void Draw (sf::RenderTarget& target);
-    void Actu (std::vector<std::shared_ptr<Etat::Objet> >  list_carte);
+    void Actu (const std::vector<std::shared_ptr<Etat::Objet> >&  list_carte);
     int GetX () const;
     int GetY () const;
     int GetWidth () const;

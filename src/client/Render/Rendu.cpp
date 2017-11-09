@@ -5,7 +5,7 @@
 
 namespace Render {
     
-    Rendu::Rendu (std::shared_ptr<Etat::State> etat, int x, int y):
+    Rendu::Rendu (std::shared_ptr<Etat::State> etat, int x, int y, int j):
         cimetiere2("Cimetiere 2", true,0,0,x/6,y/3),
         cimetiere1("Cimetiere 1", true,0,2*y/3,x/6,y/3),
         bf21("Terrain 2", false,x/4,0,x/2,y/6),
@@ -17,6 +17,7 @@ namespace Render {
         listCapa("Capacites",true,7*x/8,2*y/3,x/8,y/3)
     {
         state = etat;
+        joueur = j;
         dimensionX = x;
         dimensionY = y;
         
@@ -99,6 +100,7 @@ namespace Render {
     
     void Rendu::Draw(sf::RenderTarget& target)
     {
+        //std::cout<<"1"<<std::endl;
         // afficher notre texture
         target.draw(sprite);
         
@@ -106,25 +108,25 @@ namespace Render {
         
         // afficher les textes d'etat
         sf::String str = "";
-        str += "\nPV : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetPv());   
-        str += "\nMain : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetHand().size());
-        str += "\nDeck : " + std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetLibrary().size());
+        str += "\nPV : " + std::to_string(state->GetJoueurs()[1-joueur]->GetPv());   
+        str += "\nMain : " + std::to_string(state->GetJoueurs()[1-joueur]->GetHand().size());
+        str += "\nDeck : " + std::to_string(state->GetJoueurs()[1-joueur]->GetLibrary().size());
         str += "\nPhase : " +state->GetPhaseName();
-        str += "\nDeck : " + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetLibrary().size());
-        str += "\nMain : " +std::to_string(state->GetJoueurs()[state->GetPriority()]->GetHand().size());
-        str += "\nPV : " + std::to_string(state->GetJoueurs()[state->GetPriority()]->GetPv());
+        str += "\nDeck : " + std::to_string(state->GetJoueurs()[joueur]->GetLibrary().size());
+        str += "\nMain : " +std::to_string(state->GetJoueurs()[joueur]->GetHand().size());
+        str += "\nPV : " + std::to_string(state->GetJoueurs()[joueur]->GetPv());
         txt_etat.setString(str);
           
         target.draw(txt_etat);
         target.draw(txt_instruction);
-                    
+        //std::cout<<"2"<<std::endl;           
         // draw les autres elements
-        cimetiere1.Actu(Conv<Etat::Carte>(state->GetJoueurs()[1-state->GetPriority()]->GetGraveyard()));
+        cimetiere2.Actu(Conv<Etat::Carte>(state->GetJoueurs()[1-joueur]->GetGraveyard()));
         
-        cimetiere1.Draw(target);
+        cimetiere2.Draw(target);
         
-        DrawBf(target, 1 - state->GetPriority(), bf21,bf22);
-        DrawBf(target, state->GetPriority(),bf11,bf12);
+        DrawBf(target, 1 - joueur, bf21,bf22);
+        DrawBf(target, joueur,bf11,bf12);
         
         
         stack.Actu(state->GetPile());
@@ -132,13 +134,14 @@ namespace Render {
         
      
 
-        //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetHand().begin(),state->GetJoueurs()[state->GetPriority()]->GetHand().end());       
-        hand.Actu(Conv<Etat::Carte>(state->GetJoueurs()[state->GetPriority()]->GetHand()));
+        //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[joueur]->GetHand().begin(),state->GetJoueurs()[joueur]->GetHand().end());       
+        hand.Actu(Conv<Etat::Carte>(state->GetJoueurs()[joueur]->GetHand()));
         hand.Draw(target);        
         
-        //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[state->GetPriority()]->GetGraveyard().begin(),state->GetJoueurs()[state->GetPriority()]->GetGraveyard().end());     
-        cimetiere2.Actu(Conv<Etat::Carte>(state->GetJoueurs()[state->GetPriority()]->GetGraveyard()));
-        cimetiere2.Draw(target);
+        //tampon = std::vector<std::shared_ptr<Etat::Objet> >(state->GetJoueurs()[joueur]->GetGraveyard().begin(),state->GetJoueurs()[joueur]->GetGraveyard().end());     
+        cimetiere1.Actu(Conv<Etat::Carte>(state->GetJoueurs()[joueur]->GetGraveyard()));
+        cimetiere1.Draw(target);
+        //std::cout<<"3"<<std::endl;
         //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
         if (selectedCard != nullptr)
         {
@@ -152,7 +155,7 @@ namespace Render {
         for (int i = 0 ; i < 2 ; i++)
             DrawManaPool(target, i);
         //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-                
+        //    std::cout<<"4"<<std::endl;   
     }
     
     template<typename T>
@@ -266,13 +269,13 @@ namespace Render {
             mp.setScale(20./mp.getTextureRect().width,20./mp.getTextureRect().height);
             mp.setPosition(dimensionX*1/6 +10 ,10 +j*24+ i*2./3.*dimensionY);
             target.draw(mp);
-            
+            // trouver une mailleur solution ici
             nb.setString(
-                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetMulti())+"\n"+
-                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlack())+"\n"+
-                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetBlue())+"\n"+
-                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetGreen())+"\n"+
-                std::to_string(state->GetJoueurs()[1-state->GetPriority()]->GetManaPool()->GetInc()));
+                std::to_string(state->GetJoueurs()[1-i]->GetManaPool()->GetMulti())+"\n"+
+                std::to_string(state->GetJoueurs()[1-i]->GetManaPool()->GetBlack())+"\n"+
+                std::to_string(state->GetJoueurs()[1-i]->GetManaPool()->GetBlue())+"\n"+
+                std::to_string(state->GetJoueurs()[1-i]->GetManaPool()->GetGreen())+"\n"+
+                std::to_string(state->GetJoueurs()[1-i]->GetManaPool()->GetInc()));
             nb.setPosition(dimensionX*1/6 + 30,10 + i*2./3.*dimensionY);
             target.draw(nb);
     }

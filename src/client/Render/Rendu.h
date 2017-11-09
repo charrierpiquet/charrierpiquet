@@ -19,6 +19,7 @@ namespace Render {
   private:
     int dimensionX;
     int dimensionY;
+    int joueur;
     
     Editeur cimetiere2;
     Editeur cimetiere1;
@@ -48,7 +49,7 @@ namespace Render {
     sf::Text nb;
     // Operations
   public:
-    Rendu (std::shared_ptr<Etat::State> etat, int x, int y);
+    Rendu (std::shared_ptr<Etat::State> etat, int x, int y, int j);
     void Click (int x, int y);
     void Draw (sf::RenderTarget&  target);
     void DrawSelectedCard(sf::RenderTarget& target);

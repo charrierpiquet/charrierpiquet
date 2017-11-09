@@ -13,7 +13,7 @@ namespace Etat
     {
         pv = 20;
         aJoueTerrain = false;
-        manaPool = (std::shared_ptr<ManaPool>)new ManaPool();
+        manaPool = std::shared_ptr<ManaPool>(new ManaPool());
     }
     
     int Joueur::GetPv() const

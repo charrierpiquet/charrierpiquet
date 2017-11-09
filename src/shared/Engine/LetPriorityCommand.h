@@ -15,8 +15,8 @@ namespace Engine {
   class LetPriorityCommand : public Engine::Command {
     // Operations
   public:
-    void Execute (Etat::State& state);
-    void Resolve(std::string keyword, Etat::State &state);
+    void Execute (std::shared_ptr<Etat::State> state);
+    void Resolve(std::string keyword, std::shared_ptr<Etat::State>);
     // Setters and Getters
   };
 

@@ -74,7 +74,7 @@ namespace Render
         }        
     }
     
-    void Editeur::Actu(std::vector<std::shared_ptr<Etat::Objet> > list_carte)
+    void Editeur::Actu(const std::vector<std::shared_ptr<Etat::Objet> >& list_carte)
     {
         spriteCarte.clear();
         listeCartes = list_carte;
@@ -85,13 +85,13 @@ namespace Render
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {
                     sf::Texture tt;
-                    if (!tt.loadFromFile("res/cartes/" + listeCartes[i]->GetName() + ".png"))            
-                    {
-                        // erreur
-                    }
+                    
+                    if (!listeCartes[i]->GetIsCapacite())
+                        tt.loadFromFile("res/cartes/" + listeCartes[i]->GetName() + ".png");        
                     else
-                    {
-                        texture.push_back(tt);
+                         tt.loadFromFile("res/capacite_default.jpg");
+                    
+                    texture.push_back(tt);
 
                         std::shared_ptr<sf::Sprite> sprite (new sf::Sprite());
                         
@@ -110,8 +110,7 @@ namespace Render
                             }
 
                         //sprite->move(sprite->getGlobalBounds().width/2.,sprite->getGlobalBounds().height/2. );
-                        spriteCarte.push_back(sprite);
-                    }        
+                        spriteCarte.push_back(sprite);       
                 }
         }
         else

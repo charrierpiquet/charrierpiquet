@@ -12,7 +12,7 @@ namespace Engine {
   public:
     Command (void) { } ;
     ~Command (void) { };
-    virtual void Execute (Etat::State &state) = 0;
+    virtual void Execute (std::shared_ptr<Etat::State> state) = 0;
     // Setters and Getters
   };
 

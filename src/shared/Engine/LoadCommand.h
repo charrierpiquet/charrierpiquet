@@ -22,7 +22,7 @@ namespace Engine {
     // Operations
   public:
     LoadCommand (std::string Deck1,std::string Deck2);
-    void Execute (Etat::State& state);
+    void Execute (std::shared_ptr<Etat::State> state);
     // Setters and Getters
   };
 

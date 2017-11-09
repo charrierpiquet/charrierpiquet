@@ -38,7 +38,7 @@ namespace Engine
 		deck2 = Deck2;
 	}
 	
-	void LoadCommand::Execute(Etat::State& state)
+	void LoadCommand::Execute(std::shared_ptr<Etat::State> state)
 	{
 		std::string Type;
 		std::string Nom;
@@ -55,7 +55,7 @@ namespace Engine
 		int TailleDeck=0;
 		
 		
-		for(Joueur=0;Joueur<(int)state.GetJoueurs().size();Joueur++)
+		for(Joueur=0;Joueur<(int)state->GetJoueurs().size();Joueur++)
 		{
 			std::ifstream FichierDeck;
 			if(Joueur==0)
@@ -101,11 +101,11 @@ namespace Engine
 				Cost->SetCost(Cout[0],Cout[4],Cout[2],Cout[6],Cout[8],Cout[10],Cout[12],Cout[14],Cout[16]);
 				if (std::strcmp(Type.data(), "creature")==0)
 				{
-					state.GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(std::stoi(Force),std::stoi(Endurance),false,Nom,*Cost,Capacites,id++,Joueur)));
+					state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(std::stoi(Force),std::stoi(Endurance),false,Nom,*Cost,Capacites,id++,Joueur)));
 				}
 				else
 				{
-					state.GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
+					state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
 				}
 				
 				Texte="";
@@ -114,7 +114,7 @@ namespace Engine
 					getline(Card, Ligne);
 					Texte=Texte + Ligne + "\n";
 				}
-				state.GetJoueurs()[Joueur]->GetLibrary()[TailleDeck]->SetOracle(Texte);			
+				state->GetJoueurs()[Joueur]->GetLibrary()[TailleDeck]->SetOracle(Texte);			
 				Card.close();
 			}
 			FichierDeck.close();

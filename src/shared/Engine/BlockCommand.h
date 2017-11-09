@@ -27,7 +27,7 @@ namespace Engine {
     BlockCommand (std::vector<std::shared_ptr<Etat::Creature> > attaq);
     void SupprBloqueur (std::shared_ptr<Etat::Creature> crea);
     void AddBloqueur (std::shared_ptr<Etat::Creature> bloqueur, std::shared_ptr<Etat::Creature> bloque);
-    void Execute (Etat::State& state);
+    void Execute (std::shared_ptr<Etat::State> state);
     // Setters and Getters
   };
 

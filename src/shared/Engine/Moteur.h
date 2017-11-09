@@ -19,11 +19,11 @@ namespace Engine {
     // Attributes
   private:
     std::shared_ptr<Etat::State> currentState;
-    std::vector<std::unique_ptr<Command> > commands;
+    std::vector<std::shared_ptr<Command> > commands;
     // Operations
   public:
     Moteur (std::shared_ptr<Etat::State> state);
-    void AddCommand (Command* cmd);
+    void AddCommand (std::shared_ptr<Command> cmd);
     void Update ();
     // Setters and Getters
   };

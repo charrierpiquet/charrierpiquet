@@ -1,5 +1,6 @@
 #include "AttackCommand.h"
 #include "Etat/Carte.h"
+#include <iostream>
 
 namespace Engine
 {
@@ -19,8 +20,9 @@ namespace Engine
             attaquant.erase(attaquant.begin()+ind);
     }
     
-    void AttackCommand::Execute (Etat::State& state)
+    void AttackCommand::Execute (std::shared_ptr<Etat::State> state)
     {
+        //std::cout<<attaquant.size()<<std::endl;
         //on engage les creatures attaquantes
         for ( int i = 0 ; i < (int)attaquant.size() ; i++ )
             attaquant[i]->SetIsTap(true);

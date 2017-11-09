@@ -26,7 +26,7 @@ namespace Engine
         bloqueur.push_back(crea_bloqueur);
         bloque.push_back(crea_bloque);
     }
-    void BlockCommand::Execute (Etat::State& state)
+    void BlockCommand::Execute (std::shared_ptr<Etat::State> state)
     {
         // les creatures bloqueuse inflige leur blessure aux creatures bloques
         for( int i = 0 ; i < (int)bloqueur.size() ; i++ )
@@ -62,7 +62,7 @@ namespace Engine
                     }
             }
             else
-                state.GetJoueurs()[1-state.GetJoueurTour()]->SetPv(state.GetJoueurs()[1-state.GetJoueurTour()]->GetPv() - dmgToDeal);
+                state->GetJoueurs()[1-state->GetJoueurTour()]->SetPv(state->GetJoueurs()[1-state->GetJoueurTour()]->GetPv() - dmgToDeal);
          
         }       
     }

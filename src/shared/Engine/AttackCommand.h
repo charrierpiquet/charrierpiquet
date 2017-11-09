@@ -25,7 +25,7 @@ namespace Engine {
     //AttackCommand ();
     void SupprAttaquant (std::shared_ptr<Etat::Creature> crea);
     void AddAttaquant (std::shared_ptr<Etat::Creature> crea);
-    void Execute (Etat::State& state);
+    void Execute (std::shared_ptr<Etat::State> state);
     // Setters and Getters
   };
 

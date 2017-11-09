@@ -34,6 +34,7 @@ namespace Etat
     
     bool ManaPool::Payer(Cout cost)
     {
+        //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
         int I=cost.GetInc(),B=cost.GetBlack(),U=cost.GetBlue(),G=cost.GetGreen();
         int tamponI = inc, tamponB = black, tamponU = blue, tamponG = green, tamponM = multi;
         if (I>=inc)

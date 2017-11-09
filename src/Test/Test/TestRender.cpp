@@ -7,8 +7,8 @@ namespace Test
 {
     void TestRender()
     {
-        std::shared_ptr<Etat::State> state( new Etat::State());
-        std::shared_ptr<Render::Rendu> rendu (new Render::Rendu(state,800,600));
+        std::shared_ptr<Etat::State> state(new Etat::State());
+        std::shared_ptr<Render::Rendu> rendu (new Render::Rendu(state,800,600,0));
         bool needActu =true;
 
         // creer l'etat
