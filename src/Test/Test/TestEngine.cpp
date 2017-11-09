@@ -9,8 +9,10 @@
 
 namespace Test
 {
-    void TestEngine()
+    int TestEngine()
     {
+        int result = 0;
+        
         std::shared_ptr<Etat::State> state (new Etat::State);
         std::shared_ptr<Render::Rendu> rendu (new Render::Rendu(state,800,600,0));
         Engine::Moteur moteur(state);
@@ -61,6 +63,7 @@ namespace Test
         // attaquer avec le(s) ours
         // bloquer avec un ours
         // passer juqu'a la fin du tour
+        std::cout<<"tappez sur une touche pour passer a l'etape suivante"<<std::endl;
         int i = -1;
         while (window.isOpen())
         {
@@ -82,41 +85,76 @@ namespace Test
                     {
                         case 0 :
                         {
+                            std::cout<<"Activation des capacites des terrains ...";
                             std::shared_ptr<Engine::CastCommand> TapT1 (std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(Foret1->GetAbility()[0],Foret1,nullptr)));
                             std::shared_ptr<Engine::CastCommand> TapT2 (std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(Ile1->GetAbility()[0],Ile1,nullptr)));
                             moteur.AddCommand(TapT1);
                             moteur.AddCommand(TapT2);
+                            
+                            moteur.Update();
+                            if (state->GetPile().size() != 2 )
+                                return 1;
+                             std::cout<<" OK "<<std::endl;
                             break;
                         }
                         case 1 :
                         {
+                            std::cout<<"Resolution des capacites ... ";
                             std::shared_ptr<Engine::LetPriorityCommand> Past (std::shared_ptr<Engine::LetPriorityCommand>(new Engine::LetPriorityCommand()));
                             moteur.AddCommand(Past);moteur.AddCommand(Past);
                             moteur.AddCommand(Past);moteur.AddCommand(Past);
+                            
+                            moteur.Update();                            
+                            if (state->GetPile().size() != 0 || 
+                                state->GetJoueurs()[0]->GetManaPool()->GetBlue() != 1 || 
+                                state->GetJoueurs()[0]->GetManaPool()->GetGreen() != 1 )
+                                return 2;
+                             std::cout<<" OK "<<std::endl;  
                             break;
                         }
                         case 2 :
                         {
+                            std::cout<<"Lance de l'ours ... ";
                             std::shared_ptr<Engine::CastCommand> castours (std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(Ours4,nullptr,nullptr)));
                             moteur.AddCommand(castours);
+                            
+                            moteur.Update();
+                            if (state->GetPile().size() != 1 || state->GetJoueurs()[0]->GetHand().size() != 0)
+                                return 3;
+                            std::cout<<" OK "<<std::endl;  
                             break;
                         }
                         case 3 :
                         {
+                            std::cout<<"Resolution de l'ours ...";
                             std::shared_ptr<Engine::LetPriorityCommand> Past (std::shared_ptr<Engine::LetPriorityCommand>(new Engine::LetPriorityCommand()));
                             moteur.AddCommand(Past);moteur.AddCommand(Past);
+                            
+                            moteur.Update();
+                            if (state->GetPile().size() != 0)
+                                return 4;
+                            std::cout<<" OK "<<std::endl;
                             break;
                         }
                         case 4 :
                         {
+                            std::cout<<"Declaration des Attaquants ...";
+                            
                             std::shared_ptr<Engine::AttackCommand> attaque (std::shared_ptr<Engine::AttackCommand>(new Engine::AttackCommand()));
                             attaque->AddAttaquant(Ours2);
                             attaque->AddAttaquant(Ours3);
                             moteur.AddCommand(attaque);
+                            
+                            moteur.Update();
+                            if (!Ours2->GetIsTap() || !Ours3->GetIsTap())
+                                return 5;
+                            std::cout<<" OK "<<std::endl;
                             break;
                         }
                         case 5 :
                         {
+                            std::cout<<"Declaration des bloqueurs et resolution de l'attaque ...";
+                                    
                             std::vector<std::shared_ptr<Etat::Creature> > attaquant;
                             attaquant.push_back(Ours2);
                             attaquant.push_back(Ours3);
@@ -127,6 +165,13 @@ namespace Test
                             
                             std::shared_ptr<Engine::LetPriorityCommand> Past (std::shared_ptr<Engine::LetPriorityCommand>(new Engine::LetPriorityCommand()));
                             moteur.AddCommand(Past);
+                            
+                            moteur.Update();
+                            if (state->GetJoueurs()[0]->GetGraveyard().size()!=1 || state->GetJoueurs()[1]->GetGraveyard().size()!=1 || state->GetJoueurs()[1]->GetPv() != 18 )
+                                return 6;
+                            std::cout<<" OK "<<std::endl;
+                            
+                            std::cout<<"The END"<<std::endl;
                             break;
                         }
                         default :
@@ -143,5 +188,6 @@ namespace Test
             //std::cout<<(int)(Foret1->GetIsTap())<<std::endl;
             window.display();
         }
+        return result;
     }
 }

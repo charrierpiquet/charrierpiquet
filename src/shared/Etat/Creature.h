@@ -29,9 +29,9 @@ namespace Etat {
     // Operations
   public:
     Creature (int strengh, int thougness, bool token, std::string nom, Cout cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
-    int GetForce () const;
-    int GetEndurance () const;
-    bool GetMalInvoc () const;
+    int GetForce () ;
+    int GetEndurance () ;
+    bool GetMalInvoc () ;
     int GetBonusEOT () ;
     int GetBlessure () ;
     void SetBonusEOT (int value);

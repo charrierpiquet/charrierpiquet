@@ -16,7 +16,7 @@ namespace Engine {
   /// class LoadCommand - 
   class LoadCommand : public Engine::Command {
     // Attributes
-  public:
+  private:
     std::string deck1;
     std::string deck2;
     // Operations

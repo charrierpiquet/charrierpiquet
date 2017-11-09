@@ -8,7 +8,10 @@ namespace Render {
   class Editeur;
 }
 
+#include "Etat/Objet.h"
+#include "Etat/State.h"
 #include "Editeur.h"
+
 
 namespace Render {
 

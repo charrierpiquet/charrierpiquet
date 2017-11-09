@@ -17,12 +17,12 @@ namespace Etat
         malInvoc = true;
     }
     
-    int Creature::GetForce() const
+    int Creature::GetForce()
     {
         return force + GetCounter() + bonusEOT;
     }
     
-    int Creature::GetEndurance() const
+    int Creature::GetEndurance()
     {
         return endurance + GetCounter() + bonusEOT - blessure;
     }
@@ -33,7 +33,7 @@ namespace Etat
         return blessure;
     }
     
-    bool Creature::GetMalInvoc() const
+    bool Creature::GetMalInvoc()
     {
         return malInvoc;
     }
