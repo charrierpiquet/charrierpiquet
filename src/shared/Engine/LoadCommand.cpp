@@ -27,6 +27,8 @@
 #include <string>
 #include <cstring>
 #include "LoadCommand.h"
+#include "Etat/Active.h"
+#include "Etat/Creature.h"
 
 
 
