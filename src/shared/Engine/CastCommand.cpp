@@ -15,8 +15,10 @@ namespace Engine
     void CastCommand::Execute(std::shared_ptr<Etat::State> state)
     {
         // actuellement on ne peux gerer que les couts simple (juste du mana)
-        // si c'est une capacite
-        
+        // si on a la priorite
+        if (obj->GetIndJoueur() == state->GetPriority())
+        {
+            // si c'est une capacite  
             if (obj->GetIsCapacite())
             {
                 if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 1) // si c'est une capacite active
@@ -48,8 +50,8 @@ namespace Engine
                 if (inHand)
                 {
                     bool cast = false;
-                    // si c'est un permanent et que la pile est vide
-                    if (std::static_pointer_cast<Etat::Carte>(obj)->GetIsPermanent())
+                    // si c'est un permanent et que la pile est vide et que l'on est PAS dans la phase de combat
+                    if (std::static_pointer_cast<Etat::Carte>(obj)->GetIsPermanent() && state->GetPhase()!=2)
                     {
                         if (state->GetPile().empty())
                         {
@@ -78,6 +80,7 @@ namespace Engine
                     }
                 }
             }
+        }
             
     }
     
