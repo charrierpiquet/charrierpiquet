@@ -51,6 +51,10 @@ int main(int argc,char* argv[])
             else
                 cout << "Tout s'est bien déroulé."<< endl;
         }
+        else if ((string)argv[1] == "random_ai")
+        {
+            TestIARandom();
+        }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
                

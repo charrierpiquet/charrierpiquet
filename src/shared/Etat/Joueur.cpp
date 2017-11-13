@@ -27,8 +27,11 @@ namespace Etat
     
     void Joueur::Draw()
     {
-        hand.push_back(library.back());
-        library.pop_back();
+        if (!library.empty())
+        {
+            hand.push_back(library.back());
+            library.pop_back();
+        }
     }
     
     void Joueur::Discard()

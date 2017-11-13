@@ -2,7 +2,7 @@
 #include "Creature.h"
 #include <cstddef>
 #include <iostream>
-#define NbPhase 15
+#define NbPhase 4
 #define MaxHand 7
 namespace Etat
 {
@@ -29,7 +29,7 @@ namespace Etat
                        
             //cleanup   
             //retirer les blessures et effet fin tour
-            for (int i=0 ; (unsigned)i < battlefield.size() ; i++)
+            for (unsigned int i=0 ; i < battlefield.size() ; i++)
                 if (battlefield[i]->GetIsCreature())
                 {
                     std::static_pointer_cast<Creature> (battlefield[i])->SetBlessure(0);
@@ -38,7 +38,7 @@ namespace Etat
             
             //retirer cartes en trop dans la main
             if (joueurs[priorite]->GetHand().size() > 7)
-                for (int i = 0 ; (unsigned)i < joueurs[priorite]->GetHand().size() - 7 ; i++)
+                for (unsigned int i = 0 ; i < joueurs[priorite]->GetHand().size() - 7 ; i++)
                     joueurs[priorite]->Discard();
             
             // changement de tour
@@ -47,7 +47,7 @@ namespace Etat
                 joueur = 0; 
             
             //uptap & mal invoc
-            for (int i=0 ; (unsigned)i < battlefield.size() ; i++)
+            for (unsigned int i=0 ; i < battlefield.size() ; i++)
                 if (battlefield[i]->GetIndJoueur() == joueur)
                 {
                     battlefield[i]->SetIsTap(false);
@@ -116,15 +116,15 @@ namespace Etat
         switch (phase)
         {
             case 0:
-                return "Upkeep";
-            case 1:
                 return "Pre-Combat Main";
+            case 1:
+                return "Declaration Attaquant";
             case 2:
-                return "Combat";
+                return "Priorite combat";
             case 3:
-                return "Post-Combat Main";
+                return "Declaration Bloqueurs";
             case 4:
-                return "Clean-up";
+                return "Post-Combat Main";
             default :
                 return "Unknow";
         }
