@@ -114,7 +114,7 @@ namespace Test
                         }
                         case 2 :
                         {
-                            std::cout<<"Lance de l'ours ... ";
+                            std::cout<<"Lancement de l'ours ... ";
                             std::shared_ptr<Engine::CastCommand> castours (std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(Ours4,nullptr,nullptr)));
                             moteur.AddCommand(castours);
                             
