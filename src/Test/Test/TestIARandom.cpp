@@ -1,5 +1,12 @@
 #include "IA.h"
-#include "Engine/Moteur.h"
+#include <vector>
+
+#include "TestIARandom.h"
+#include "Etat.h"
+#include "Render.h"
+#include "Engine.h"
+#include <SFML/Graphics.hpp>
+#include <iostream>
 
 namespace Test
 {
