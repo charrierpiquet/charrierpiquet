@@ -26,6 +26,9 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <algorithm>
+#include <ctime> 
+#include <cstdlib>
 #include "LoadCommand.h"
 #include "Etat/Active.h"
 #include "Etat/Creature.h"
@@ -42,32 +45,35 @@ namespace Engine
 	
     void LoadCommand::Execute(std::shared_ptr<Etat::State> state)
     {
-        std::string Type;
-        std::string Nom;
-        std::string Cout;
-        std::string Force;
-        std::string Endurance;
-        std::string NbCapa;
-        std::string Ability;
-        std::string Texte;
-        std::string Ligne;
+        
+        std::string Type ="";
+        std::string Nom="";
+        std::string Cout="";
+        std::string Force="";
+        std::string Endurance="";
+        std::string NbCapa="";
+        std::string Ability="";
+        std::string Texte="";
+        std::string Ligne="";
         std::vector<std::shared_ptr<Etat::Capacite> > Capacites;
         int id=-1;
         int Joueur;
-        int TailleDeck=0;
                 
         for(Joueur=0;Joueur<(int)state->GetJoueurs().size();Joueur++)
         {
+            int TailleDeck=0;
             std::ifstream FichierDeck;
             if(Joueur==0)
             {
-                FichierDeck.open("/res/decks/" + deck1 + ".deck");
+                FichierDeck.open("./res/" + deck1 + ".deck");
+                std::cout<<"chargement deck 1 ..."<<std::endl;
             }
             else
             {
                 if(Joueur==1)
                 {
-                    FichierDeck.open("/res/decks/" + deck2 + ".deck");
+                    FichierDeck.open("./res/" + deck2 + ".deck");
+                    std::cout<<"chargement deck 2 ..."<<std::endl;
                 }
                 else
                 {
@@ -75,21 +81,33 @@ namespace Engine
                     return;
                 }
             }
+            if (!FichierDeck)
+                std::cout<<"impossible d'ouvrir le deck"<<std::endl;
             
-            while(FichierDeck.peek()!=EOF)
+            while(FichierDeck.peek()!= EOF)
             {
                 TailleDeck++;
                 std::getline(FichierDeck, Nom);
+                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                Nom.erase(Nom.end()-1);
+                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                //std::cout<<"."<<Nom<<"."<<std::endl;
+                //std::cout<<Nom.size()<<std::endl;
+                std::ifstream Card("./res/cartes/" + Nom + ".carte");
+                //std::ifstream Card("./res/cartes/Ours.carte");
+                if (!Card)
+                    std::cout<<"impossible d'ouvrir la carte "<<Nom<<std::endl;
+                else
+                {
+                std::getline(Card, Type);       //Type.erase(Type.end()-1);
+                std::getline(Card, Nom);        //Nom.erase(Nom.end()-1);
+                std::getline(Card, Cout);       //Cout.erase(Cout.end()-1);
+                std::getline(Card, Force);      //Force.erase(Force.end()-1);
+                std::getline(Card, Endurance);  //Endurance.erase(Endurance.end()-1);
+                std::getline(Card, NbCapa);     //NbCapa.erase(NbCapa.end()-1);
                 
-                std::ifstream Card("/res/cartes" + Nom + ".Carte");
-                
-                std::getline(Card, Type);
-                std::getline(Card, Nom);
-                std::getline(Card, Cout);
-                std::getline(Card, Force);
-                std::getline(Card, Endurance);
-                std::getline(Card, NbCapa);
-                for(int i=0;i<std::stoi(NbCapa);i++)
+                //std::cout<<Type<<"."<<std::endl<<Nom<<"."<<std::endl<<Force<<"."<<std::endl<<Endurance<<"."<<std::endl<<NbCapa<<"."<<std::endl;
+                for(int i=0;i<std::stoi(NbCapa,nullptr,0);i++)
                 {
                     std::getline(Card, Ability);
                     auto CostAbility = new Etat::Cout();
@@ -101,7 +119,7 @@ namespace Engine
                 Cost->SetCost(Cout[0],Cout[4],Cout[2],Cout[6],Cout[8],Cout[10],Cout[12],Cout[14],Cout[16]);
                 if (std::strcmp(Type.data(), "creature")==0)
                 {
-                    state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(std::stoi(Force),std::stoi(Endurance),false,Nom,*Cost,Capacites,id++,Joueur)));
+                    state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(std::stoi(Force,nullptr,0),std::stoi(Endurance,nullptr,0),false,Nom,*Cost,Capacites,id++,Joueur)));
                 }
                 else
                 {
@@ -114,11 +132,20 @@ namespace Engine
                     getline(Card, Ligne);
                     Texte=Texte + Ligne + "\n";
                 }
-                state->GetJoueurs()[Joueur]->GetLibrary()[TailleDeck]->SetOracle(Texte);
-		
+                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                //std::cout<<state->GetJoueurs().size()<<" "<<Joueur<<std::endl;
+                state->GetJoueurs()[Joueur]->GetLibrary()[TailleDeck-1]->SetOracle(Texte);
+                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
                 Card.close();
+                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                }
             }
             FichierDeck.close();
-        }	
+        }
+        
+        //std::srand ( unsigned ( std::time(0) ) );
+        //std::random_shuffle(state->GetJoueurs()[0]->GetLibrary().begin(),state->GetJoueurs()[0]->GetLibrary().end());
+        //std::random_shuffle(state->GetJoueurs()[1]->GetLibrary().begin(),state->GetJoueurs()[1]->GetLibrary().end());
+        std::cout<<"coucou c'est moi !"<<std::endl;
     }
 }

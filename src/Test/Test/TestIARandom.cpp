@@ -18,10 +18,21 @@ namespace Test
         
         IA::IA_base ia (state, moteur);
         
-        moteur->AddCommand(std::shared_ptr<Engine::LoadCommand>(new Engine::LoadCommand("deck1","deck2")));
+        moteur->AddCommand(std::shared_ptr<Engine::LoadCommand>(new Engine::LoadCommand("Deck1","Deck2")));
+        moteur->Update();
         
         sf::RenderWindow window(sf::VideoMode(800,600),"Sorcellerie, le Regroupement",sf::Style::Close);
         window.setFramerateLimit(60);
+        
+        state->GetJoueurs()[0]->Draw();
+        state->GetJoueurs()[0]->Draw();
+        state->GetJoueurs()[0]->Draw();
+        state->GetJoueurs()[0]->Draw();
+        
+        state->GetJoueurs()[1]->Draw();
+        state->GetJoueurs()[1]->Draw();
+        state->GetJoueurs()[1]->Draw();
+        state->GetJoueurs()[1]->Draw();
         
         std::cout<<"tappez sur une touche pour passer a l'etape suivante"<<std::endl;
         
