@@ -24,8 +24,7 @@ namespace IA
 		MainJoueur = currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetHand();
 		Board = currentState->GetBattlefield();
 		int c=0;
-		unsigned int i;
-		for(i=0;i<(Board->size());i++) //Récupération des listes de créatures et terrians controlés par le joueur
+		for( unsigned int i=0;i<Board->size();i++) //Récupération des listes de créatures et terrians controlés par le joueur
 		{
 			if ((Board[i]->GetIndJoueur() == currentState->GetJoueurTour()) && (Board[i]->isCreature()))
 			{

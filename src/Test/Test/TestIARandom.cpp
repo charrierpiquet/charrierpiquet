@@ -1,4 +1,4 @@
-#include "TestIARandom.h"
+#include "IA.h"
 #include "Engine/Moteur.h"
 
 namespace Test
@@ -9,7 +9,7 @@ namespace Test
         std::shared_ptr<Render::Rendu> rendu (new Render::Rendu(state,800,600,0));
         std::shared_ptr<Engine::Moteur> moteur(new Engine::Moteur(state));
         
-        IA::IA_Base ia (state, moteur);
+        IA::IA_base ia (state, moteur);
         
         moteur->AddCommand(std::shared_ptr<Engine::LoadCommand>(new Engine::LoadCommand("deck1","deck2")));
         
