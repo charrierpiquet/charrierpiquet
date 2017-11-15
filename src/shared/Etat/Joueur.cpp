@@ -37,8 +37,12 @@ namespace Etat
     void Joueur::Discard()
     {
         std::srand(std::time(0));
+        int del = std::rand()%(hand.size()-1);
         if (hand.size() > 0)
-            hand.erase(hand.begin()+std::rand()%hand.size());
+        {
+            graveyard.push_back(hand[del]);
+            hand.erase(hand.begin()+del);
+        }
     }
     
     std::vector<std::shared_ptr<Carte> > Joueur::GetHand() const

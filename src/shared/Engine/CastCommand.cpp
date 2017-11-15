@@ -58,8 +58,13 @@ namespace Engine
                             // si c'est un terrain et que l'on a pas jouer de terrain
                             if (std::static_pointer_cast<Etat::Carte>(obj)->GetIsLand() )
                             {
+                                //std::cout<<"on est la"<<std::endl;
                                 if(!state->GetJoueurs()[state->GetJoueurTour()]->GetAJoueTerrain() && state->GetJoueurTour() == state->GetPriority())
+                                {
+                                    //std::cout<<"on lance le terrain"<<std::endl;
                                     cast = true;
+                                    state->GetJoueurs()[state->GetJoueurTour()]->SetAJoueTerrain(true);
+                                }
                             }
                             else
                                 cast = true;

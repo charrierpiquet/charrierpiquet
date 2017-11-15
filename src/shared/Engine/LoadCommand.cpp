@@ -106,20 +106,24 @@ namespace Engine
                 std::getline(Card, Endurance);  //Endurance.erase(Endurance.end()-1);
                 std::getline(Card, NbCapa);     //NbCapa.erase(NbCapa.end()-1);
                 
-                //std::cout<<Type<<"."<<std::endl<<Nom<<"."<<std::endl<<Force<<"."<<std::endl<<Endurance<<"."<<std::endl<<NbCapa<<"."<<std::endl;
-                for(int i=0;i<std::stoi(NbCapa,nullptr,0);i++)
-                {
-                    std::getline(Card, Ability);
-                    auto CostAbility = new Etat::Cout();
-                    CostAbility->SetCost(Ability[0],Ability[4],Ability[2],Ability[6],Ability[8],Ability[10],Ability[12],Ability[14],Ability[16]);                  
-                    Capacites.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*CostAbility,Ability.substr(18,Ability.size()-18),id++,Joueur,Ability.substr(18,Ability.size()-18))));
-                }
                 
-                auto Cost = new Etat::Cout();
-                Cost->SetCost(Cout[0],Cout[4],Cout[2],Cout[6],Cout[8],Cout[10],Cout[12],Cout[14],Cout[16]);
+                int k = std::stoi(NbCapa,nullptr,0), f=std::stoi(Force,nullptr,0),e=std::stoi(Endurance,nullptr,0);
+                //std::cout<<Type<<"."<<std::endl<<Nom<<"."<<std::endl<<f<<"."<<std::endl<<e<<"."<<std::endl<<k<<"."<<std::endl;
+                Capacites.clear();
+                if (k != 0)     
+                    for(int i=0;i<k;i++)
+                    {
+                        std::getline(Card, Ability);
+                        auto CostAbility = new Etat::Cout();
+                        CostAbility->SetCost(Ability[0]-'0',Ability[4]-'0',Ability[2]-'0',Ability[6]-'0');                  
+                        Capacites.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*CostAbility,Ability.substr(18,Ability.size()-18),id++,Joueur,Ability.substr(18,Ability.size()-18))));
+                    }
+                
+                std::shared_ptr<Etat::Cout> Cost(new Etat::Cout());
+                Cost->SetCost(Cout[0]-'0',Cout[4]-'0',Cout[2]-'0',Cout[6]-'0');
                 if (std::strcmp(Type.data(), "creature")==0)
                 {
-                    state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(std::stoi(Force,nullptr,0),std::stoi(Endurance,nullptr,0),false,Nom,*Cost,Capacites,id++,Joueur)));
+                    state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,*Cost,Capacites,id++,Joueur)));
                 }
                 else
                 {
@@ -143,9 +147,21 @@ namespace Engine
             FichierDeck.close();
         }
         
-        //std::srand ( unsigned ( std::time(0) ) );
+        std::srand ( unsigned ( std::time(0) ) );
+        /*int size = std::min(state->GetJoueurs()[0]->GetLibrary().size(), state->GetJoueurs()[1]->GetLibrary().size());
+        for (int i = 0; i < size; i++)
+        {
+            using std::swap;
+            int rand1 = std::rand()%(size-1), rand2 =std::rand()%(size-1);
+            swap(state->GetJoueurs()[0]->GetLibrary()[i],state->GetJoueurs()[0]->GetLibrary()[rand1]);
+            swap(state->GetJoueurs()[1]->GetLibrary()[i],state->GetJoueurs()[1]->GetLibrary()[rand2]);
+            std::cout<<rand1<<" "<<rand2<<std::endl;
+        }
+        
+        for (int i = 0; i<size;i++)
+            std::cout<<state->GetJoueurs()[0]->GetLibrary()[i]->GetName()<<std::endl;*/
         //std::random_shuffle(state->GetJoueurs()[0]->GetLibrary().begin(),state->GetJoueurs()[0]->GetLibrary().end());
         //std::random_shuffle(state->GetJoueurs()[1]->GetLibrary().begin(),state->GetJoueurs()[1]->GetLibrary().end());
-        std::cout<<"coucou c'est moi !"<<std::endl;
+        //std::cout<<"coucou c'est moi !"<<std::endl;
     }
 }

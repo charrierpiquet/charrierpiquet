@@ -57,15 +57,15 @@ namespace Etat
             
             //draw
             joueurs[priorite]->Draw();
+            // il a le droit de rejouer un terrain
+            joueurs[priorite]->SetAJoueTerrain(false);
         }
         priorite = joueur;
     }
     
     void State::IncrPriority()
     {
-        priorite ++;
-        if (priorite >= nbJoueur)
-            priorite = 0;
+        priorite = (priorite +1) %2;
     }
     
     void State::AddCardBattlefield(std::shared_ptr<Carte> card)

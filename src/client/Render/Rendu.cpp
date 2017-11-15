@@ -176,8 +176,11 @@ namespace Render {
             target.draw(txt_Oracle);
             
             //tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
-            listCapa.Actu(Conv<Etat::Capacite>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
-            listCapa.Draw(target);
+            if (!selectedCard->GetIsCapacite())
+            {
+                listCapa.Actu(Conv<Etat::Capacite>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
+                listCapa.Draw(target);
+            }
             // on affiche le cout que pour les cartes
             if (!selectedCard->GetIsCapacite())
             {
@@ -286,7 +289,7 @@ namespace Render {
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
             if (state->GetBattlefield()[i]->GetIndJoueur() == joueur)
             {
-                if (state->GetBattlefield()[i]->GetIsCreature())
+                if (!state->GetBattlefield()[i]->GetIsLand())
                     bf_2.push_back(state->GetBattlefield()[i]);
                 else
                     bf_1.push_back(state->GetBattlefield()[i]);

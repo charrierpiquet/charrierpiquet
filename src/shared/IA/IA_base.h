@@ -16,6 +16,7 @@ namespace IA {
   private:
     std::shared_ptr<Etat::State> currentState;
     std::shared_ptr<Engine::Moteur> engine;
+    bool ajouer;
     // Operations
   public:
     IA_base (std::shared_ptr<Etat::State> state, std::shared_ptr<Engine::Moteur> moteur);

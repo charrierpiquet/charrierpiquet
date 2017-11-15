@@ -40,10 +40,11 @@ namespace Engine
                 
                 // on supprime la carte du dessus de la pile
                 state->DelCardPile(state->GetPile().size()-1);
+                state->IncrPriority();
             }
         }
-        // on passe au joueur suivant
-        state->IncrPriority();
+        else
+            state->IncrPriority();
        
         // on kill les creatures qui ont 0 d'endurance
         for (int i = 0 ; i < (int)state->GetBattlefield().size() ; i++ )
