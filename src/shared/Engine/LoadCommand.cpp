@@ -58,6 +58,9 @@ namespace Engine
         std::vector<std::shared_ptr<Etat::Capacite> > Capacites;
         int id=-1;
         int Joueur;
+        
+        std::vector<std::shared_ptr<Etat::Carte> > list_deck1;
+        std::vector<std::shared_ptr<Etat::Carte> > list_deck2;
                 
         for(Joueur=0;Joueur<(int)state->GetJoueurs().size();Joueur++)
         {
@@ -104,8 +107,7 @@ namespace Engine
                 std::getline(Card, Cout);       //Cout.erase(Cout.end()-1);
                 std::getline(Card, Force);      //Force.erase(Force.end()-1);
                 std::getline(Card, Endurance);  //Endurance.erase(Endurance.end()-1);
-                std::getline(Card, NbCapa);     //NbCapa.erase(NbCapa.end()-1);
-                
+                std::getline(Card, NbCapa);     //NbCapa.erase(NbCapa.end()-1);                
                 
                 int k = std::stoi(NbCapa,nullptr,0), f=std::stoi(Force,nullptr,0),e=std::stoi(Endurance,nullptr,0);
                 //std::cout<<Type<<"."<<std::endl<<Nom<<"."<<std::endl<<f<<"."<<std::endl<<e<<"."<<std::endl<<k<<"."<<std::endl;
@@ -123,11 +125,17 @@ namespace Engine
                 Cost->SetCost(Cout[0]-'0',Cout[4]-'0',Cout[2]-'0',Cout[6]-'0');
                 if (std::strcmp(Type.data(), "creature")==0)
                 {
-                    state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,*Cost,Capacites,id++,Joueur)));
+                    if (Joueur == 0)
+                        list_deck1.push_back(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,*Cost,Capacites,id++,Joueur)));
+                    else
+                        list_deck2.push_back(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,*Cost,Capacites,id++,Joueur)));
                 }
                 else
                 {
-                    state->GetJoueurs()[Joueur]->AddCardLibrary(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
+                    if (Joueur == 0)
+                        list_deck1.push_back(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
+                    else 
+                        list_deck2.push_back(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
                 }
                 
                 Texte="";
@@ -138,7 +146,10 @@ namespace Engine
                 }
                 //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
                 //std::cout<<state->GetJoueurs().size()<<" "<<Joueur<<std::endl;
-                state->GetJoueurs()[Joueur]->GetLibrary()[TailleDeck-1]->SetOracle(Texte);
+                if (Joueur == 0)
+                    list_deck1[TailleDeck-1]->SetOracle(Texte);
+                else
+                    list_deck2[TailleDeck-1]->SetOracle(Texte);
                 //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
                 Card.close();
                 //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
@@ -148,6 +159,18 @@ namespace Engine
         }
         
         std::srand ( unsigned ( std::time(0) ) );
+            while (!list_deck1.empty())
+            {
+                int k = std::rand()%list_deck1.size();
+                state->GetJoueurs()[0]->AddCardLibrary(list_deck1[k]);
+                list_deck1.erase(list_deck1.begin()+k);
+            }
+        while (!list_deck2.empty())
+            {
+                int k = std::rand()%list_deck2.size();
+                state->GetJoueurs()[1]->AddCardLibrary(list_deck2[k]);
+                list_deck2.erase(list_deck2.begin()+k);
+            }
         /*int size = std::min(state->GetJoueurs()[0]->GetLibrary().size(), state->GetJoueurs()[1]->GetLibrary().size());
         for (int i = 0; i < size; i++)
         {

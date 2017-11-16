@@ -60,6 +60,17 @@ namespace Test
             rendu->Draw(window);
             //std::cout<<(int)(Foret1->GetIsTap())<<std::endl;
             window.display();
+            
+            if(state->GetJoueurs()[0]->GetPv() == 0)
+            {
+                std::cout<<"Le joueur 2 gagne"<<std::endl;
+                window.close();
+            }
+            if(state->GetJoueurs()[1]->GetPv() == 0)
+            {
+                std::cout<<"Le joueur 1 gagne"<<std::endl;
+                window.close();
+            }
         }
         
     }

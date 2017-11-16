@@ -85,7 +85,7 @@ namespace IA {
                     std::cout<<"on passe"<<std::endl; 
                 }   
             }
-            // si on est dans la pre-combat main phase
+            // si on est dans la post-combat main phase
             else if (currentState->GetPhase()==4)
             {
                 // si c'est le joueur dont c'est le tour qui a la priorite
