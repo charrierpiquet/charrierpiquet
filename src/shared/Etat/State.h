@@ -9,11 +9,13 @@
 namespace Etat {
   class Objet;
   class Carte;
+  class Creature;
   class Joueur;
 }
 
 #include "Objet.h"
 #include "Carte.h"
+#include "Creature.h"
 #include "Joueur.h"
 
 namespace Etat {
@@ -30,6 +32,7 @@ namespace Etat {
     std::vector<std::shared_ptr<Objet> > pile;
     std::vector<std::shared_ptr<Carte> > battlefield;
     int nbJoueur;
+    std::vector<std::shared_ptr<Creature> > list_attaquant;
     // Operations
   public:
     State (int nb = 2);
@@ -47,6 +50,8 @@ namespace Etat {
     int GetPriority () const;
     bool GetPileEmpty () const;
     int GetJoueurTour () const;
+    void AddListAttaquant (std::shared_ptr<Creature> crea);
+    std::vector<std::shared_ptr<Creature> > GetAttaquants () const;
     // Setters and Getters
   };
 

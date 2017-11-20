@@ -142,7 +142,7 @@ namespace IA {
                 engine->AddCommand(attaque);
                 std::cout<<"on attaque avec tout ce qui peux attaquer"<<std::endl;
                 
-                std::shared_ptr<Engine::BlockCommand> bloque(new Engine::BlockCommand(attaquant));
+                std::shared_ptr<Engine::BlockCommand> bloque(new Engine::BlockCommand());
                 engine->AddCommand(bloque);
                 std::cout<<"on ne bloque pas"<<std::endl;      
                 engine->AddCommand(Past);engine->AddCommand(Past);engine->AddCommand(Past);

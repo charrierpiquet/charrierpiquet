@@ -135,4 +135,14 @@ namespace Etat
         return joueur;
     }
     
+    void State::AddListAttaquant(std::shared_ptr<Creature> crea)
+    {
+        list_attaquant.push_back(crea);
+    }
+    
+    std::vector<std::shared_ptr<Creature> > State::GetAttaquants() const
+    {
+        return list_attaquant;
+    }
+    
 };

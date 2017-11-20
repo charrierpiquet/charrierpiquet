@@ -25,6 +25,10 @@ namespace Engine
         //std::cout<<attaquant.size()<<std::endl;
         //on engage les creatures attaquantes
         for ( int i = 0 ; i < (int)attaquant.size() ; i++ )
+        {
+            state->AddListAttaquant(attaquant[i]);
             attaquant[i]->SetIsTap(true);
+        }
+        
     }
 }

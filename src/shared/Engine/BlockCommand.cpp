@@ -4,10 +4,6 @@
 
 namespace Engine
 {
-    BlockCommand::BlockCommand (std::vector<std::shared_ptr<Etat::Creature> > attaq)
-    {
-        attaquant = attaq;
-    }
     void BlockCommand::SupprBloqueur (std::shared_ptr<Etat::Creature> crea)
     {
         int ind=-1;
@@ -26,6 +22,7 @@ namespace Engine
         bloqueur.push_back(crea_bloqueur);
         bloque.push_back(crea_bloque);
     }
+    
     void BlockCommand::Execute (std::shared_ptr<Etat::State> state)
     {
         // les creatures bloqueuse inflige leur blessure aux creatures bloques
@@ -34,20 +31,20 @@ namespace Engine
          
         // les creatures bloques infliges leurs blessures aux creature bloqueuses
         // dans l'ordre des creatures qui bloque et si ça depasse aux creatures suivantes
-        for( int i = 0 ; i < (int)attaquant.size() ; i++ )
+        for( int i = 0 ; i < (int)state->GetAttaquants().size() ; i++ )
         {
             bool isBlocked = false;
             
             for ( int j = 0 ; j < (int)bloque.size() ; j++ )
-                if ( attaquant[i] == bloque[j] )
+                if ( state->GetAttaquants()[i] == bloque[j] )
                     isBlocked = true;
             
-            int dmgToDeal = attaquant[i]->GetForce();    
+            int dmgToDeal = state->GetAttaquants()[i]->GetForce();    
             
             if ( isBlocked )
             {
                 for ( int j = 0 ; j < (int)bloque.size() ; j++ )
-                    if ( attaquant[i] == bloque[j] && dmgToDeal > 0 )
+                    if ( state->GetAttaquants()[i] == bloque[j] && dmgToDeal > 0 )
                     {
                         if ( dmgToDeal >= bloqueur[j]->GetEndurance() )
                         {

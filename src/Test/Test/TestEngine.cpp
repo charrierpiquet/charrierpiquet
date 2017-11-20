@@ -159,7 +159,7 @@ namespace Test
                             attaquant.push_back(Ours2);
                             attaquant.push_back(Ours3);
                     
-                            std::shared_ptr<Engine::BlockCommand> bloque (std::shared_ptr<Engine::BlockCommand>(new Engine::BlockCommand(attaquant)));
+                            std::shared_ptr<Engine::BlockCommand> bloque (std::shared_ptr<Engine::BlockCommand>(new Engine::BlockCommand()));
                             bloque->AddBloqueur(Ours1,Ours3);
                             moteur.AddCommand(bloque);
                             

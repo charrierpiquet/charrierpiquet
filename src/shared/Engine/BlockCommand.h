@@ -24,12 +24,10 @@ namespace Engine {
     // Associations
     // Attributes
   private:
-    std::vector<std::shared_ptr<Etat::Creature> > attaquant;
     std::vector<std::shared_ptr<Etat::Creature> > bloqueur;
     std::vector<std::shared_ptr<Etat::Creature> > bloque;
     // Operations
   public:
-    BlockCommand (std::vector<std::shared_ptr<Etat::Creature> > attaq);
     void AddBloqueur (std::shared_ptr<Etat::Creature> bloqueur, std::shared_ptr<Etat::Creature> bloque);
     void Execute (std::shared_ptr<Etat::State> state);
     void SupprBloqueur (std::shared_ptr<Etat::Creature> crea);
