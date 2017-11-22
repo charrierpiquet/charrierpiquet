@@ -59,6 +59,8 @@ namespace Engine
     
     void LetPriorityCommand::Resolve(std::string keyword, std::shared_ptr<Etat::State> state)
     {
+		std::vector<std::shared_ptr<Etat::Capacite> > capaVide;
+		Etat::Cout coutVide;
         //std::cout<<keyword<<" "<<keyword.compare("blue")<<" "<<keyword.compare("green")<<std::endl;
         if (keyword.compare("multi") ==0)
             state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetManaPool()->AddMulti();
@@ -74,6 +76,42 @@ namespace Engine
             state->GetJoueurs()[1-state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->SetPv( state->GetJoueurs()[1-state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetPv()-1);
         else if (keyword.compare("draw") == 0)
             state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->Draw();
+        else if (keyword.compare("TokenRat") == 0)
+			{
+				std::shared_ptr<Etat::Creature>  Rat (new Etat::Creature(1,1,true,(std::string)"Rat",coutVide,capaVide,0,state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()));
+				Rat->SetOracle("Creature Jeton 1/1\nJeton de creature rat,\ncree par Chef des rats.");
+				state->AddCardBattlefield(Rat); 
+			}
+        else if (keyword.compare("TokenSquirrel") == 0)
+			{
+				std::shared_ptr<Etat::Creature>  Squirrel(new Etat::Creature(1,1,true,"Ecureuil",coutVide,capaVide,0,state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()));
+				Squirrel->SetOracle("Creature Jeton 1/1\nJeton de creature ecureuil,\ncree par Glandee.");
+				state->AddCardBattlefield(Squirrel);
+			}
+        else if (keyword.compare("Folie") == 0)
+				state->GetJoueurs()[1-state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->Discard();
+		else if (keyword.compare("Contresort") == 0)
+			{
+				std::weak_ptr<Etat::Objet> Cible (state->GetPile()[state->GetPile().size()-1]->GetTarget());
+				int i;
+				for(i=0;i<state->GetPile().size()-1;i++)
+				{
+					if (state->GetPile()[i]==Cible.lock())
+					{
+						if (!Cible.lock()->GetIsCapacite())
+						{
+							state->GetJoueurs()[state->GetPile()[i]->GetIndJoueur()]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(Cible.lock()));
+						}
+						state->DelCardPile(i);
+						break;
+					}
+				}
+			}
+        
+        
+        
+        
+        
             //state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->AddCardHand(state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary()[state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1]);
             //state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->DelCardLibrary( state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1);
         else
