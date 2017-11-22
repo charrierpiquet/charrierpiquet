@@ -3,6 +3,7 @@
 #define ETAT__CAPACITE__H
 
 #include <string>
+#include <memory>
 
 namespace Etat {
   class Objet;
@@ -23,6 +24,7 @@ namespace Etat {
     Capacite (std::string motclef, int type, int id, int prop, std::string nom);
     std::string GetKeyWord () const;
     int GetCategorie () const;
+    std::shared_ptr<Capacite> Clone ();
     // Setters and Getters
   };
 

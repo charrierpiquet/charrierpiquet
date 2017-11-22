@@ -26,7 +26,7 @@ namespace Etat
         if (phase > NbPhase)
         {
             phase = 0;
-                       
+            list_attaquant.clear();
             //cleanup   
             //retirer les blessures et effet fin tour
             for (unsigned int i=0 ; i < battlefield.size() ; i++)
@@ -143,6 +143,69 @@ namespace Etat
     std::vector<std::shared_ptr<Creature> > State::GetAttaquants() const
     {
         return list_attaquant;
+    }
+    
+    std::shared_ptr<State> State::Clone()
+    {
+        std::shared_ptr<State> clone = std::shared_ptr<State>(new State(nbJoueur));
+        // mettre les phases au bon stade
+        while (clone->GetPhase() != this->GetPhase() && clone->GetJoueurTour() != this->GetJoueurTour() && clone->GetPriority() != this->GetPriority())
+            clone->IncrPriority();
+         
+        // copier le champ de batailles et la pile et les liste d'attaquant
+        // voir si on a pas besoin de faire des tests (si jamais ça utilise carte.clone pour une crea)
+        for ( int i = 0 ; i < this->GetBattlefield().size() ; i++ )
+            clone->AddCardBattlefield(this->GetBattlefield()[i]->Clone());
+        for ( int i = 0 ; i < this->GetPile().size() ; i++ )
+            clone->AddCardPile(this->GetPile()[i]->Clone());
+        for ( int i = 0 ; i < this->GetAttaquants().size() ; i++ )
+            clone->AddListAttaquant(this->GetAttaquants()[i]->Clone());
+        
+        // copier les joueurs
+        for ( int i = 0 ; i < this->GetJoueurs().size() ; i++ )
+        {
+            clone->GetJoueurs()[i]->SetAJoueTerrain( this->GetJoueurs()[i]->GetAJoueTerrain());
+            clone->GetJoueurs()[i]->SetPv( this->GetJoueurs()[i]->GetPv());
+            // les 3 zones
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetGraveyard().size() ; j++ )
+                clone->GetJoueurs()[i]->AddCardGraveyard(this->GetJoueurs()[i]->GetGraveyard()[j]->Clone());
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetLibrary().size() ; j++ )
+                clone->GetJoueurs()[i]->AddCardLibrary(this->GetJoueurs()[i]->GetLibrary()[j]->Clone());
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetHand().size() ; j++ )
+                clone->GetJoueurs()[i]->AddCardHand(this->GetJoueurs()[i]->GetHand()[j]->Clone());
+            // la manapool
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetBlack() ; j++ )
+                clone->GetJoueurs()[i]->GetManaPool()->AddBlack();
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetBlue() ; j++ )
+                clone->GetJoueurs()[i]->GetManaPool()->AddBlue();
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetGreen() ; j++ )
+                clone->GetJoueurs()[i]->GetManaPool()->AddGreen();
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetMulti() ; j++ )
+                clone->GetJoueurs()[i]->GetManaPool()->AddMulti();
+            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetInc() ; j++ )
+                clone->GetJoueurs()[i]->GetManaPool()->AddInc();
+        }
+        // gerer les cibles
+        for ( int i = 0 ; i < this->GetPile().size() ; i++ )
+            if (this->GetPile()[i]->GetTarget().lock().get() != nullptr)
+            {
+                bool trouve = false;
+                for ( int j = 0 ; j < this->GetPile().size() ; j++ )
+                    if (this->GetPile()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
+                    {
+                        trouve = true;
+                        clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(this->GetPile()[j]));
+                    }
+                if (!trouve)
+                    for ( int j = 0 ; j < this->GetBattlefield().size() ; j++ )
+                        if (this->GetBattlefield()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
+                        {
+                            trouve = true;
+                            clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(this->GetBattlefield()[j]));
+                        }
+            }
+        
+        return clone;
     }
     
 };

@@ -51,7 +51,8 @@ namespace Engine
             if (state->GetBattlefield()[i]->GetIsCreature())
                 if (std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetEndurance() <= 0)
                 {
-                    state->GetJoueurs()[state->GetBattlefield()[i]->GetIndJoueur()]->AddCardGraveyard(state->GetBattlefield()[i]);
+                    if (!std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetIsToken())
+                        state->GetJoueurs()[state->GetBattlefield()[i]->GetIndJoueur()]->AddCardGraveyard(state->GetBattlefield()[i]);
                     state->DelCardBattlefield(i);
                 }
   

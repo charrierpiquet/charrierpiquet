@@ -25,14 +25,16 @@ namespace Engine
                     if (src != nullptr)  
                         if (!src->GetIsTap())  
                             if (state->GetJoueurs()[state->GetPriority()]->GetManaPool()->Payer(std::static_pointer_cast<Etat::Active>(obj)->GetCost()))
-                            {
-                                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-                                // on engage la source de la capa
-                                src->SetIsTap(true);
-                                // on met une capa sur la pile
-                                state->AddCardPile(obj);
-                                //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
-                            }
+                                if (state->GetJoueurs()[state->GetPriority()]->GetPv() > std::static_pointer_cast<Etat::Active>(obj)->GetCost().GetLife())
+                                {
+                                    state->GetJoueurs()[state->GetPriority()]->SetPv(state->GetJoueurs()[state->GetPriority()]->GetPv() - std::static_pointer_cast<Etat::Active>(obj)->GetCost().GetLife() );
+                                    //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                                    // on engage la source de la capa
+                                    src->SetIsTap(true);
+                                    // on met une capa sur la pile
+                                    state->AddCardPile(obj);
+                                    //std::cout<<"jusqu'ici tout vas bien"<<std::endl;
+                                }
             }
             // si c'est une carte
             else

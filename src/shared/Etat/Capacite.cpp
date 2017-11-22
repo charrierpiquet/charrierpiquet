@@ -23,6 +23,11 @@ namespace Etat
     {
         return keyWord;
     }
+    
+    std::shared_ptr<Capacite> Capacite::Clone()
+    {
+        return std::shared_ptr<Capacite>(new Capacite(keyWord,categorie, this->GetIdObj(), this->GetIndJoueur(), this->GetName()));
+    }
   
     
 };

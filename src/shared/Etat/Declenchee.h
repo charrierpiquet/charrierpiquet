@@ -3,6 +3,7 @@
 #define ETAT__DECLENCHEE__H
 
 #include <string>
+#include <memory>
 
 namespace Etat {
   class Capacite;
@@ -21,6 +22,7 @@ namespace Etat {
   public:
     Declenchee (int evnt, std::string motclef, int id, int prop, std::string nom);
     int GetEvent ();
+    std::shared_ptr<Declenchee> Clone ();
     // Setters and Getters
   };
 
