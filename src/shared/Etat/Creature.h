@@ -38,6 +38,7 @@ namespace Etat {
     void SetBonusEOT (int value);
     void SetBlessure (int value);
     void SetMalInvoc (bool value);
+    std::shared_ptr<Creature> Clone ();
     // Setters and Getters
   };
 

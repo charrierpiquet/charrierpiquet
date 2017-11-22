@@ -66,4 +66,17 @@ namespace Etat
     {
         counters = value;
     }
+    
+    std::shared_ptr<Carte> Carte::Clone()
+    {
+        std::vector<std::shared_ptr<Capacite> > capa;
+        for (int i = 0 ; i < ability.size() ; i++ )
+            capa.push_back(ability[i]->Clone());
+        
+        std::shared_ptr<Carte> clone (new Carte(isPermanent,isLand,isCreature,isToken,this->GetName(),cost, capa, this->GetIdObj(), this->GetIndJoueur()));
+        clone->SetCounter(counters);
+        clone->SetIsTap(isTap);
+        clone->SetOracle(this->GetOracle());
+        return clone;
+    }
 };

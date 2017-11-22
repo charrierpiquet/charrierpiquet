@@ -52,6 +52,7 @@ namespace Etat {
     int GetJoueurTour () const;
     void AddListAttaquant (std::shared_ptr<Creature> crea);
     std::vector<std::shared_ptr<Creature> > GetAttaquants () const;
+    std::shared_ptr<State> Clone ();
     // Setters and Getters
   };
 

@@ -58,6 +58,20 @@ namespace Etat
         malInvoc = value;
     }
     
-
+    std::shared_ptr<Creature> Creature::Clone()
+    {
+        std::vector<std::shared_ptr<Capacite> > capa;
+        for (int i = 0 ; i < this->GetAbility().size() ; i++ )
+            capa.push_back(this->GetAbility()[i]->Clone());
+        
+        std::shared_ptr<Creature> clone (new Creature(force, endurance,this->GetIsToken(),this->GetName(), this->GetCost(),capa, this->GetIdObj(), this->GetIndJoueur()));
+        clone->SetCounter(this->GetCounter());
+        clone->SetIsTap(this->GetIsTap());
+        clone->SetOracle(this->GetOracle());
+        clone->SetBlessure(blessure);
+        clone->SetBonusEOT(bonusEOT);
+        clone->SetMalInvoc(malInvoc);
+        return clone;
+    }
     
 };

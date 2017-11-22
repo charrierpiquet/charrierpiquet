@@ -11,5 +11,8 @@ namespace Etat
     {
         return cost;
     }
-    
+    std::shared_ptr<Active> Active::Clone()
+    {
+        return std::shared_ptr<Active>(new Active(cost, this->GetKeyWord(), this->GetIdObj(), this->GetIndJoueur(), this->GetName()));
+    }
 };

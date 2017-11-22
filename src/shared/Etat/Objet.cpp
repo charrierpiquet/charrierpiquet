@@ -43,6 +43,12 @@ namespace Etat
     {
         return name;
     }
+    std::shared_ptr<Objet> Objet::Clone()
+    {
+        std::shared_ptr<Objet> clone (new Objet(isCapacite, idObj, indJoueur, name));
+        clone->SetOracle(oracle);
+        return clone;
+    }
     
 };
 

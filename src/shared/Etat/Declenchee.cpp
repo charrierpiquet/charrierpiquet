@@ -12,4 +12,9 @@ namespace Etat
         return event;
     }
     
+    std::shared_ptr<Declenchee> Declenchee::Clone()
+    {
+        return std::shared_ptr<Declenchee>(new Declenchee(event, this->GetKeyWord(), this->GetIdObj(), this->GetIndJoueur(), this->GetName()));
+    }
+    
 };

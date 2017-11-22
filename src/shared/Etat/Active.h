@@ -3,6 +3,7 @@
 #define ETAT__ACTIVE__H
 
 #include <string>
+#include <memory>
 
 namespace Etat {
   class Cout;
@@ -24,6 +25,7 @@ namespace Etat {
   public:
     Active (Cout cout, std::string motclef, int id, int prop, std::string nom);
     Cout GetCost () const;
+    std::shared_ptr<Active> Clone ();
     // Setters and Getters
   };
 

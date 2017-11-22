@@ -44,6 +44,7 @@ namespace Etat {
     std::vector<std::shared_ptr<Capacite> > GetAbility () const;
     void SetIsTap (bool value);
     void SetCounter (int value);
+    std::shared_ptr<Carte> Clone ();
     // Setters and Getters
   };
 

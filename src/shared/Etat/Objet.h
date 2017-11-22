@@ -33,6 +33,7 @@ namespace Etat {
     void SetOracle (std::string txt);
     std::string GetOracle () const;
     std::string GetName () const;
+    std::shared_ptr<Objet> Clone ();
     // Setters and Getters
   };
 
