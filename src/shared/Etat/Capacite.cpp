@@ -4,9 +4,10 @@
 
 namespace Etat
 {
-    Capacite::Capacite(std::string motclef, int type, int id, int prop, std::string nom):Objet(true, id, prop, nom)
+    Capacite::Capacite(std::string motclef, int type, int id, int prop, std::string nom, bool target):Objet(true, id, prop, nom)
     {
         keyWord = motclef;
+        needTarget = target;
         
         if (type >= 0 && type <= 2)
             categorie = type; // 0 = statique; 1 = activée; 2 = déclenchée
@@ -26,7 +27,11 @@ namespace Etat
     
     std::shared_ptr<Capacite> Capacite::Clone()
     {
-        return std::shared_ptr<Capacite>(new Capacite(keyWord,categorie, this->GetIdObj(), this->GetIndJoueur(), this->GetName()));
+        return std::shared_ptr<Capacite>(new Capacite(keyWord,categorie, this->GetIdObj(), this->GetIndJoueur(), this->GetName(), needTarget));
+    }
+    bool Capacite::GetNeedTarget()
+    {
+        return needTarget;
     }
   
     

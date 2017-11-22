@@ -19,12 +19,14 @@ namespace Etat {
   private:
     std::string keyWord;
     int categorie;
+    bool needTarget;
     // Operations
   public:
-    Capacite (std::string motclef, int type, int id, int prop, std::string nom);
+    Capacite (std::string motclef, int type, int id, int prop, std::string nom, bool target);
     std::string GetKeyWord () const;
     int GetCategorie () const;
     std::shared_ptr<Capacite> Clone ();
+    bool GetNeedTarget ();
     // Setters and Getters
   };
 

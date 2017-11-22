@@ -41,13 +41,13 @@ namespace Test
         state->AddCardBattlefield(Ours3);
         
         std::vector<std::shared_ptr<Etat::Capacite> > capa1;
-        capa1.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,"green",identifiant++,0,"green")));
+        capa1.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,"green",identifiant++,0,"green",false)));
         std::shared_ptr<Etat::Carte> Foret1(new Etat::Carte(true,true,false,false,"Foret",*coutnull,capa1,identifiant++,0));
         Foret1->SetOracle("T : add G to manapool");
         state->AddCardBattlefield(Foret1);
         
         std::vector<std::shared_ptr<Etat::Capacite> > capa2;
-        capa2.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,"blue",identifiant++,0,"blue")));
+        capa2.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,"blue",identifiant++,0,"blue",false)));
         std::shared_ptr<Etat::Carte> Ile1(new Etat::Carte(true,true,false,false,"Ile",*coutnull,capa2,identifiant++,0));
         Ile1->SetOracle("T : add U to manapool");
         state->AddCardBattlefield(Ile1);

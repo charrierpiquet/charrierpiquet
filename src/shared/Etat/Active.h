@@ -23,7 +23,7 @@ namespace Etat {
     Cout cost;
     // Operations
   public:
-    Active (Cout cout, std::string motclef, int id, int prop, std::string nom);
+    Active (Cout cout, std::string motclef, int id, int prop, std::string nom, bool target);
     Cout GetCost () const;
     std::shared_ptr<Active> Clone ();
     // Setters and Getters

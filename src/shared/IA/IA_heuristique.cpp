@@ -106,7 +106,36 @@ namespace IA {
     
     std::shared_ptr<Engine::Command> IA_heuristique::PhaseAttaque()
     {
-        return std::shared_ptr<Engine::AttackCommand>(new Engine::AttackCommand());
+        std::shared_ptr<Engine::AttackCommand> attaque (new Engine::AttackCommand());
+        // si ta creature meurs pas et tue quelqu'un si elle est bloquee et que sa capacite n'est pas rentable
+        for ( int i = 0 ; i < currentState->GetBattlefield().size() ; i++ )
+            if (currentState->GetBattlefield()[i]->GetIsCreature() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetJoueurTour())
+            {
+                int survie = std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetEndurance();
+                bool tue = true;
+                 
+                for ( int j = 0 ; j < currentState->GetBattlefield().size() ; j++ )
+                    if (currentState->GetBattlefield()[j]->GetIsCreature() && currentState->GetBattlefield()[j]->GetIndJoueur() == 1-currentState->GetJoueurTour())
+                    {
+                        survie -= std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[j])->GetForce();
+                        if (std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetForce() < std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[j])->GetEndurance())
+                            tue = false;
+                    }
+                 
+                bool bonne_capa = false;
+                if (!currentState->GetBattlefield()[i]->GetAbility().empty())
+                {
+                    int actustate = EvalCmd(nullptr);
+                    for ( int j = 0 ; j < currentState->GetBattlefield()[i]->GetAbility().size() ; j++)
+                        if (!currentState->GetBattlefield()[i]->GetAbility()[i]->GetNeedTarget())
+                        {
+                            std::shared_ptr<Engine::CastCommand> cmd(new Engine::CastCommand(currentState->GetBattlefield()[i]->GetAbility()[j],currentState->GetBattlefield()[i],nullptr));
+                            if (EvalCmd(cmd) > actustate)
+                                bonne_capa = true;
+                        }
+                }
+            }
+        return attaque;
     }
     
     std::shared_ptr<Engine::Command> IA_heuristique::PhaseBloqueur()

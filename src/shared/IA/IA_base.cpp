@@ -121,6 +121,11 @@ namespace IA {
                             }
                         }
                     }
+                    else
+                    {
+                        engine->AddCommand(Past);
+                        std::cout<<"on passe"<<std::endl; 
+                    }
                 }
                 else
                 {

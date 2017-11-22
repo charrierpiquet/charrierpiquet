@@ -118,7 +118,7 @@ namespace Engine
                         std::getline(Card, Ability);
                         auto CostAbility = new Etat::Cout();
                         CostAbility->SetCost(Ability[0]-'0',Ability[4]-'0',Ability[2]-'0',Ability[6]-'0');                  
-                        Capacites.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*CostAbility,Ability.substr(18,Ability.size()-18),id++,Joueur,Ability.substr(18,Ability.size()-18))));
+                        Capacites.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*CostAbility,Ability.substr(18,Ability.size()-18),id++,Joueur,Ability.substr(18,Ability.size()-18),(bool)(int)(Ability[8]-'0'))));
                     }
                 
                 std::shared_ptr<Etat::Cout> Cost(new Etat::Cout());
