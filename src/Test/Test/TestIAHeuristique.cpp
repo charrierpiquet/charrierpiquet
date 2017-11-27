@@ -50,11 +50,15 @@ namespace Test
                         rendu->Click(event.mouseButton.x,event.mouseButton.y);
                 
                 if (event.type == sf::Event::KeyPressed)
+                {
                     ia.Think();
+                    moteur->Update();
+                    std::cout<<"Tour "<<state->GetJoueurTour()<<"; Phase "<<state->GetPhaseName()<<"; Priorite "<<state->GetPriority()<<std::endl;
+                }
             }
                 
             
-            moteur->Update();
+            
                 
             window.clear(sf::Color::Black);
             rendu->Draw(window);
