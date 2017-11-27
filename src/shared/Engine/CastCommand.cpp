@@ -88,7 +88,11 @@ namespace Engine
                 }
             }
         }
-            
+    }
+    
+    std::shared_ptr<Etat::Objet> CastCommand::GetObj()
+    {
+        return obj;
     }
     
 }

@@ -24,6 +24,7 @@ namespace IA {
     int EvalCmd(std::shared_ptr<Engine::Command> cmd);
     std::shared_ptr<Engine::Command> PhaseAttaque();
     std::shared_ptr<Engine::Command> PhaseBloqueur();
+    bool InvCompareCreaAtt(std::shared_ptr<Etat::Creature> a,std::shared_ptr<Etat::Creature> b);
     
     // Setters and Getters
   };
