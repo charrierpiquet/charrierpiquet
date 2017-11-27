@@ -8,8 +8,12 @@
 #include <Engine/AttackCommand.h>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 
+    static bool InvCompareCreaAtt(std::shared_ptr<Etat::Creature> a, std::shared_ptr<Etat::Creature> b) {
+        return a->GetForce() > b->GetForce();
+    }
 
 
 namespace IA {
@@ -102,29 +106,29 @@ namespace IA {
                         cost = std::static_pointer_cast<Etat::Carte>(obj)->GetCost();
                     
                     int b=0,u=0,g=0,i=0;
-                    for (int j = 0 ; j < TerrainsJoueur ; j++)
-                        if (TerrainsJoueur[j]->GetName()=="Marais" && b<cost->GetBlack() && !TerrainsJoueur[j]->GetIsTap())
+                    for (int j = 0 ; j < TerrainsJoueur.size() ; j++)
+                        if (TerrainsJoueur[j]->GetName()=="Marais" && b<cost.GetBlack() && !TerrainsJoueur[j]->GetIsTap())
                         {
                             engine->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(TerrainsJoueur[i]->GetAbility()[0],TerrainsJoueur[i],nullptr)));
                             engine->AddCommand(Past);engine->AddCommand(Past);
                             b++;
                         }
-                    for (int j = 0 ; j < TerrainsJoueur ; j++)
-                        if (TerrainsJoueur[j]->GetName()=="Ile" && u<cost->GetBlue() && !TerrainsJoueur[j]->GetIsTap())
+                    for (int j = 0 ; j < TerrainsJoueur.size() ; j++)
+                        if (TerrainsJoueur[j]->GetName()=="Ile" && u<cost.GetBlue() && !TerrainsJoueur[j]->GetIsTap())
                         {
                             engine->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(TerrainsJoueur[i]->GetAbility()[0],TerrainsJoueur[i],nullptr)));
                             engine->AddCommand(Past);engine->AddCommand(Past);
                             u++;
                         }
-                    for (int j = 0 ; j < TerrainsJoueur ; j++)
-                        if (TerrainsJoueur[j]->GetName()=="Foret" && g<cost->GetGreen() && !TerrainsJoueur[j]->GetIsTap())
+                    for (int j = 0 ; j < TerrainsJoueur.size() ; j++)
+                        if (TerrainsJoueur[j]->GetName()=="Foret" && g<cost.GetGreen() && !TerrainsJoueur[j]->GetIsTap())
                         {
                             engine->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(TerrainsJoueur[i]->GetAbility()[0],TerrainsJoueur[i],nullptr)));
                             engine->AddCommand(Past);engine->AddCommand(Past);
                             g++;
                         }
-                    for (int j = 0 ; j < TerrainsJoueur ; j++)
-                        if (i<cost->GetInc() && !TerrainsJoueur[j]->GetIsTap()) 
+                    for (int j = 0 ; j < TerrainsJoueur.size() ; j++)
+                        if (i<cost.GetInc() && !TerrainsJoueur[j]->GetIsTap()) 
                         {
                             engine->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(TerrainsJoueur[i]->GetAbility()[0],TerrainsJoueur[i],nullptr)));
                             engine->AddCommand(Past);engine->AddCommand(Past);
@@ -165,8 +169,8 @@ namespace IA {
         }
     }
 
-    std::vector<std::shared_ptr<Engine::Command> > IA_heuristique::GetListCommand() {
-        std::vector<std::shared_ptr<Engine::Command> > sortie;
+    std::vector<std::shared_ptr<Engine::CastCommand> > IA_heuristique::GetListCommand() {
+        std::vector<std::shared_ptr<Engine::CastCommand> > sortie;
 
         return sortie;
     }
@@ -314,11 +318,6 @@ namespace IA {
 
         return bloqueur;
     }
-
-    bool IA_heuristique::InvCompareCreaAtt(std::shared_ptr<Etat::Creature> a, std::shared_ptr<Etat::Creature> b) {
-        return a->GetForce() > b->GetForce();
-    }
-
 }
 
 

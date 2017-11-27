@@ -10,6 +10,8 @@ namespace Engine
         obj = o;
         src = s;
         target = t; // est ce que c'est vraiment utile ?
+        
+        obj->SetTarget(std::weak_ptr<Etat::Objet>(target));
     }
     
     void CastCommand::Execute(std::shared_ptr<Etat::State> state)

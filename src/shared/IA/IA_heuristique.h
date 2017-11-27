@@ -6,6 +6,8 @@
 
 #include <Etat/State.h>
 #include <Engine/Moteur.h>
+#include <Engine/CastCommand.h>
+#include <Engine/Command.h>
 
 namespace IA {
 
@@ -20,12 +22,10 @@ namespace IA {
   public:
     IA_heuristique (std::shared_ptr<Etat::State> state, std::shared_ptr<Engine::Moteur> moteur);
     void Think();
-    std::vector<std::shared_ptr<Engine::Command> > GetListCommand(); // eventuellement mettre un std::shared_ptr<Etat::State> en param pour plus tard...
+    std::vector<std::shared_ptr<Engine::CastCommand> > GetListCommand(); // eventuellement mettre un std::shared_ptr<Etat::State> en param pour plus tard...
     int EvalCmd(std::shared_ptr<Engine::Command> cmd);
     std::shared_ptr<Engine::Command> PhaseAttaque();
-    std::shared_ptr<Engine::Command> PhaseBloqueur();
-    bool InvCompareCreaAtt(std::shared_ptr<Etat::Creature> a,std::shared_ptr<Etat::Creature> b);
-    
+    std::shared_ptr<Engine::Command> PhaseBloqueur();    
     // Setters and Getters
   };
 
