@@ -25,8 +25,7 @@ namespace IA {
     std::vector<std::shared_ptr<Engine::CastCommand> > GetListCommand(); // eventuellement mettre un std::shared_ptr<Etat::State> en param pour plus tard...
     int EvalCmd(std::shared_ptr<Engine::Command> cmd);
     std::shared_ptr<Engine::Command> PhaseAttaque();
-    std::shared_ptr<Engine::Command> PhaseBloqueur();
-    
+    std::shared_ptr<Engine::Command> PhaseBloqueur();    
     // Setters and Getters
   };
 

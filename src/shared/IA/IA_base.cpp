@@ -158,62 +158,6 @@ namespace IA {
                 engine->AddCommand(Past);
                 std::cout<<"on passe"<<std::endl;
             }
-            
-        /*   
-        switch (currentState->GetPhase()) {
-            case 0:
-            {
-                for (i = 0; i < MainJoueur.size(); i++)
-                {
-                    if (MainJoueur[i]->GetIsLand())
-                    {
-                        std::shared_ptr<Engine::CastCommand> Cast(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr)));
-                        engine->AddCommand(Cast);
-                        std::cout<<"on tente de poser un terrain"<<std::endl;                        
-                        break;
-                    }
-                }
-                break;
-            }
-
-            case 1:
-            {
-                std::shared_ptr<Engine::AttackCommand> attaque(new Engine::AttackCommand());
-                std::vector<std::shared_ptr<Etat::Creature> > attaquant;
-                for (i = 0; i < CreaturesJoueur.size(); i++) 
-                {
-                    attaque->AddAttaquant(CreaturesJoueur[i]);
-                    attaquant.push_back(CreaturesJoueur[i]);
-                }
-                engine->AddCommand(attaque);
-                
-                std::shared_ptr<Engine::BlockCommand> bloque(new Engine::BlockCommand(attaquant));
-                engine->AddCommand(bloque);
-                break;
-            }
-
-            case 4:
-            {
-                for (i = 0; i < TerrainsJoueur.size(); i++) {
-                    std::shared_ptr<Engine::CastCommand> TapLand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(TerrainsJoueur[i]->GetAbility()[0], TerrainsJoueur[i], nullptr)));
-                    engine->AddCommand(TapLand);
-                    std::cout<<"on tente de tap un terrain"<<std::endl;
-                }
-
-                if (!NonLandMainJoueur.empty()) {
-                    int num = std::rand()%(NonLandMainJoueur.size());
-                    std::shared_ptr<Engine::CastCommand> Cast(new Engine::CastCommand(NonLandMainJoueur[num], nullptr, nullptr));
-                    engine->AddCommand(Cast);
-                    std::cout<<"on tente de cast un truc"<<std::endl;
-                }        
-                break;
-            }
-            default:
-            {
-                engine->AddCommand(Past);
-                break;
-            }
-        }*/
         }
         else
         {

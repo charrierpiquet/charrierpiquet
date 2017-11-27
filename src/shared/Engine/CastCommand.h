@@ -32,6 +32,7 @@ namespace Engine {
   public:
     CastCommand (std::shared_ptr<Etat::Objet> o, std::shared_ptr<Etat::Carte> s, std::shared_ptr<Etat::Objet> t);
     void Execute (std::shared_ptr<Etat::State> state);
+    std::shared_ptr<Etat::Objet> GetObj ();
     // Setters and Getters
   };
 

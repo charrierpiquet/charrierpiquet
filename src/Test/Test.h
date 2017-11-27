@@ -5,5 +5,6 @@
 #include "Test/TestEngine.h"
 #include "Test/TestRender.h"
 #include "Test/TestIARandom.h"
+#include "Test/TestIAHeuristique.h"
 
 #endif
