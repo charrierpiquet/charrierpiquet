@@ -55,6 +55,10 @@ int main(int argc,char* argv[])
         {
             TestIARandom();
         }
+        else if ((string)argv[1] == "heuristic_ai")
+        {
+            TestIAHeuristique();
+        }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
                
