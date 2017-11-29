@@ -99,31 +99,31 @@ namespace IA {
         }
     }
 
-    std::vector<std::shared_ptr<Engine::CastCommand> > IA_heuristique::GetListCommand() {
+    std::vector<std::shared_ptr<Engine::CastCommand> > IA_heuristique::GetListCommand(std::shared_ptr<Etat::State> etatObserve) {
         unsigned int i = 0;
         unsigned int j = 0;
         unsigned int n = 0;
         std::vector<std::shared_ptr<Engine::CastCommand> > ListeCommandes;
-        std::vector<std::shared_ptr<Etat::Carte> > MainJoueur = currentState->GetJoueurs()[currentState->GetPriority()]->GetHand();
+        std::vector<std::shared_ptr<Etat::Carte> > MainJoueur = etatObserve->GetJoueurs()[etatObserve->GetPriority()]->GetHand();
         std::vector<std::shared_ptr<Etat::Carte> > BoardJoueur;
         std::vector<std::shared_ptr<Etat::Objet> > Cibles;
 
         std::cout << "\trecherche des cibles potentielles ..." << std::endl;
-        for (i = 0; i < currentState->GetBattlefield().size(); i++)
-            Cibles.push_back(std::static_pointer_cast<Etat::Objet>(currentState->GetBattlefield()[i]));
+        for (i = 0; i < etatObserve->GetBattlefield().size(); i++)
+            Cibles.push_back(std::static_pointer_cast<Etat::Objet>(etatObserve->GetBattlefield()[i]));
 
-        for (j = 0; j < currentState->GetPile().size(); j++)
-            Cibles.push_back(currentState->GetPile()[j]);
+        for (j = 0; j < etatObserve->GetPile().size(); j++)
+            Cibles.push_back(etatObserve->GetPile()[j]);
 
         std::cout << "\trecherche des cartes possede ..." << std::endl;
-        for (n = 0; n < currentState->GetBattlefield().size(); n++)
-            if ((currentState->GetBattlefield()[n]->GetIndJoueur() == currentState->GetPriority())&&(!currentState->GetBattlefield()[n]->GetIsLand()))
-                BoardJoueur.push_back(currentState->GetBattlefield()[n]);
+        for (n = 0; n < etatObserve->GetBattlefield().size(); n++)
+            if ((etatObserve->GetBattlefield()[n]->GetIndJoueur() == etatObserve->GetPriority())&&(!etatObserve->GetBattlefield()[n]->GetIsLand()))
+                BoardJoueur.push_back(etatObserve->GetBattlefield()[n]);
 
         std::cout << "\tgeneration de la liste des commande ..." << std::endl;
         for (i = 0; i < MainJoueur.size(); i++) {
-            if (((currentState->GetPriority() == currentState->GetJoueurTour()) && ((currentState->GetPhaseName() == "Pre-Combat Main") || (currentState->GetPhaseName() == "Post-Combat Main")))&&((MainJoueur[i]->GetIsPermanent()) && currentState->GetPile().empty())) {
-                if ((MainJoueur[i]->GetIsLand()&&!(currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetAJoueTerrain())) || (!MainJoueur[i]->GetIsLand())) {
+            if (((etatObserve->GetPriority() == etatObserve->GetJoueurTour()) && ((etatObserve->GetPhaseName() == "Pre-Combat Main") || (etatObserve->GetPhaseName() == "Post-Combat Main")))&&((MainJoueur[i]->GetIsPermanent()) && etatObserve->GetPile().empty())) {
+                if ((MainJoueur[i]->GetIsLand()&&!(etatObserve->GetJoueurs()[etatObserve->GetJoueurTour()]->GetAJoueTerrain())) || (!MainJoueur[i]->GetIsLand())) {
                     ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr))));
                 }
             } else if (!MainJoueur[i]->GetIsPermanent()) {
