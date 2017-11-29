@@ -153,9 +153,9 @@ namespace IA {
         return ListeCommandes;
     }
 
-    int IA_heuristique::EvalCmd(std::shared_ptr<Engine::Command> cmd) {
+    int IA_heuristique::EvalCmd(std::shared_ptr<Engine::Command> cmd, std::shared_ptr<Etat::State> tampon) {
         // on copie l'etat;
-        std::shared_ptr<Etat::State> tampon = currentState->Clone();
+        //std::shared_ptr<Etat::State> tampon = currentState->Clone();
         std::shared_ptr<Engine::Moteur> m = std::shared_ptr<Engine::Moteur>(new Engine::Moteur(tampon));
         int joueur = currentState->GetPriority();
 
@@ -276,7 +276,7 @@ namespace IA {
     std::shared_ptr<Engine::Command> IA_heuristique::PhaseBloqueur() {
         // bloquage extremement simplifie
         // theoriquement, on pourrait aussi bloquer avec une creature "inutile",
-        // bloque avec plusieurs creature sur une même creature, chercher a tuer a tout prix etc.
+        // bloquer avec plusieurs creature sur une même creature, chercher a tuer a tout prix etc.
 
         std::shared_ptr<Engine::BlockCommand> bloqueur(new Engine::BlockCommand());
         int jDef = 1 - currentState->GetJoueurTour();
@@ -307,16 +307,18 @@ namespace IA {
             if ((currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetJoueurTour()) && (currentState->GetBattlefield()[i]->GetIsLand()))
                 TerrainsJoueur.push_back(currentState->GetBattlefield()[i]);
         std::shared_ptr<Engine::LetPriorityCommand> Past(std::shared_ptr<Engine::LetPriorityCommand>(new Engine::LetPriorityCommand()));
+        std::shared_ptr<Etat::State> clone = currentState->Clone();
 
         std::cout << "on reflechis ..." << std::endl;
         std::vector<int> list_val_cmd;
-        std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd = GetListCommand();
+        std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd_state = GetListCommand(currentState);
+        std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd_clone = GetListCommand(clone);
         std::cout << "\tliste commande trouve ... " << std::endl;
-        if (!list_cmd.empty()) {
-            int indmax = 0, max = EvalCmd(list_cmd[0]);
+        if (!list_cmd_clone.empty()) {
+            int indmax = 0, max = EvalCmd(list_cmd_clone[0],clone);
             list_val_cmd.push_back(max);
-            for (unsigned int i = 1; i < list_cmd.size(); i++) {
-                list_val_cmd.push_back(EvalCmd(list_cmd[i]));
+            for (unsigned int i = 1; i < list_cmd_clone.size(); i++) {
+                list_val_cmd.push_back(EvalCmd(list_cmd_clone[i],clone));
                 if (list_val_cmd[i] > max) {
                     max = list_val_cmd[i];
                     indmax = i;
@@ -324,7 +326,7 @@ namespace IA {
             }
             if (max > EvalCmd(Past)) {
                 // on depense le mana (on admet que ça passe pas par la pile)
-                auto obj = list_cmd[indmax]->GetObj();
+                auto obj = list_cmd_state[indmax]->GetObj();
                 Etat::Cout cost;
                 if (obj->GetIsCapacite()) {
                     if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 2)
@@ -365,7 +367,7 @@ namespace IA {
             std::cout << "\tliste commande evalue ... " << std::endl;
             if (max > EvalCmd(Past)) {
                 // on depense le mana (on admet que ça passe pas par la pile)
-                auto obj = list_cmd[indmax]->GetObj();
+                auto obj = list_cmd_state[indmax]->GetObj();
                 Etat::Cout cost;
                 if (obj->GetIsCapacite()) {
                     if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 2)
@@ -404,7 +406,7 @@ namespace IA {
                     }
                 engine->Update();
 
-                engine->AddCommand(list_cmd[indmax]);
+                engine->AddCommand(list_cmd_state[indmax]);
                 std::cout << " lancement de la commande " << indmax << " de valeur " << max << std::endl;
             } else {
                 engine->AddCommand(Past);
