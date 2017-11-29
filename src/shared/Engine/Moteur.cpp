@@ -25,6 +25,7 @@ namespace Engine
         //    std::static_pointer_cast<Command>(it->second)->Execute(currentState);
         //    it++;
         //}
+        etatsPreced.push_back(currentState->Clone());
         if (!commands.empty())
             for (int i = 0 ; i < (int)commands.size() ; i++ )
             {
@@ -34,6 +35,11 @@ namespace Engine
             }    
         commands.clear();
    
+    }
+    void Moteur::RollBack()
+    {
+        currentState=etatsPreced[etatsPreced.size()-1]->Clone();
+        etatsPreced.pop_back();
     }
     
 }

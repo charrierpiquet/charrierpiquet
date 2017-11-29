@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace Engine {
-
+    
     void LetPriorityCommand::Execute(std::shared_ptr<Etat::State> state) {
         // si c'est le joueur dont c'est pas le tour qui passe
         if (state->GetJoueurTour() != state->GetPriority()) {
