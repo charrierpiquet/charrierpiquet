@@ -6,8 +6,8 @@
 namespace Render {
     
     Rendu::Rendu (std::shared_ptr<Etat::State> etat, int x, int y, int j):
-        cimetiere2("Cimetiere 2", true,0,0,x/6,y/3),
         cimetiere1("Cimetiere 1", true,0,2*y/3,x/6,y/3),
+        cimetiere2("Cimetiere 2", true,0,0,x/6,y/3),
         bf21("Terrain 2", false,x/4,0,x/2,y/6),
         bf22("Creatures 2", false, x/4,y/6,x/2,y/6), 
         stack("Pile", false, x/4,2*y/6,x/2,y/6), 

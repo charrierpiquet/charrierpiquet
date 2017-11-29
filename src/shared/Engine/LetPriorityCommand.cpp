@@ -22,7 +22,7 @@ namespace Engine {
                         //si c'est un sort on resout ses capa
                     else {
                         state->GetJoueurs()[state->GetPile()[state->GetPile().size() - 1]->GetIndJoueur()]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
-                        for (int i = 0; i < (int) std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size(); i++)
+                        for (unsigned int i = 0; i < std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size(); i++)
                             Resolve(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility()[i]->GetKeyWord(), state);
                     }
                 } else {
@@ -38,7 +38,7 @@ namespace Engine {
             state->IncrPriority();
 
         // on kill les creatures qui ont 0 d'endurance
-        for (int i = 0; i < (int) state->GetBattlefield().size(); i++)
+        for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
             if (state->GetBattlefield()[i]->GetIsCreature())
                 if (std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetEndurance() <= 0) {
                     if (!std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetIsToken())
@@ -78,7 +78,7 @@ namespace Engine {
             state->GetJoueurs()[1 - state->GetPile()[state->GetPile().size() - 1]->GetIndJoueur()]->Discard();
         else if (keyword.compare("Contresort") == 0) {
             std::weak_ptr<Etat::Objet> Cible(state->GetPile()[state->GetPile().size() - 1]->GetTarget());
-            int i;
+            unsigned int i;
             for (i = 0; i < state->GetPile().size() - 1; i++)
                 if (state->GetPile()[i] == Cible.lock()) {
                     if (!Cible.lock()->GetIsCapacite())

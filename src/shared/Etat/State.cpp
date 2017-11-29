@@ -20,7 +20,7 @@ namespace Etat
         phase ++;
         
         //vider la mana pool
-        for(int i = 0; i < nbJoueur ; i++)
+        for ( int i = 0; i < nbJoueur ; i++)
             joueurs[i]->GetManaPool()->Vider();
         
         if (phase > NbPhase)
@@ -154,24 +154,24 @@ namespace Etat
          
         // copier le champ de batailles et la pile et les liste d'attaquant
         // voir si on a pas besoin de faire des tests (si jamais ça utilise carte.clone pour une crea)
-        for ( int i = 0 ; i < this->GetBattlefield().size() ; i++ )
+        for ( unsigned int i = 0 ; i < this->GetBattlefield().size() ; i++ )
             clone->AddCardBattlefield(this->GetBattlefield()[i]->Clone());
-        for ( int i = 0 ; i < this->GetPile().size() ; i++ )
+        for ( unsigned int i = 0 ; i < this->GetPile().size() ; i++ )
             clone->AddCardPile(this->GetPile()[i]->Clone());
-        for ( int i = 0 ; i < this->GetAttaquants().size() ; i++ )
+        for ( unsigned int i = 0 ; i < this->GetAttaquants().size() ; i++ )
             clone->AddListAttaquant(this->GetAttaquants()[i]->Clone());
         
         // copier les joueurs
-        for ( int i = 0 ; i < this->GetJoueurs().size() ; i++ )
+        for ( unsigned int i = 0 ; i < this->GetJoueurs().size() ; i++ )
         {
             clone->GetJoueurs()[i]->SetAJoueTerrain( this->GetJoueurs()[i]->GetAJoueTerrain());
             clone->GetJoueurs()[i]->SetPv( this->GetJoueurs()[i]->GetPv());
             // les 3 zones
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetGraveyard().size() ; j++ )
+            for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetGraveyard().size() ; j++ )
                 clone->GetJoueurs()[i]->AddCardGraveyard(this->GetJoueurs()[i]->GetGraveyard()[j]->Clone());
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetLibrary().size() ; j++ )
+            for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetLibrary().size() ; j++ )
                 clone->GetJoueurs()[i]->AddCardLibrary(this->GetJoueurs()[i]->GetLibrary()[j]->Clone());
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetHand().size() ; j++ )
+            for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetHand().size() ; j++ )
                 clone->GetJoueurs()[i]->AddCardHand(this->GetJoueurs()[i]->GetHand()[j]->Clone());
             // la manapool
             for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetBlack() ; j++ )
@@ -186,18 +186,18 @@ namespace Etat
                 clone->GetJoueurs()[i]->GetManaPool()->AddInc();
         }
         // gerer les cibles
-        for ( int i = 0 ; i < this->GetPile().size() ; i++ )
+        for ( unsigned int i = 0 ; i < this->GetPile().size() ; i++ )
             if (this->GetPile()[i]->GetTarget().lock().get() != nullptr)
             {
                 bool trouve = false;
-                for ( int j = 0 ; j < this->GetPile().size() ; j++ )
+                for ( unsigned int j = 0 ; j < this->GetPile().size() ; j++ )
                     if (this->GetPile()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
                     {
                         trouve = true;
                         clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(this->GetPile()[j]));
                     }
                 if (!trouve)
-                    for ( int j = 0 ; j < this->GetBattlefield().size() ; j++ )
+                    for ( unsigned int j = 0 ; j < this->GetBattlefield().size() ; j++ )
                         if (this->GetBattlefield()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
                         {
                             trouve = true;
