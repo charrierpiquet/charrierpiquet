@@ -22,8 +22,8 @@ namespace IA {
   public:
     IA_heuristique (std::shared_ptr<Etat::State> state, std::shared_ptr<Engine::Moteur> moteur);
     void Think();
-    int EvalCmd(std::shared_ptr<Engine::CastCommand> cmd);
-    std::vector<std::shared_ptr<Engine::CastCommand> > GetListCommand();
+    int EvalCmd(std::shared_ptr<Etat::State> tampon,std::shared_ptr<Engine::CastCommand> cmd);
+    std::vector<std::shared_ptr<Engine::CastCommand> > GetListCommand(std::shared_ptr<Etat::State> tampon);
     std::shared_ptr<Engine::Command> PhaseAttaque();
     std::shared_ptr<Engine::Command> PhaseBloqueur();
     void Penser();  
