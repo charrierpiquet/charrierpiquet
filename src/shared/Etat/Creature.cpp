@@ -61,7 +61,7 @@ namespace Etat
     std::shared_ptr<Creature> Creature::Clone()
     {
         std::vector<std::shared_ptr<Capacite> > capa;
-        for (int i = 0 ; i < this->GetAbility().size() ; i++ )
+        for (unsigned int i = 0 ; i < this->GetAbility().size() ; i++ )
             capa.push_back(this->GetAbility()[i]->Clone());
         
         std::shared_ptr<Creature> clone (new Creature(force, endurance,this->GetIsToken(),this->GetName(), this->GetCost(),capa, this->GetIdObj(), this->GetIndJoueur()));

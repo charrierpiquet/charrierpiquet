@@ -81,7 +81,7 @@ namespace Render
         texture.clear();
         if (!isVertical)
         {
-            for(unsigned int i=0 ; i < listeCartes.size(); i++)
+            for( int i=0 ; i < (int)listeCartes.size(); i++)
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {
                     sf::Texture tt;
@@ -115,7 +115,7 @@ namespace Render
         }
         else
         { 
-            for(unsigned int i=0 ; i < listeCartes.size(); i++) //Affichage du cimetière?
+            for( int i=0 ; i < (int)listeCartes.size(); i++) //Affichage du cimetière?
                 if (i >=  ind_dbt && i < ind_dbt + nb_elem)
                 {
                     std::shared_ptr<sf::Text> txt(new sf::Text());
@@ -137,7 +137,7 @@ namespace Render
         target.draw(nom);
         nom.setString(str);
         
-        for(unsigned int i = 0 ; i < spriteCarte.size() ; i ++)
+        for( int i = 0 ; i < (int)spriteCarte.size() ; i ++)
         {
             //std::cout<<i<<" "<<ind_dbt<<" "<<listeCartes.size()<<" "<<spriteCarte.size()<<std::endl;
             target.draw(*spriteCarte[i]);
@@ -219,7 +219,7 @@ namespace Render
     void Editeur::SetIndDbt(int value)
     {
         //std::cout<<"click"<<std::endl;   
-        if (listeCartes.size() < nb_elem)
+        if ((int)listeCartes.size() < nb_elem)
             ind_dbt = 0;
         else if (value < 0)
             ind_dbt = 0;
