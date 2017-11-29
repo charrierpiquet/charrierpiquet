@@ -96,5 +96,12 @@ namespace Engine
     {
         return obj;
     }
-    
+    std::shared_ptr<Etat::Carte> CastCommand::GetSrc()
+    {
+        return src;
+    }
+    std::shared_ptr<Etat::Objet> CastCommand::GetTarget()
+    {
+        return target;
+    }
 }

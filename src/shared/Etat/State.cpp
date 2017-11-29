@@ -194,14 +194,14 @@ namespace Etat
                     if (this->GetPile()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
                     {
                         trouve = true;
-                        clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(this->GetPile()[j]));
+                        clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(clone->GetPile()[j]));
                     }
                 if (!trouve)
                     for ( unsigned int j = 0 ; j < this->GetBattlefield().size() ; j++ )
                         if (this->GetBattlefield()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
                         {
                             trouve = true;
-                            clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(this->GetBattlefield()[j]));
+                            clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(clone->GetBattlefield()[j]));
                         }
             }
         

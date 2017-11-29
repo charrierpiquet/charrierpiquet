@@ -41,61 +41,48 @@ namespace IA {
                 NonLandMainJoueur.push_back(MainJoueur[i]);
 
         std::shared_ptr<Engine::LetPriorityCommand> Past(std::shared_ptr<Engine::LetPriorityCommand>(new Engine::LetPriorityCommand()));
-        if (currentState->GetPile().empty()) {
-            // si on est dans la pre-combat main phase
-            if (currentState->GetPhase() == 0) {
-                // si c'est joueur dont c'est le tour qui a la priorite
-                if (currentState->GetJoueurTour() == currentState->GetPriority()) {
-                    // si on peux jouer un terrain
-                    if (!currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetAJoueTerrain()) {
-                        bool passe = true;
-                        for (i = 0; i < MainJoueur.size(); i++)
-                            if (MainJoueur[i]->GetIsLand()) {
-                                std::shared_ptr<Engine::CastCommand> Cast(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr)));
-                                engine->AddCommand(Cast);
-                                std::cout << "on tente de poser un terrain" << std::endl;
-                                passe = false;
-                                break;
-                            }
-                        if (passe) {
-                            engine->AddCommand(Past);
-                            std::cout << "on passe" << std::endl;
+        // si on est dans la pre-combat main phase
+        if (currentState->GetPhase() == 0) {
+            // si c'est joueur dont c'est le tour qui a la priorite
+            if (currentState->GetJoueurTour() == currentState->GetPriority()) {
+                // si on peux jouer un terrain
+                if (!currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetAJoueTerrain()) {
+                    //std::cout<<"on est la"<<currentState->GetJoueurTour()<<" "<< currentState->GetPriority()<<" "<<currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetAJoueTerrain()<<std::endl;
+                    bool passe = true;
+                    for (i = 0; i < MainJoueur.size(); i++)
+                        if (MainJoueur[i]->GetIsLand()) {
+                            std::shared_ptr<Engine::CastCommand> Cast(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr)));
+                            engine->AddCommand(Cast);
+                            passe = false;
+                            break;
                         }
-                    } else {
+                    if (passe) {
                         engine->AddCommand(Past);
-                        std::cout << "on passe" << std::endl;
                     }
                 } else {
                     engine->AddCommand(Past);
-                    std::cout << "on passe" << std::endl;
                 }
-            }// si on est dans la post-combat main phase
-            else if (currentState->GetPhase() == 4) {
-                Penser();
-            }// si on est durant la phase de combat
-            else if (currentState->GetPhase() == 1) {
-                if (currentState->GetPriority() == currentState->GetJoueurTour()) {
-                    std::cout << "reflexion ... ";
-                    engine->AddCommand(PhaseAttaque());
-                    std::cout << "attaquant choisi !" << std::endl;
-                }
-                engine->AddCommand(Past);
-                std::cout << "on passe" << std::endl;
-            } else if (currentState->GetPhase() == 2) {
-                Penser();
-            } else if (currentState->GetPhase() == 3) {
-                std::cout << "reflexion ... ";
-                engine->AddCommand(PhaseBloqueur());
-                std::cout << "bloqueur choisi !" << std::endl;
-                engine->AddCommand(Past);
-                std::cout << "on passe" << std::endl;
             } else {
                 engine->AddCommand(Past);
-                std::cout << "on passe" << std::endl;
             }
+        }// si on est dans la post-combat main phase
+        else if (currentState->GetPhase() == 4) {
+            Penser();
+        }// si on est durant la phase de combat
+        else if (currentState->GetPhase() == 1) {
+            if (currentState->GetPriority() == currentState->GetJoueurTour()) {
+                engine->AddCommand(PhaseAttaque());
+            }
+            engine->AddCommand(Past);
+            engine->AddCommand(Past);
+        } else if (currentState->GetPhase() == 2) {
+            Penser();
+        } else if (currentState->GetPhase() == 3) {
+            engine->AddCommand(PhaseBloqueur());
+            engine->AddCommand(Past);
+            engine->AddCommand(Past);
         } else {
             engine->AddCommand(Past);
-            std::cout << "on passe" << std::endl;
         }
     }
 
@@ -108,62 +95,94 @@ namespace IA {
         std::vector<std::shared_ptr<Etat::Carte> > BoardJoueur;
         std::vector<std::shared_ptr<Etat::Objet> > Cibles;
 
-        std::cout << "\trecherche des cibles potentielles ..." << std::endl;
         for (i = 0; i < currentState->GetBattlefield().size(); i++)
             Cibles.push_back(std::static_pointer_cast<Etat::Objet>(currentState->GetBattlefield()[i]));
 
         for (j = 0; j < currentState->GetPile().size(); j++)
             Cibles.push_back(currentState->GetPile()[j]);
 
-        std::cout << "\trecherche des cartes possede ..." << std::endl;
         for (n = 0; n < currentState->GetBattlefield().size(); n++)
             if ((currentState->GetBattlefield()[n]->GetIndJoueur() == currentState->GetPriority())&&(!currentState->GetBattlefield()[n]->GetIsLand()))
                 BoardJoueur.push_back(currentState->GetBattlefield()[n]);
 
-        std::cout << "\tgeneration de la liste des commande ..." << std::endl;
         for (i = 0; i < MainJoueur.size(); i++) {
             if (((currentState->GetPriority() == currentState->GetJoueurTour()) && ((currentState->GetPhaseName() == "Pre-Combat Main") || (currentState->GetPhaseName() == "Post-Combat Main")))&&((MainJoueur[i]->GetIsPermanent()) && currentState->GetPile().empty())) {
                 if ((MainJoueur[i]->GetIsLand()&&!(currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetAJoueTerrain())) || (!MainJoueur[i]->GetIsLand())) {
                     ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr))));
                 }
-            } else if (!MainJoueur[i]->GetIsPermanent()) {
+            } else if (!MainJoueur[i]->GetIsPermanent())
                 for (unsigned int k = 0; k < MainJoueur[i]->GetAbility().size(); k++) {
-                    if (!MainJoueur[i]->GetAbility()[k]->GetNeedTarget()) {
+                    if (!MainJoueur[i]->GetAbility()[k]->GetNeedTarget())
                         ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr))));
-                    } else {
-                        for (j = 0; j < Cibles.size(); j++) {
+                    else
+                        for (j = 0; j < Cibles.size(); j++)
                             ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, Cibles[j]))));
-                        }
-                    }
+
                 }
-            }
         }
 
-        for (i = 0; i < BoardJoueur.size(); i++) {
+        for (i = 0; i < BoardJoueur.size(); i++)
             for (n = 0; n < BoardJoueur[i]->GetAbility().size(); n++) {
-                if (BoardJoueur[i]->GetAbility()[n]->GetNeedTarget()) {
-                    for (j = 0; j < Cibles.size(); j++) {
+                if (BoardJoueur[i]->GetAbility()[n]->GetNeedTarget())
+                    for (j = 0; j < Cibles.size(); j++)
                         ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(BoardJoueur[i]->GetAbility()[n], BoardJoueur[i], Cibles[j]))));
-                    }
-                } else {
+                else
                     ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(BoardJoueur[i]->GetAbility()[n], BoardJoueur[i], nullptr))));
-                }
             }
-        }
         return ListeCommandes;
     }
 
-    int IA_heuristique::EvalCmd(std::shared_ptr<Engine::Command> cmd, std::shared_ptr<Etat::State> tampon) {
+    int IA_heuristique::EvalCmd(std::shared_ptr<Engine::Command> cmd) {
         // on copie l'etat;
-        //std::shared_ptr<Etat::State> tampon = currentState->Clone();
-        std::shared_ptr<Engine::Moteur> m = std::shared_ptr<Engine::Moteur>(new Engine::Moteur(tampon));
-        int joueur = currentState->GetPriority();
-
+        std::shared_ptr<Etat::State> Tampon = currentState->Clone();
+        std::shared_ptr<Engine::Moteur> m = std::shared_ptr<Engine::Moteur>(new Engine::Moteur(Tampon));
+        int joueur = Tampon->GetPriority();
+        
         std::shared_ptr<Engine::LetPriorityCommand> passe(new Engine::LetPriorityCommand());
+        
+        /*
+        std::shared_ptr<Etat::Objet> obj = nullptr,trgt =nullptr;
+        std::shared_ptr<Etat::Carte> src = nullptr;
+        
+        std::shared_ptr<Engine::Command> cmdAlter = cmd;
+        //creation de la commande "alternative"
+        if (cmd != nullptr)
+            //si la commande est un cast-command
+            if (cmd != passe)
+            {
+                for (unsigned int i = 0 ; i < currentState->GetJoueurs()[currentState->GetPriority()]->GetHand().size() ; i++ )
+                    if (std::static_pointer_cast<Engine::CastCommand>(cmd)->GetObj() == currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i])
+                        obj = Tampon->GetJoueurs()[Tampon->GetPriority()]->GetHand()[i];
+                        
+                for (unsigned int i = 0 ; i < currentState->GetBattlefield().size() ; i++ )
+                {
+                    if (std::static_pointer_cast<Engine::CastCommand>(cmd)->GetObj() == currentState->GetBattlefield()[i])
+                        obj = Tampon->GetBattlefield()[i];
+                    if (std::static_pointer_cast<Engine::CastCommand>(cmd)->GetSrc() == currentState->GetBattlefield()[i])
+                        src = Tampon->GetBattlefield()[i];
+                    if (std::static_pointer_cast<Engine::CastCommand>(cmd)->GetTarget() == currentState->GetBattlefield()[i])
+                        trgt = Tampon->GetBattlefield()[i];
+                }
+                        
+                for (unsigned int i = 0 ; i < currentState->GetPile().size() ; i++ )
+                {
+                    if (std::static_pointer_cast<Engine::CastCommand>(cmd)->GetObj() == currentState->GetPile()[i])
+                        obj = Tampon->GetPile()[i];
+                    if (std::static_pointer_cast<Engine::CastCommand>(cmd)->GetTarget() == currentState->GetPile()[i])
+                        trgt = Tampon->GetPile()[i];
+                }
+            }
+        if(obj != nullptr)
+        {
+            cmdAlter = std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(obj,src,trgt));
+        }
+        else 
+            cmdAlter = cmd;
+        */
         // on engage tout nos terrains
-        for (unsigned int i = 0; i < tampon->GetBattlefield().size(); i++)
-            if (tampon->GetBattlefield()[i]->GetIsLand()) {
-                m->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(tampon->GetBattlefield()[i]->GetAbility()[0], tampon->GetBattlefield()[i], nullptr)));
+        for (unsigned int i = 0; i < Tampon->GetBattlefield().size(); i++)
+            if (Tampon->GetBattlefield()[i]->GetIsLand()) {
+                m->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(Tampon->GetBattlefield()[i]->GetAbility()[0], Tampon->GetBattlefield()[i], nullptr)));
                 m->Update();
             }
 
@@ -171,59 +190,58 @@ namespace IA {
         m->AddCommand(cmd);
         m->Update();
         // on déroule jusqu'a ce que la pile soit vide pour pouvoir "noter" l'etat;
-        while (!tampon->GetPile().empty()) {
+        while (!Tampon->GetPile().empty()) {
             m->AddCommand(passe);
             m->Update();
         }
 
         // on evalue l'etat
         int nb_crea = 0, offense = 0, defense = 0, carte_main = 0, nb_land = 0, nb_pv = 0, nb_autre = 0;
-        for (unsigned int i = 0; i < tampon->GetBattlefield().size(); i++) {
-            if (tampon->GetBattlefield()[i]->GetIsCreature()) {
+        for (unsigned int i = 0; i < Tampon->GetBattlefield().size(); i++) {
+            if (Tampon->GetBattlefield()[i]->GetIsCreature()) {
                 // si c'est toi qui est en train de regarder
                 // on ne prend en compte que les creatures degages
-                if (std::static_pointer_cast<Etat::Creature>(tampon->GetBattlefield()[i])->GetIsTap()) {
-                    if (tampon->GetBattlefield()[i]->GetIndJoueur() == joueur) {
+                if (std::static_pointer_cast<Etat::Creature>(Tampon->GetBattlefield()[i])->GetIsTap()) {
+                    if (Tampon->GetBattlefield()[i]->GetIndJoueur() == joueur) {
                         nb_crea++;
-                        offense += std::static_pointer_cast<Etat::Creature>(tampon->GetBattlefield()[i])->GetForce();
-                        defense += std::static_pointer_cast<Etat::Creature>(tampon->GetBattlefield()[i])->GetEndurance();
+                        offense += std::static_pointer_cast<Etat::Creature>(Tampon->GetBattlefield()[i])->GetForce();
+                        defense += std::static_pointer_cast<Etat::Creature>(Tampon->GetBattlefield()[i])->GetEndurance();
                         //} else {
                         //    nb_crea--;
-                        //    offense -= std::static_pointer_cast<Etat::Creature>(tampon->GetBattlefield()[i])->GetEndurance();
-                        //    defense -= std::static_pointer_cast<Etat::Creature>(tampon->GetBattlefield()[i])->GetForce();
+                        //    offense -= std::static_pointer_cast<Etat::Creature>(Tampon->GetBattlefield()[i])->GetEndurance();
+                        //    defense -= std::static_pointer_cast<Etat::Creature>(Tampon->GetBattlefield()[i])->GetForce();
                     }
                 } else {
-                    if (tampon->GetBattlefield()[i]->GetIndJoueur() == joueur)
+                    if (Tampon->GetBattlefield()[i]->GetIndJoueur() == joueur)
                         nb_autre++;
                     //else
                     //    nb_autre--;
                 }
-            } else if (tampon->GetBattlefield()[i]->GetIsLand()) {
-                if (tampon->GetBattlefield()[i]->GetIndJoueur() == joueur)
+            } else if (Tampon->GetBattlefield()[i]->GetIsLand()) {
+                if (Tampon->GetBattlefield()[i]->GetIndJoueur() == joueur)
                     nb_land++;
                 //else
                 //    nb_land--;
             }
         }
-        carte_main = tampon->GetJoueurs()[joueur]->GetHand().size(); // - tampon->GetJoueurs()[1 - joueur]->GetHand().size();
-        nb_pv = tampon->GetJoueurs()[joueur]->GetPv(); // - tampon->GetJoueurs()[1 - joueur]->GetPv();
+        carte_main = Tampon->GetJoueurs()[joueur]->GetHand().size(); // - Tampon->GetJoueurs()[1 - joueur]->GetHand().size();
+        nb_pv = Tampon->GetJoueurs()[joueur]->GetPv(); // - Tampon->GetJoueurs()[1 - joueur]->GetPv();
         //prise en compte des manapool pour la qtt de terrain
-        nb_land += tampon->GetJoueurs()[joueur]->GetManaPool()->GetBlack();
-        nb_land += tampon->GetJoueurs()[joueur]->GetManaPool()->GetBlue();
-        nb_land += tampon->GetJoueurs()[joueur]->GetManaPool()->GetGreen();
-        nb_land += tampon->GetJoueurs()[joueur]->GetManaPool()->GetMulti();
-        nb_land += tampon->GetJoueurs()[joueur]->GetManaPool()->GetInc();
+        nb_land += Tampon->GetJoueurs()[joueur]->GetManaPool()->GetBlack();
+        nb_land += Tampon->GetJoueurs()[joueur]->GetManaPool()->GetBlue();
+        nb_land += Tampon->GetJoueurs()[joueur]->GetManaPool()->GetGreen();
+        nb_land += Tampon->GetJoueurs()[joueur]->GetManaPool()->GetMulti();
+        nb_land += Tampon->GetJoueurs()[joueur]->GetManaPool()->GetInc();
 
-        //nb_land -= tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetBlack();
-        //nb_land -= tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetBlue();
-        //nb_land -= tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetGreen();
-        //nb_land -= tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetMulti();
-        //nb_land -= tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetInc();
-
-
+        //nb_land -= Tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetBlack();
+        //nb_land -= Tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetBlue();
+        //nb_land -= Tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetGreen();
+        //nb_land -= Tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetMulti();
+        //nb_land -= Tampon->GetJoueurs()[1 - joueur]->GetManaPool()->GetInc();
+        
         int k1 = 5, k2 = 3, k3 = 3, k4 = 1, k5 = 1, k6 = 1, k7 = 3; // voir pour changer les coefficients plus tard
         int score = nb_crea * k1 + offense * k2 + defense * k3 + carte_main * k4 + nb_land * k5 + nb_pv * k6 + nb_autre*k7;
-        std::cout << "\t\t nbCrea " << nb_crea << " offensif " << offense << " defensif " << defense << " mana " << nb_land << " pv " << nb_pv << " main " << carte_main << " permanent " << nb_autre << std::endl;
+        //std::cout << "\t\t nbCrea " << nb_crea << " offensif " << offense << " defensif " << defense << " mana " << nb_land << " pv " << nb_pv << " main " << carte_main << " permanent " << nb_autre << std::endl;
         return score;
     }
 
@@ -302,31 +320,33 @@ namespace IA {
     }
 
     void IA_heuristique::Penser() {
-        std::vector<std::shared_ptr<Etat::Carte> > TerrainsJoueur;
-        for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++) //Récupération des listes de créatures et terrians controlés par le joueur
-            if ((currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetJoueurTour()) && (currentState->GetBattlefield()[i]->GetIsLand()))
-                TerrainsJoueur.push_back(currentState->GetBattlefield()[i]);
         std::shared_ptr<Engine::LetPriorityCommand> Past(std::shared_ptr<Engine::LetPriorityCommand>(new Engine::LetPriorityCommand()));
-        std::shared_ptr<Etat::State> clone = currentState->Clone();
+        int passer = EvalCmd(Past);
 
-        std::cout << "on reflechis ..." << std::endl;
+
         std::vector<int> list_val_cmd;
-        std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd_state = GetListCommand(currentState);
-        std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd_clone = GetListCommand(clone);
-        std::cout << "\tliste commande trouve ... " << std::endl;
-        if (!list_cmd_clone.empty()) {
-            int indmax = 0, max = EvalCmd(list_cmd_clone[0],clone);
+        std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd = GetListCommand();
+
+        if (!list_cmd.empty()) {
+            
+            int indmax = 0, max = EvalCmd(list_cmd[0]);
             list_val_cmd.push_back(max);
-            for (unsigned int i = 1; i < list_cmd_clone.size(); i++) {
-                list_val_cmd.push_back(EvalCmd(list_cmd_clone[i],clone));
+            for (unsigned int i = 1; i < list_cmd.size(); i++) {
+                list_val_cmd.push_back(EvalCmd(list_cmd[i]));
                 if (list_val_cmd[i] > max) {
                     max = list_val_cmd[i];
                     indmax = i;
                 }
             }
-            if (max > EvalCmd(Past)) {
+            
+            std::vector<std::shared_ptr<Etat::Carte> > TerrainsJoueur;
+            for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++) //Récupération des listes de terrians controlés par le joueur
+                if ((currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetJoueurTour()) && (currentState->GetBattlefield()[i]->GetIsLand()))
+                    TerrainsJoueur.push_back(currentState->GetBattlefield()[i]);
+            
+            if (max > passer) {
                 // on depense le mana (on admet que ça passe pas par la pile)
-                auto obj = list_cmd_state[indmax]->GetObj();
+                auto obj = list_cmd[indmax]->GetObj();
                 Etat::Cout cost;
                 if (obj->GetIsCapacite()) {
                     if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 2)
@@ -364,10 +384,9 @@ namespace IA {
                         i++;
                     }
             }
-            std::cout << "\tliste commande evalue ... " << std::endl;
-            if (max > EvalCmd(Past)) {
+            if (max > passer) {
                 // on depense le mana (on admet que ça passe pas par la pile)
-                auto obj = list_cmd_state[indmax]->GetObj();
+                auto obj = list_cmd[indmax]->GetObj();
                 Etat::Cout cost;
                 if (obj->GetIsCapacite()) {
                     if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 2)
@@ -406,16 +425,11 @@ namespace IA {
                     }
                 engine->Update();
 
-                engine->AddCommand(list_cmd_state[indmax]);
-                std::cout << " lancement de la commande " << indmax << " de valeur " << max << std::endl;
-            } else {
+                engine->AddCommand(list_cmd[indmax]);
+            } else
                 engine->AddCommand(Past);
-                std::cout << " aucune commande utile : on passe" << std::endl;
-            }
-        } else {
+        } else
             engine->AddCommand(Past);
-            std::cout << " aucune commande disponible : on passe" << std::endl;
-        }
     }
 }
 
