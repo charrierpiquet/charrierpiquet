@@ -2,8 +2,8 @@
 #ifndef ETAT__ACTIVE__H
 #define ETAT__ACTIVE__H
 
-#include <string>
 #include <memory>
+#include <string>
 
 namespace Etat {
   class Cout;
@@ -20,11 +20,11 @@ namespace Etat {
     // Associations
     // Attributes
   private:
-    Cout cost;
+    std::shared_ptr<Cout> cost;
     // Operations
   public:
-    Active (Cout cout, std::string motclef, int id, int prop, std::string nom, bool target);
-    Cout GetCost () const;
+    Active (std::shared_ptr<Cout> cout, std::string motclef, int id, int prop, std::string nom, bool target);
+    std::shared_ptr<Cout> GetCost () const;
     std::shared_ptr<Active> Clone ();
     // Setters and Getters
   };

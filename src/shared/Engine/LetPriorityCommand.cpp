@@ -50,7 +50,7 @@ namespace Engine {
 
     void LetPriorityCommand::Resolve(std::string keyword, std::shared_ptr<Etat::State> state) {
         std::vector<std::shared_ptr<Etat::Capacite> > capaVide;
-        Etat::Cout coutVide;
+        std::shared_ptr<Etat::Cout> coutVide (new Etat::Cout());
         //std::cout<<keyword<<" "<<keyword.compare("blue")<<" "<<keyword.compare("green")<<std::endl;
         if (keyword.compare("multi") == 0)
             state->GetJoueurs()[state->GetPile()[state->GetPile().size() - 1]->GetIndJoueur()]->GetManaPool()->AddMulti();

@@ -24,35 +24,35 @@ namespace Test
         int identifiant = 0;
         // positionner un ours en face (eventuellement deux terrains pour dire qu'il avait le droit d'avoir un ours)
         std::shared_ptr<Etat::Cout> coutOurs (new Etat::Cout()); coutOurs->SetCost(1,0,0,1);
-        auto coutnull = new Etat::Cout(); coutnull->SetCost();
+        std::shared_ptr<Etat::Cout> coutnull (new Etat::Cout()); coutnull->SetCost();
         
-        std::shared_ptr<Etat::Creature> Ours1(new Etat::Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,1));
+        std::shared_ptr<Etat::Creature> Ours1(new Etat::Creature(2,2,false,"Ours",coutOurs,capa,identifiant++,1));
         Ours1->SetOracle("ours Adverse 2/2");
         state->AddCardBattlefield(Ours1);
         
-        std::shared_ptr<Etat::Creature> Ours2(new Etat::Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
+        std::shared_ptr<Etat::Creature> Ours2(new Etat::Creature(2,2,false,"Ours",coutOurs,capa,identifiant++,0));
         Ours2->SetOracle("ours Allie n1 2/2");
         Ours2->SetMalInvoc(false);
         state->AddCardBattlefield(Ours2);
         
-        std::shared_ptr<Etat::Creature> Ours3(new Etat::Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
+        std::shared_ptr<Etat::Creature> Ours3(new Etat::Creature(2,2,false,"Ours",coutOurs,capa,identifiant++,0));
         Ours3->SetOracle("ours Allie n2 2/2");
         Ours3->SetMalInvoc(false);
         state->AddCardBattlefield(Ours3);
         
         std::vector<std::shared_ptr<Etat::Capacite> > capa1;
-        capa1.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,"green",identifiant++,0,"green",false)));
-        std::shared_ptr<Etat::Carte> Foret1(new Etat::Carte(true,true,false,false,"Foret",*coutnull,capa1,identifiant++,0));
+        capa1.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(coutnull,"green",identifiant++,0,"green",false)));
+        std::shared_ptr<Etat::Carte> Foret1(new Etat::Carte(true,true,false,false,"Foret",coutnull,capa1,identifiant++,0));
         Foret1->SetOracle("T : add G to manapool");
         state->AddCardBattlefield(Foret1);
         
         std::vector<std::shared_ptr<Etat::Capacite> > capa2;
-        capa2.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*coutnull,"blue",identifiant++,0,"blue",false)));
-        std::shared_ptr<Etat::Carte> Ile1(new Etat::Carte(true,true,false,false,"Ile",*coutnull,capa2,identifiant++,0));
+        capa2.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(coutnull,"blue",identifiant++,0,"blue",false)));
+        std::shared_ptr<Etat::Carte> Ile1(new Etat::Carte(true,true,false,false,"Ile",coutnull,capa2,identifiant++,0));
         Ile1->SetOracle("T : add U to manapool");
         state->AddCardBattlefield(Ile1);
         
-        std::shared_ptr<Etat::Creature> Ours4(new Etat::Creature(2,2,false,"Ours",*coutOurs,capa,identifiant++,0));
+        std::shared_ptr<Etat::Creature> Ours4(new Etat::Creature(2,2,false,"Ours",coutOurs,capa,identifiant++,0));
         Ours4->SetOracle("ours en main");
         state->GetJoueurs()[0]->AddCardHand(Ours4);
         

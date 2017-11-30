@@ -3,7 +3,7 @@
 
 namespace Etat
 {
-    Creature::Creature(int strengh, int thougness,bool token,std::string nom, Cout cout,
+    Creature::Creature(int strengh, int thougness,bool token,std::string nom, std::shared_ptr<Cout> cout,
             std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):Carte(true,false,true,token, nom, cout, capa, id, prop)
     {
         force = strengh;

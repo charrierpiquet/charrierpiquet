@@ -116,9 +116,9 @@ namespace Engine
                     for(int i=0;i<k;i++)
                     {
                         std::getline(Card, Ability);
-                        auto CostAbility = new Etat::Cout();
+                        std::shared_ptr<Etat::Cout> CostAbility(new Etat::Cout());
                         CostAbility->SetCost(Ability[0]-'0',Ability[4]-'0',Ability[2]-'0',Ability[6]-'0');                  
-                        Capacites.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(*CostAbility,Ability.substr(20,Ability.size()-20),id++,Joueur,Ability.substr(20,Ability.size()-20),(bool)(int)(Ability[18]-'0'))));
+                        Capacites.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(CostAbility,Ability.substr(20,Ability.size()-20),id++,Joueur,Ability.substr(20,Ability.size()-20),(bool)(int)(Ability[18]-'0'))));
                     }
                 
                 std::shared_ptr<Etat::Cout> Cost(new Etat::Cout());
@@ -126,16 +126,16 @@ namespace Engine
                 if (std::strcmp(Type.data(), "creature")==0)
                 {
                     if (Joueur == 0)
-                        list_deck1.push_back(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,*Cost,Capacites,id++,Joueur)));
+                        list_deck1.push_back(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,Cost,Capacites,id++,Joueur)));
                     else
-                        list_deck2.push_back(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,*Cost,Capacites,id++,Joueur)));
+                        list_deck2.push_back(std::shared_ptr<Etat::Creature>(new Etat::Creature(f,e,false,Nom,Cost,Capacites,id++,Joueur)));
                 }
                 else
                 {
                     if (Joueur == 0)
-                        list_deck1.push_back(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
+                        list_deck1.push_back(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,Cost,Capacites,id++,Joueur)));
                     else 
-                        list_deck2.push_back(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,*Cost,Capacites,id++,Joueur)));
+                        list_deck2.push_back(std::shared_ptr<Etat::Carte>(new Etat::Carte(std::strcmp(Type.data(),"sort")!=0,std::strcmp(Type.data()	,"terrain")==0,std::strcmp(Type.data(),"creature")==0,0,Nom,Cost,Capacites,id++,Joueur)));
                 }
                 
                 Texte="";

@@ -3,8 +3,8 @@
 #define ETAT__CREATURE__H
 
 #include <string>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace Etat {
   class Cout;
@@ -29,7 +29,7 @@ namespace Etat {
     bool malInvoc;
     // Operations
   public:
-    Creature (int strengh, int thougness, bool token, std::string nom, Cout cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
+    Creature (int strengh, int thougness, bool token, std::string nom, std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
     int GetForce ();
     int GetEndurance ();
     bool GetMalInvoc ();

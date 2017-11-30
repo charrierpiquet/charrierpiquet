@@ -58,7 +58,7 @@ namespace Test
             
             std::cout<<"passage de phase Ok"<<std::endl;
             
-            Etat::Cout* cost = new Etat::Cout();
+            std::shared_ptr<Etat::Cout> cost (new Etat::Cout());
             cost->SetCost(-1,0,0,0,0,0,0,0,0);
             if (cost->GetInc() != 0)
                 return 8;
@@ -77,7 +77,7 @@ namespace Test
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->AddInc();
-            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->Payer(*cost);
+            state->GetJoueurs()[state->GetPriority()]->GetManaPool()->Payer(cost);
             if (state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetInc() != 1)
                 return 10;
             else
@@ -86,7 +86,7 @@ namespace Test
             
             std::string nom = "foret";
             std::vector<std::shared_ptr<Etat::Capacite> > capa;
-            std::shared_ptr<Etat::Carte> card (new Etat::Carte(true,true,false,false,nom,*cost,capa,1,0));
+            std::shared_ptr<Etat::Carte> card (new Etat::Carte(true,true,false,false,nom,cost,capa,1,0));
             state->AddCardBattlefield(card);
             if (state->GetBattlefield().size() != 1)
                 return 11;

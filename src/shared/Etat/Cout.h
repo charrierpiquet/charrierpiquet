@@ -20,6 +20,7 @@ namespace Etat {
     int exile;
     // Operations
   public:
+    Cout ();
     int GetDiscard () const;
     int GetLife () const;
     int GetPermanent () const;

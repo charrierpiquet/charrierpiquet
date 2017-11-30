@@ -1,9 +1,9 @@
 #include "Carte.h"
-
+#include "iostream"
 namespace Etat
 {
     Carte::Carte(bool permanent,bool land,bool creature,bool token,
-            std::string nom,Cout cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):
+            std::string nom,std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):
     Objet(false, id, prop, nom), cost(cout),ability(capa)
     {
         isPermanent = permanent;
@@ -16,7 +16,7 @@ namespace Etat
         
     }
     
-    Cout Carte::GetCost() const
+    std::shared_ptr<Cout> Carte::GetCost() const
     {
         return cost;
     }
@@ -72,11 +72,14 @@ namespace Etat
         std::vector<std::shared_ptr<Capacite> > capa;
         for (unsigned int i = 0 ; i < ability.size() ; i++ )
             capa.push_back(ability[i]->Clone());
-        
-        std::shared_ptr<Carte> clone (new Carte(isPermanent,isLand,isCreature,isToken,this->GetName(),cost, capa, this->GetIdObj(), this->GetIndJoueur()));
+        std::shared_ptr<Cout> new_cout(new Cout());
+        new_cout->SetCost(cost->GetInc(),cost->GetBlue(),cost->GetBlack(),cost->GetGreen(),0,cost->GetLife());
+        std::shared_ptr<Carte> clone (new Carte(isPermanent,isLand,isCreature,isToken,this->GetName(),new_cout, capa, this->GetIdObj(), this->GetIndJoueur()));
         clone->SetCounter(counters);
         clone->SetIsTap(isTap);
         clone->SetOracle(this->GetOracle());
+        //std::cout<<"\t cout de base : "<<cost->GetBlack()<<" "<<cost->GetBlue()<<" "<<cost->GetGreen()<<" "<<cost->GetInc()<<std::endl;
+        //std::cout<<"\t copie du cout : "<<clone->GetCost()->GetBlack()<<" "<<clone->GetCost()->GetBlue()<<" "<<clone->GetCost()->GetGreen()<<" "<<clone->GetCost()->GetInc()<<std::endl;
         return clone;
     }
 };

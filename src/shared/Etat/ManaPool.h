@@ -2,6 +2,7 @@
 #ifndef ETAT__MANAPOOL__H
 #define ETAT__MANAPOOL__H
 
+#include <memory>
 
 namespace Etat {
   class Cout;
@@ -28,7 +29,7 @@ namespace Etat {
     void AddGreen ();
     void AddMulti ();
     void Vider ();
-    bool Payer (Cout cost);
+    bool Payer (std::shared_ptr<Cout> cost);
     int GetInc () const;
     int GetBlue () const;
     int GetBlack () const;

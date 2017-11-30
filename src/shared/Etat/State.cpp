@@ -1,5 +1,7 @@
 #include "State.h"
 #include "Creature.h"
+#include "Active.h"
+#include "Declenchee.h"
 #include <cstddef>
 #include <iostream>
 #define NbPhase 4
@@ -66,6 +68,7 @@ namespace Etat
     void State::IncrPriority()
     {
         priorite = (priorite +1) %2;
+        //std::cout<<"j'arrive la"<<std::endl;
     }
     
     void State::AddCardBattlefield(std::shared_ptr<Carte> card)
@@ -149,15 +152,45 @@ namespace Etat
     {
         std::shared_ptr<State> clone = std::shared_ptr<State>(new State(nbJoueur));
         // mettre les phases au bon stade
-        while (clone->GetPhase() != this->GetPhase() && clone->GetJoueurTour() != this->GetJoueurTour() && clone->GetPriority() != this->GetPriority())
+        while (clone->GetPhase() != this->GetPhase() || clone->GetJoueurTour() != this->GetJoueurTour())
+            clone->IncrPhase();
+        while (clone->GetPriority() != this->GetPriority())
             clone->IncrPriority();
          
         // copier le champ de batailles et la pile et les liste d'attaquant
         // voir si on a pas besoin de faire des tests (si jamais ça utilise carte.clone pour une crea)
         for ( unsigned int i = 0 ; i < this->GetBattlefield().size() ; i++ )
-            clone->AddCardBattlefield(this->GetBattlefield()[i]->Clone());
+        {
+            if (this->GetBattlefield()[i]->GetIsCreature())
+                clone->AddCardBattlefield(std::static_pointer_cast<Etat::Creature>(this->GetBattlefield()[i])->Clone());
+            else
+                clone->AddCardBattlefield(this->GetBattlefield()[i]->Clone());
+        }
         for ( unsigned int i = 0 ; i < this->GetPile().size() ; i++ )
-            clone->AddCardPile(this->GetPile()[i]->Clone());
+        {
+            if (this->GetPile()[i]->GetIsCapacite())
+            {
+                switch (std::static_pointer_cast<Etat::Capacite>(this->GetPile()[i])->GetCategorie())
+                {
+                    case 0: // statique
+                        clone->AddCardPile(std::static_pointer_cast<Etat::Capacite>(this->GetPile()[i])->Clone());
+                        break;
+                    case 1: // active
+                        clone->AddCardPile(std::static_pointer_cast<Etat::Active>(this->GetPile()[i])->Clone());
+                        break;
+                    case 2: // declenche
+                        clone->AddCardPile(std::static_pointer_cast<Etat::Declenchee>(this->GetPile()[i])->Clone());
+                        break;
+                }
+            }
+            else
+            {
+                if (std::static_pointer_cast<Etat::Carte>(this->GetPile()[i])->GetIsCreature())
+                    clone->AddCardPile(std::static_pointer_cast<Etat::Creature>(this->GetPile()[i])->Clone());
+                else
+                    clone->AddCardPile(this->GetPile()[i]->Clone());
+            }
+        }
         for ( unsigned int i = 0 ; i < this->GetAttaquants().size() ; i++ )
             clone->AddListAttaquant(this->GetAttaquants()[i]->Clone());
         
@@ -168,11 +201,26 @@ namespace Etat
             clone->GetJoueurs()[i]->SetPv( this->GetJoueurs()[i]->GetPv());
             // les 3 zones
             for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetGraveyard().size() ; j++ )
-                clone->GetJoueurs()[i]->AddCardGraveyard(this->GetJoueurs()[i]->GetGraveyard()[j]->Clone());
+            {
+                if (this->GetJoueurs()[i]->GetGraveyard()[j]->GetIsCreature())
+                    clone->GetJoueurs()[i]->AddCardGraveyard(std::static_pointer_cast<Etat::Creature>(this->GetJoueurs()[i]->GetGraveyard()[j])->Clone());
+                else
+                    clone->GetJoueurs()[i]->AddCardGraveyard(this->GetJoueurs()[i]->GetGraveyard()[j]->Clone());
+            }
             for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetLibrary().size() ; j++ )
-                clone->GetJoueurs()[i]->AddCardLibrary(this->GetJoueurs()[i]->GetLibrary()[j]->Clone());
+            {
+                if(this->GetJoueurs()[i]->GetLibrary()[j]->GetIsCreature())
+                       clone->GetJoueurs()[i]->AddCardLibrary(std::static_pointer_cast<Etat::Creature>(this->GetJoueurs()[i]->GetLibrary()[j])->Clone()); 
+                else
+                        clone->GetJoueurs()[i]->AddCardLibrary(this->GetJoueurs()[i]->GetLibrary()[j]->Clone());
+            }
             for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetHand().size() ; j++ )
-                clone->GetJoueurs()[i]->AddCardHand(this->GetJoueurs()[i]->GetHand()[j]->Clone());
+            {
+                if (this->GetJoueurs()[i]->GetHand()[j]->GetIsCreature())
+                    clone->GetJoueurs()[i]->AddCardHand(std::static_pointer_cast<Etat::Creature>(this->GetJoueurs()[i]->GetHand()[j])->Clone());
+                else
+                    clone->GetJoueurs()[i]->AddCardHand(this->GetJoueurs()[i]->GetHand()[j]->Clone());
+            }
             // la manapool
             for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetBlack() ; j++ )
                 clone->GetJoueurs()[i]->GetManaPool()->AddBlack();
@@ -204,7 +252,13 @@ namespace Etat
                             clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(clone->GetBattlefield()[j]));
                         }
             }
-        
+        if (clone->GetAttaquants().size()!=this->GetAttaquants().size() || clone->GetBattlefield().size()!=this->GetBattlefield().size()
+                || clone->GetPile().size()!=this->GetPile().size() || clone->GetJoueurs()[0]->GetGraveyard().size() != this->GetJoueurs()[0]->GetGraveyard().size()
+                || clone->GetJoueurs()[0]->GetHand().size() != this->GetJoueurs()[0]->GetHand().size() || clone->GetJoueurs()[0]->GetLibrary().size() != this->GetJoueurs()[0]->GetLibrary().size()
+                || clone->GetJoueurs()[1]->GetGraveyard().size() != this->GetJoueurs()[1]->GetGraveyard().size()
+                || clone->GetJoueurs()[1]->GetHand().size() != this->GetJoueurs()[1]->GetHand().size() || clone->GetJoueurs()[1]->GetLibrary().size() != this->GetJoueurs()[1]->GetLibrary().size())
+            std::cout<<"probleme de copie"<<std::endl;
+   
         return clone;
     }
     
