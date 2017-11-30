@@ -79,7 +79,7 @@ namespace IA {
             }
             engine->AddCommand(Past);
             engine->AddCommand(Past);
-        } else if (currentState->GetPhase() == 2) {
+        } else if (currentState->GetPhase() == 2 ) {
             Penser();
         } else if (currentState->GetPhase() == 3) {
             engine->AddCommand(PhaseBloqueur());
@@ -88,6 +88,8 @@ namespace IA {
         } else {
             engine->AddCommand(Past);
         }
+        //engine->AddCommand(Past);
+        //engine->Update();
     }
 
     std::vector<std::shared_ptr<Engine::CastCommand> > IA_heuristique::GetListCommand(std::shared_ptr<Etat::State> tampon) {
@@ -95,7 +97,7 @@ namespace IA {
         //    std::cout<<"recherche dans l'etat courant"<<std::endl;
         //else
         //    std::cout<<"recherche dans le clone"<<std::endl;
-        
+
         unsigned int i = 0;
         unsigned int j = 0;
         unsigned int n = 0;
@@ -119,19 +121,17 @@ namespace IA {
             //    std::cout<<"\t"<<tampon->GetPriority()<<" "<<tampon->GetJoueurTour()<<" "<<tampon->GetPhase()<<" "<<MainJoueur[i]->GetName()<<" "<<MainJoueur[i]->GetIsPermanent()<<std::endl;
             if (((tampon->GetPriority() == tampon->GetJoueurTour())&& ((tampon->GetPhase() == 1) || (tampon->GetPhase() == 4)))
                     &&((MainJoueur[i]->GetIsPermanent()) && tampon->GetPile().empty())) {
-                if ((MainJoueur[i]->GetIsLand()&&!(tampon->GetJoueurs()[tampon->GetJoueurTour()]->GetAJoueTerrain())) || (!MainJoueur[i]->GetIsLand())){
+                if ((MainJoueur[i]->GetIsLand()&&!(tampon->GetJoueurs()[tampon->GetJoueurTour()]->GetAJoueTerrain())) || (!MainJoueur[i]->GetIsLand())) {
                     //std::cout<<"\tcommande lancer un permanent trouvee"<<std::endl;
                     ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr))));
                 }
-            }else if (!MainJoueur[i]->GetIsPermanent())
+            } else if (!MainJoueur[i]->GetIsPermanent())
                 for (unsigned int k = 0; k < MainJoueur[i]->GetAbility().size(); k++) {
-                    if (!MainJoueur[i]->GetAbility()[k]->GetNeedTarget())
-                    {
+                    if (!MainJoueur[i]->GetAbility()[k]->GetNeedTarget()) {
                         //std::cout<<"\tcommande lancer un sort sans cible trouve"<<std::endl;
                         ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, nullptr))));
-                    }else
-                        for (j = 0; j < Cibles.size(); j++)
-                        {
+                    } else
+                        for (j = 0; j < Cibles.size(); j++) {
                             //std::cout<<"\tcommande lancer un sort avec cible trouve"<<std::endl;
                             ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(MainJoueur[i], nullptr, Cibles[j]))));
                         }
@@ -141,39 +141,35 @@ namespace IA {
         for (i = 0; i < BoardJoueur.size(); i++)
             for (n = 0; n < BoardJoueur[i]->GetAbility().size(); n++) {
                 if (BoardJoueur[i]->GetAbility()[n]->GetNeedTarget())
-                    for (j = 0; j < Cibles.size(); j++)
-                    {
+                    for (j = 0; j < Cibles.size(); j++) {
                         //std::cout<<"\tcommande lancer une capa avec cible trouve"<<std::endl;
                         ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(BoardJoueur[i]->GetAbility()[n], BoardJoueur[i], Cibles[j]))));
-                    }
-                else{
+                    } else {
                     //std::cout<<"\tcommande lancer une capa sans cible trouve"<<std::endl;
                     ListeCommandes.push_back(std::shared_ptr<Engine::CastCommand>(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(BoardJoueur[i]->GetAbility()[n], BoardJoueur[i], nullptr))));
-            }
+                }
             }
         return ListeCommandes;
     }
 
-    int IA_heuristique::EvalCmd(std::shared_ptr<Etat::State> tampon,std::shared_ptr<Engine::CastCommand> cmd) {
+    int IA_heuristique::EvalCmd(std::shared_ptr<Etat::State> tampon, std::shared_ptr<Engine::CastCommand> cmd) {
         std::shared_ptr<Engine::LetPriorityCommand> passe(new Engine::LetPriorityCommand());
-        std::shared_ptr<Engine::Moteur> m (new Engine::Moteur(tampon));
+        std::shared_ptr<Engine::Moteur> m(new Engine::Moteur(tampon));
         int joueur = tampon->GetPriority();
         unsigned int taille = tampon->GetPile().size();
-        std::cout<<taille<<std::endl;
+        //std::cout << taille << std::endl;
         for (unsigned int i = 0; i < tampon->GetBattlefield().size(); i++)
             if (tampon->GetBattlefield()[i]->GetIsLand()) {
                 m->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(tampon->GetBattlefield()[i]->GetAbility()[0], tampon->GetBattlefield()[i], nullptr)));
-               // compteur++;
+                // compteur++;
             }
-        while (tampon->GetPriority()!=tampon->GetJoueurTour() || tampon->GetPile().size()!=taille)
-        {
+        while ( tampon->GetPile().size() != taille) {
             m->AddCommand(passe);
             m->Update();
         }
 
         // on ajoute la commande et on l'execute
-        if (cmd != nullptr)
-        {
+        if (cmd != nullptr) {
             m->AddCommand(cmd);
             m->Update();
         }
@@ -231,7 +227,7 @@ namespace IA {
 
         int k1 = 5, k2 = 3, k3 = 3, k4 = 1, k5 = 1, k6 = 1, k7 = 3; // voir pour changer les coefficients plus tard
         int score = nb_crea * k1 + offense * k2 + defense * k3 + carte_main * k4 + nb_land * k5 + nb_pv * k6 + nb_autre*k7;
-        std::cout << "\t nbCrea " << nb_crea << " offensif " << offense << " defensif " << defense << " mana " << nb_land << " pv " << nb_pv << " main " << carte_main << " permanent " << nb_autre << std::endl;
+        //std::cout << "\t nbCrea " << nb_crea << " offensif " << offense << " defensif " << defense << " mana " << nb_land << " pv " << nb_pv << " main " << carte_main << " permanent " << nb_autre << std::endl;
         return score;
     }
 
@@ -252,24 +248,24 @@ namespace IA {
 
                 bool bonne_capa = false;
                 if (!currentState->GetBattlefield()[i]->GetAbility().empty()) {
-                    int actustate = EvalCmd(currentState->Clone(),nullptr);
+                    int actustate = EvalCmd(currentState->Clone(), nullptr);
                     for (unsigned int j = 0; j < currentState->GetBattlefield()[i]->GetAbility().size(); j++)
                         if (!currentState->GetBattlefield()[i]->GetAbility()[i]->GetNeedTarget()) {
                             std::shared_ptr<Engine::CastCommand> cmd(new Engine::CastCommand(currentState->GetBattlefield()[i]->GetAbility()[j], currentState->GetBattlefield()[i], nullptr));
-                            if (EvalCmd(currentState->Clone(),cmd) > actustate)
+                            if (EvalCmd(currentState->Clone(), cmd) > actustate)
                                 bonne_capa = true;
                         } else {
                             // si la capa a besoin d'une cible, on teste toute les cibles envisageable, que ce soit sur la pile ou en jeu.
                             for (unsigned int k = 0; k < currentState->GetBattlefield().size(); k++)
                                 if (!bonne_capa) {
                                     std::shared_ptr<Engine::CastCommand> cmd(new Engine::CastCommand(currentState->GetBattlefield()[i]->GetAbility()[j], currentState->GetBattlefield()[i], currentState->GetBattlefield()[k]));
-                                    if (EvalCmd(currentState->Clone(),cmd) > actustate)
+                                    if (EvalCmd(currentState->Clone(), cmd) > actustate)
                                         bonne_capa = true;
                                 }
                             for (unsigned int k = 0; k < currentState->GetPile().size(); k++)
                                 if (!bonne_capa) {
                                     std::shared_ptr<Engine::CastCommand> cmd(new Engine::CastCommand(currentState->GetBattlefield()[i]->GetAbility()[j], currentState->GetBattlefield()[i], currentState->GetPile()[k]));
-                                    if (EvalCmd(currentState->Clone(),cmd) > actustate)
+                                    if (EvalCmd(currentState->Clone(), cmd) > actustate)
                                         bonne_capa = true;
                                 }
                         }
@@ -311,23 +307,20 @@ namespace IA {
 
     void IA_heuristique::Penser() {
         std::shared_ptr<Engine::LetPriorityCommand> Past(std::shared_ptr<Engine::LetPriorityCommand>(new Engine::LetPriorityCommand()));
-        int passer = EvalCmd(currentState->Clone(),nullptr);
+        int passer = EvalCmd(currentState->Clone(), nullptr);
 
         std::vector<int> list_val_cmd;
         std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd = GetListCommand(currentState);
         if (!list_cmd.empty()) {
-
-            int indmax = 0, max = EvalCmd(currentState->Clone(),list_cmd[0]);
+            int indmax = 0, max = EvalCmd(currentState->Clone(), list_cmd[0]);
             list_val_cmd.push_back(max);
             for (unsigned int i = 1; i < list_cmd.size(); i++) {
                 std::shared_ptr<Etat::State> clone = currentState->Clone();
                 std::vector<std::shared_ptr<Engine::CastCommand> > list_cmd_clone = GetListCommand(clone);
-                if (list_cmd_clone.size() != list_cmd.size())
-                {
-                    std::cout<<"erreur dans le clone!\n\t taille attendu : "<<list_cmd.size()<<"\n\t taille obtenu : "<<list_cmd_clone.size()<<std::endl;
-                    
+                if (list_cmd_clone.size() != list_cmd.size()) {
+                    std::cout << "erreur dans le clone!\n\t taille attendu : " << list_cmd.size() << "\n\t taille obtenu : " << list_cmd_clone.size() << std::endl;
                 }
-                list_val_cmd.push_back(EvalCmd(clone,list_cmd_clone[i]));
+                list_val_cmd.push_back(EvalCmd(clone, list_cmd_clone[i]));
                 if (list_val_cmd[i] > max) {
                     max = list_val_cmd[i];
                     indmax = i;
@@ -386,7 +379,7 @@ namespace IA {
             engine->AddCommand(Past);
         //std::cout<<"on reussi a penser"<<std::endl;
     }
-    
+
 }
 
 

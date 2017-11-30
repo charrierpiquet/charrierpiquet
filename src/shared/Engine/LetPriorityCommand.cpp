@@ -20,7 +20,11 @@ namespace Engine {
                     //std::cout << "\tc'est une carte" << std::endl;
                     // si c'est un permanent tu le mets sur champ de bataille
                     if (std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetIsPermanent())
-                        state->AddCardBattlefield(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
+                    {
+                        int ind = state->GetPile().size() - 1;
+                        auto bla = std::static_pointer_cast<Etat::Carte>(state->GetPile()[ind]);
+                        state->AddCardBattlefield(bla);
+                    }
                         //si c'est un sort on resout ses capa
                     else {
                         //std::cout << std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size() << std::endl;
@@ -40,14 +44,16 @@ namespace Engine {
         } else
             state->IncrPriority();
 
+        //std::cout<<"on est la"<<std::endl;
         // on kill les creatures qui ont 0 d'endurance
-        for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
-            if (state->GetBattlefield()[i]->GetIsCreature())
-                if (std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetEndurance() <= 0) {
-                    if (!std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetIsToken())
-                        state->GetJoueurs()[state->GetBattlefield()[i]->GetIndJoueur()]->AddCardGraveyard(state->GetBattlefield()[i]);
-                    state->DelCardBattlefield(i);
-                }
+        if (!state->GetBattlefield().empty())
+            for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
+                if (state->GetBattlefield()[i]->GetIsCreature())
+                    if (std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetEndurance() <= 0) {
+                        if (!std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->GetIsToken())
+                            state->GetJoueurs()[state->GetBattlefield()[i]->GetIndJoueur()]->AddCardGraveyard(state->GetBattlefield()[i]);
+                        state->DelCardBattlefield(i);
+                    }
 
     }
 
