@@ -3,7 +3,7 @@
 namespace Etat
 {
     Carte::Carte(bool permanent,bool land,bool creature,bool token,
-            std::string nom,std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):
+            std::string nom,std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Active> > capa, int id, int prop):
     Objet(false, id, prop, nom), cost(cout),ability(capa)
     {
         isPermanent = permanent;
@@ -51,7 +51,7 @@ namespace Etat
         return counters;
     }
     
-    std::vector<std::shared_ptr<Capacite> > Carte::GetAbility() const
+    std::vector<std::shared_ptr<Active> > Carte::GetAbility() const
     {
         return ability;
     }
@@ -69,7 +69,7 @@ namespace Etat
     
     std::shared_ptr<Carte> Carte::Clone()
     {
-        std::vector<std::shared_ptr<Capacite> > capa;
+        std::vector<std::shared_ptr<Active> > capa;
         for (unsigned int i = 0 ; i < ability.size() ; i++ )
             capa.push_back(ability[i]->Clone());
         std::shared_ptr<Cout> new_cout(new Cout());

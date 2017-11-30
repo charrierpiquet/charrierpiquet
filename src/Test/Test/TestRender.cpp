@@ -20,7 +20,7 @@ namespace Test
         std::shared_ptr<Etat::Cout> coutTerrain(new Etat::Cout());
         coutTerrain->SetCost();
         
-        std::vector<std::shared_ptr<Etat::Capacite> > capa;
+        std::vector<std::shared_ptr<Etat::Active> > capa;
         
         std::shared_ptr<Etat::Carte> Foret1(new Etat::Carte(true,true,false,false,"Foret",coutTerrain,capa,identifiant++,0));
         Foret1->SetOracle("ceci est une foret \ntap : ajoutez (G) a votre reserve\nune foret est un terrain\nun terrain est incolore");

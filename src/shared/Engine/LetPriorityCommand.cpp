@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace Engine {
-    
+
     void LetPriorityCommand::Execute(std::shared_ptr<Etat::State> state) {
         // si c'est le joueur dont c'est pas le tour qui passe
         if (state->GetJoueurTour() != state->GetPriority()) {
@@ -14,20 +14,23 @@ namespace Engine {
                 state->IncrPhase();
                 // sinon
             else {
+                //std::cout << "\tla pile n'est pas vide : " << state->GetPile()[state->GetPile().size() - 1]->GetName() << std::endl;
                 // on resout l'objet au dessus de la pile
                 if (!state->GetPile()[state->GetPile().size() - 1]->GetIsCapacite()) {
+                    //std::cout << "\tc'est une carte" << std::endl;
                     // si c'est un permanent tu le mets sur champ de bataille
                     if (std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetIsPermanent())
                         state->AddCardBattlefield(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
                         //si c'est un sort on resout ses capa
                     else {
+                        //std::cout << std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size() << std::endl;
                         state->GetJoueurs()[state->GetPile()[state->GetPile().size() - 1]->GetIndJoueur()]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
                         for (unsigned int i = 0; i < std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size(); i++)
                             Resolve(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility()[i]->GetKeyWord(), state);
                     }
                 } else {
                     // si c'est une capa on resout
-                    Resolve(std::static_pointer_cast<Etat::Capacite>(state->GetPile()[state->GetPile().size() - 1])->GetKeyWord(), state);
+                    Resolve(std::static_pointer_cast<Etat::Active>(state->GetPile()[state->GetPile().size() - 1])->GetKeyWord(), state);
                 }
 
                 // on supprime la carte du dessus de la pile
@@ -49,8 +52,8 @@ namespace Engine {
     }
 
     void LetPriorityCommand::Resolve(std::string keyword, std::shared_ptr<Etat::State> state) {
-        std::vector<std::shared_ptr<Etat::Capacite> > capaVide;
-        std::shared_ptr<Etat::Cout> coutVide (new Etat::Cout());
+        std::vector<std::shared_ptr<Etat::Active> > capaVide;
+        std::shared_ptr<Etat::Cout> coutVide(new Etat::Cout());
         //std::cout<<keyword<<" "<<keyword.compare("blue")<<" "<<keyword.compare("green")<<std::endl;
         if (keyword.compare("multi") == 0)
             state->GetJoueurs()[state->GetPile()[state->GetPile().size() - 1]->GetIndJoueur()]->GetManaPool()->AddMulti();

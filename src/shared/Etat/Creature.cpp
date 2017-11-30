@@ -4,7 +4,7 @@
 namespace Etat
 {
     Creature::Creature(int strengh, int thougness,bool token,std::string nom, std::shared_ptr<Cout> cout,
-            std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):Carte(true,false,true,token, nom, cout, capa, id, prop)
+            std::vector<std::shared_ptr<Active> > capa, int id, int prop):Carte(true,false,true,token, nom, cout, capa, id, prop)
     {
         force = strengh;
         endurance = thougness;
@@ -60,7 +60,7 @@ namespace Etat
     
     std::shared_ptr<Creature> Creature::Clone()
     {
-        std::vector<std::shared_ptr<Capacite> > capa;
+        std::vector<std::shared_ptr<Active> > capa;
         for (unsigned int i = 0 ; i < this->GetAbility().size() ; i++ )
             capa.push_back(this->GetAbility()[i]->Clone());
         

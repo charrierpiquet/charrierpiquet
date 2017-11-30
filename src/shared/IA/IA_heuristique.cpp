@@ -159,6 +159,7 @@ namespace IA {
         std::shared_ptr<Engine::Moteur> m (new Engine::Moteur(tampon));
         int joueur = tampon->GetPriority();
         unsigned int taille = tampon->GetPile().size();
+        std::cout<<taille<<std::endl;
         for (unsigned int i = 0; i < tampon->GetBattlefield().size(); i++)
             if (tampon->GetBattlefield()[i]->GetIsLand()) {
                 m->AddCommand(std::shared_ptr<Engine::CastCommand>(new Engine::CastCommand(tampon->GetBattlefield()[i]->GetAbility()[0], tampon->GetBattlefield()[i], nullptr)));
@@ -343,8 +344,7 @@ namespace IA {
                 auto obj = list_cmd[indmax]->GetObj();
                 std::shared_ptr<Etat::Cout> cost;
                 if (obj->GetIsCapacite()) {
-                    if (std::static_pointer_cast<Etat::Capacite>(obj)->GetCategorie() == 2)
-                        cost = std::static_pointer_cast<Etat::Active>(obj)->GetCost();
+                    cost = std::static_pointer_cast<Etat::Active>(obj)->GetCost();
                 } else
                     cost = std::static_pointer_cast<Etat::Carte>(obj)->GetCost();
 

@@ -85,7 +85,7 @@ namespace Test
             std::cout<<"payer cout Ok"<<std::endl; 
             
             std::string nom = "foret";
-            std::vector<std::shared_ptr<Etat::Capacite> > capa;
+            std::vector<std::shared_ptr<Etat::Active> > capa;
             std::shared_ptr<Etat::Carte> card (new Etat::Carte(true,true,false,false,nom,cost,capa,1,0));
             state->AddCardBattlefield(card);
             if (state->GetBattlefield().size() != 1)

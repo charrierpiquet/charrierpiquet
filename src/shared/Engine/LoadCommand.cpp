@@ -55,7 +55,7 @@ namespace Engine
         std::string Ability="";
         std::string Texte="";
         std::string Ligne="";
-        std::vector<std::shared_ptr<Etat::Capacite> > Capacites;
+        std::vector<std::shared_ptr<Etat::Active> > Capacites;
         int id=-1;
         int Joueur;
         

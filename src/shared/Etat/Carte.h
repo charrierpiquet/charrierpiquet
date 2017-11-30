@@ -8,12 +8,12 @@
 
 namespace Etat {
   class Cout;
-  class Capacite;
+  class Active;
   class Objet;
 }
 
 #include "Cout.h"
-#include "Capacite.h"
+#include "Active.h"
 #include "Objet.h"
 
 namespace Etat {
@@ -30,10 +30,10 @@ namespace Etat {
     bool isToken;
     std::shared_ptr<Cout> cost;
     int counters;
-    std::vector<std::shared_ptr<Capacite> > ability;
+    std::vector<std::shared_ptr<Active> > ability;
     // Operations
   public:
-    Carte (bool permanent, bool land, bool creature, bool token, std::string nom, std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
+    Carte (bool permanent, bool land, bool creature, bool token, std::string nom, std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Active> > capa, int id, int prop);
     std::shared_ptr<Cout> GetCost () const;
     int GetCounter () const;
     bool GetIsLand () const;
@@ -41,7 +41,7 @@ namespace Etat {
     bool GetIsCreature () const;
     bool GetIsToken () const;
     bool GetIsTap () const;
-    std::vector<std::shared_ptr<Capacite> > GetAbility () const;
+    std::vector<std::shared_ptr<Active> > GetAbility () const;
     void SetIsTap (bool value);
     void SetCounter (int value);
     std::shared_ptr<Carte> Clone ();

@@ -1,7 +1,6 @@
 #include "State.h"
 #include "Creature.h"
 #include "Active.h"
-#include "Declenchee.h"
 #include <cstddef>
 #include <iostream>
 #define NbPhase 4
@@ -170,18 +169,8 @@ namespace Etat
         {
             if (this->GetPile()[i]->GetIsCapacite())
             {
-                switch (std::static_pointer_cast<Etat::Capacite>(this->GetPile()[i])->GetCategorie())
-                {
-                    case 0: // statique
-                        clone->AddCardPile(std::static_pointer_cast<Etat::Capacite>(this->GetPile()[i])->Clone());
-                        break;
-                    case 1: // active
-                        clone->AddCardPile(std::static_pointer_cast<Etat::Active>(this->GetPile()[i])->Clone());
-                        break;
-                    case 2: // declenche
-                        clone->AddCardPile(std::static_pointer_cast<Etat::Declenchee>(this->GetPile()[i])->Clone());
-                        break;
-                }
+                
+                clone->AddCardPile(std::static_pointer_cast<Etat::Active>(this->GetPile()[i])->Clone());                
             }
             else
             {

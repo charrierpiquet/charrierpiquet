@@ -7,25 +7,29 @@
 
 namespace Etat {
   class Cout;
-  class Capacite;
+  class Objet;
 }
 
 #include "Cout.h"
-#include "Capacite.h"
+#include "Objet.h"
 
 namespace Etat {
 
   /// class Active - 
-  class Active : public Etat::Capacite {
+  class Active : public Etat::Objet {
     // Associations
     // Attributes
   private:
     std::shared_ptr<Cout> cost;
+    std::string keyWord;
+    bool needTarget;
     // Operations
   public:
     Active (std::shared_ptr<Cout> cout, std::string motclef, int id, int prop, std::string nom, bool target);
     std::shared_ptr<Cout> GetCost () const;
     std::shared_ptr<Active> Clone ();
+    std::string GetKeyWord () const;
+    bool GetNeedTarget ();
     // Setters and Getters
   };
 

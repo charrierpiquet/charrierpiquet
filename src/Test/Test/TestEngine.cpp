@@ -20,7 +20,7 @@ namespace Test
         sf::RenderWindow window(sf::VideoMode(800,600),"Sorcellerie, le Regroupement",sf::Style::Close);
         window.setFramerateLimit(60);
         
-        std::vector<std::shared_ptr<Etat::Capacite> > capa;
+        std::vector<std::shared_ptr<Etat::Active> > capa;
         int identifiant = 0;
         // positionner un ours en face (eventuellement deux terrains pour dire qu'il avait le droit d'avoir un ours)
         std::shared_ptr<Etat::Cout> coutOurs (new Etat::Cout()); coutOurs->SetCost(1,0,0,1);
@@ -40,13 +40,13 @@ namespace Test
         Ours3->SetMalInvoc(false);
         state->AddCardBattlefield(Ours3);
         
-        std::vector<std::shared_ptr<Etat::Capacite> > capa1;
+        std::vector<std::shared_ptr<Etat::Active> > capa1;
         capa1.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(coutnull,"green",identifiant++,0,"green",false)));
         std::shared_ptr<Etat::Carte> Foret1(new Etat::Carte(true,true,false,false,"Foret",coutnull,capa1,identifiant++,0));
         Foret1->SetOracle("T : add G to manapool");
         state->AddCardBattlefield(Foret1);
         
-        std::vector<std::shared_ptr<Etat::Capacite> > capa2;
+        std::vector<std::shared_ptr<Etat::Active> > capa2;
         capa2.push_back(std::shared_ptr<Etat::Active>(new Etat::Active(coutnull,"blue",identifiant++,0,"blue",false)));
         std::shared_ptr<Etat::Carte> Ile1(new Etat::Carte(true,true,false,false,"Ile",coutnull,capa2,identifiant++,0));
         Ile1->SetOracle("T : add U to manapool");

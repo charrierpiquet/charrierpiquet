@@ -178,7 +178,7 @@ namespace Render {
             //tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
             if (!selectedCard->GetIsCapacite())
             {
-                listCapa.Actu(Conv<Etat::Capacite>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
+                listCapa.Actu(Conv<Etat::Active>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
                 listCapa.Draw(target);
             }
             // on affiche le cout que pour les cartes
