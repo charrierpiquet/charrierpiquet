@@ -1,122 +1,148 @@
 #include "State.h"
-#include "Creature.h"
-#include "Active.h"
-#include <cstddef>
 #include <iostream>
-#define NbPhase 4
+#include <fstream>
+#include <string>
+#include <cstring>
+#include <algorithm>
+#include <ctime> 
+#include <cstdlib>
+#define NbPhase 5
 #define MaxHand 7
-namespace Etat
-{
-    State::State(int nb )
-    {
-        nbJoueur = nb ;
-        
-        for (int i = 0 ; i < nbJoueur ; i++)
+namespace Etat {
+
+    State::State(std::vector<std::string> list_deck) {
+        for (unsigned int i = 0; i < list_deck.size(); i++)
             joueurs.push_back(std::shared_ptr<Joueur>(new Joueur()));
-        joueur = 0; phase = 0; priorite =0;
-    }
-    
-    void State::IncrPhase()
-    {
-        phase ++;
-        
-        //vider la mana pool
-        for ( int i = 0; i < nbJoueur ; i++)
-            joueurs[i]->GetManaPool()->Vider();
-        
-        if (phase > NbPhase)
-        {
-            phase = 0;
-            list_attaquant.clear();
-            //cleanup   
-            //retirer les blessures et effet fin tour
-            for (unsigned int i=0 ; i < battlefield.size() ; i++)
-                if (battlefield[i]->GetIsCreature())
-                {
-                    std::static_pointer_cast<Creature> (battlefield[i])->SetBlessure(0);
-                    std::static_pointer_cast<Creature> (battlefield[i])->SetBonusEOT(0);
+        joueur = 0;
+        phase = 0;
+        priorite = 0;
+        //load
+
+        std::string Type = "";
+        std::string Nom = "";
+        std::string strCout = "";
+        std::string Force = "";
+        std::string Endurance = "";
+        std::string NbCapa = "";
+        std::string Ability = "";
+        std::string Texte = "";
+        std::string Ligne = "";
+        std::vector<std::shared_ptr< Capacite> > Capacites;
+        unsigned int Joueur;
+
+        std::vector<std::vector<std::shared_ptr< Carte> > > decks;
+
+        for (Joueur = 0; Joueur < list_deck.size(); Joueur++) {
+            int TailleDeck = 0;
+            std::ifstream FichierDeck;
+            FichierDeck.open("./res/" + list_deck[Joueur] + ".deck");
+            std::cout << "chargement deck " << Joueur << " ..." << std::endl;
+
+            if (!FichierDeck)
+                std::cout << "impossible d'ouvrir le deck" << std::endl;
+
+            while (FichierDeck.peek() != EOF) {
+                TailleDeck++;
+                std::getline(FichierDeck, Nom);
+                Nom.erase(Nom.end() - 1);
+                std::ifstream Card("./res/cartes/" + Nom + ".carte");
+                //std::ifstream Card("./res/cartes/Ours.carte");
+                if (!Card)
+                    std::cout << "impossible d'ouvrir la carte " << Nom << std::endl;
+                else {
+                    std::getline(Card, Type); //Type.erase(Type.end()-1);
+                    std::getline(Card, Nom); //Nom.erase(Nom.end()-1);
+                    std::getline(Card, strCout); //Cout.erase(Cout.end()-1);
+                    std::getline(Card, Force); //Force.erase(Force.end()-1);
+                    std::getline(Card, Endurance); //Endurance.erase(Endurance.end()-1);
+                    std::getline(Card, NbCapa); //NbCapa.erase(NbCapa.end()-1);                
+
+                    int k = std::stoi(NbCapa, nullptr, 0), f = std::stoi(Force, nullptr, 0), e = std::stoi(Endurance, nullptr, 0);
+                    Capacites.clear();
+                    if (k != 0)
+                        for (int i = 0; i < k; i++) {
+                            std::getline(Card, Ability);
+                            std::shared_ptr<Cout> CostAbility(new  Cout(0,Ability[0] - '0', Ability[4] - '0', Ability[2] - '0', Ability[6] - '0'));
+                            Capacites.push_back(std::shared_ptr< Capacite>(new  Capacite(CostAbility, Ability.substr(20, Ability.size() - 20), id++, Joueur, Ability.substr(20, Ability.size() - 20), (bool)(int) (Ability[18] - '0'))));
+                        }
+
+                    std::shared_ptr<Cout> Cost(new Cout(0, strCout[0] - '0', strCout[4] - '0', strCout[2] - '0', strCout[6] - '0'));
+                    if (std::strcmp(Type.data(), "creature") == 0) {
+                        decks[Joueur].push_back(std::shared_ptr< Creature>(new  Creature(f, e, false, Nom, Cost, Capacites, id++, Joueur)));
+                    } else {
+                        decks[Joueur].push_back(std::shared_ptr< Carte>(new  Carte(std::strcmp(Type.data(), "sort") != 0, std::strcmp(Type.data(), "terrain") == 0, std::strcmp(Type.data(), "creature") == 0, 0, Nom, Cost, Capacites, id++, Joueur)));
+                    }
+
+                    Texte = "";
+                    while (Card.peek() != EOF) {
+                        getline(Card, Ligne);
+                        Texte = Texte + Ligne + "\n";
+                    }
+                    decks[Joueur][TailleDeck - 1]->SetOracle(Texte);
+
+                    Card.close();
                 }
-            
-            //retirer cartes en trop dans la main
-            if (joueurs[priorite]->GetHand().size() > 7)
-                for (unsigned int i = 0 ; i < joueurs[priorite]->GetHand().size() - 7 ; i++)
-                    joueurs[priorite]->Discard();
-            
-            // changement de tour
-            joueur ++;
-            if (joueur >= nbJoueur)
-                joueur = 0; 
-            
-            //uptap & mal invoc
-            for (unsigned int i=0 ; i < battlefield.size() ; i++)
-                if (battlefield[i]->GetIndJoueur() == joueur)
-                {
-                    battlefield[i]->SetIsTap(false);
-                    if (battlefield[i]->GetIsCreature())
-                        std::static_pointer_cast<Creature>(battlefield[i])->SetMalInvoc(false);
-                }
-            
-            //draw
-            joueurs[priorite]->Draw();
-            // il a le droit de rejouer un terrain
-            joueurs[priorite]->SetAJoueTerrain(false);
+            }
+            FichierDeck.close();
         }
-        priorite = joueur;
+        for (unsigned int i = 0; i < list_deck.size(); i++) {
+            std::srand(unsigned ( std::time(0)));
+            while (!decks[i].empty()) {
+                int k = std::rand() % decks[i].size();
+                this->GetJoueurs()[i]->AddCardLibrary(decks[i][k]);
+                decks[i].erase(decks[i].begin() + k);
+            }
+        }
     }
-    
-    void State::IncrPriority()
-    {
-        priorite = (priorite +1) %2;
-        //std::cout<<"j'arrive la"<<std::endl;
+
+    void State::SetPriority(int value) {
+        priorite = std::max(0, std::min(value, (int)joueurs.size()));
     }
-    
-    void State::AddCardBattlefield(std::shared_ptr<Carte> card)
-    {
+
+    void State::SetPhase(int value) {
+        phase = std::max(0, std::min(value, NbPhase - 1));
+    }
+
+    void State::AddCardBattlefield(std::shared_ptr<Carte> card) {
         battlefield.push_back(card);
     }
-    void State::AddCardPile(std::shared_ptr<Objet> card)
-    {
+
+    void State::AddCardPile(std::shared_ptr<Objet> card) {
         pile.push_back(card);
     }
-    void State::DelCardBattlefield(int ind)
-    {
-        if (ind >= 0 && ind < (int)battlefield.size())
+
+    void State::DelCardBattlefield(int ind) {
+        if (ind >= 0 && ind < (int) battlefield.size())
             battlefield.erase(battlefield.begin() + ind);
     }
-    void State::DelCardPile(int ind)
-    {
-        if (ind >= 0 && ind < (int)pile.size())
+
+    void State::DelCardPile(int ind) {
+        if (ind >= 0 && ind < (int) pile.size())
             pile.erase(pile.begin() + ind);
     }
-    std::vector<std::shared_ptr<Joueur> > State::GetJoueurs() const
-    {
+
+    std::vector<std::shared_ptr<Joueur> > State::GetJoueurs() const {
         return joueurs;
     }
 
-    int State::GetPhase() const
-    {
+    int State::GetPhase() const {
         return phase;
     }
-    
-    int State::GetPriority() const
-    {
+
+    int State::GetPriority() const {
         return priorite;
     }
-    
-    std::vector<std::shared_ptr<Objet> > State::GetPile () const
-    {
+
+    std::vector<std::shared_ptr<Objet> > State::GetPile() const {
         return pile;
     }
-    std::vector<std::shared_ptr<Carte> > State::GetBattlefield () const
-    {
+
+    std::vector<std::shared_ptr<Carte> > State::GetBattlefield() const {
         return battlefield;
     }
-    
-    
-    std::string State::GetPhaseName() const
-    {
-        switch (phase)
-        {
+
+    std::string State::GetPhaseName() const {
+        switch (phase) {
             case 0:
                 return "Pre-Combat Main";
             case 1:
@@ -127,128 +153,45 @@ namespace Etat
                 return "Declaration Bloqueurs";
             case 4:
                 return "Post-Combat Main";
-            default :
+            default:
                 return "Unknow";
         }
     }
-    
-    int State::GetJoueurTour() const
-    {
+
+    int State::GetJoueurTour() const {
         return joueur;
     }
-    
-    void State::AddListAttaquant(std::shared_ptr<Creature> crea)
-    {
+
+    void State::AddListAttaquant(std::shared_ptr<Creature> crea) {
         list_attaquant.push_back(crea);
     }
-    
-    std::vector<std::shared_ptr<Creature> > State::GetAttaquants() const
-    {
+
+    std::vector<std::shared_ptr<Creature> > State::GetAttaquants() const {
         return list_attaquant;
     }
-    
-    std::shared_ptr<State> State::Clone()
-    {
-        std::shared_ptr<State> clone = std::shared_ptr<State>(new State(nbJoueur));
-        // mettre les phases au bon stade
-        while (clone->GetPhase() != this->GetPhase() || clone->GetJoueurTour() != this->GetJoueurTour())
-            clone->IncrPhase();
-        while (clone->GetPriority() != this->GetPriority())
-            clone->IncrPriority();
-         
-        // copier le champ de batailles et la pile et les liste d'attaquant
-        // voir si on a pas besoin de faire des tests (si jamais ça utilise carte.clone pour une crea)
-        for ( unsigned int i = 0 ; i < this->GetBattlefield().size() ; i++ )
-        {
-            if (this->GetBattlefield()[i]->GetIsCreature())
-                clone->AddCardBattlefield(std::static_pointer_cast<Etat::Creature>(this->GetBattlefield()[i])->Clone());
-            else
-                clone->AddCardBattlefield(this->GetBattlefield()[i]->Clone());
-        }
-        for ( unsigned int i = 0 ; i < this->GetPile().size() ; i++ )
-        {
-            if (this->GetPile()[i]->GetIsCapacite())
-            {
-                
-                clone->AddCardPile(std::static_pointer_cast<Etat::Active>(this->GetPile()[i])->Clone());                
-            }
-            else
-            {
-                if (std::static_pointer_cast<Etat::Carte>(this->GetPile()[i])->GetIsCreature())
-                    clone->AddCardPile(std::static_pointer_cast<Etat::Creature>(this->GetPile()[i])->Clone());
-                else
-                    clone->AddCardPile(this->GetPile()[i]->Clone());
-            }
-        }
-        for ( unsigned int i = 0 ; i < this->GetAttaquants().size() ; i++ )
-            clone->AddListAttaquant(this->GetAttaquants()[i]->Clone());
-        
-        // copier les joueurs
-        for ( unsigned int i = 0 ; i < this->GetJoueurs().size() ; i++ )
-        {
-            clone->GetJoueurs()[i]->SetAJoueTerrain( this->GetJoueurs()[i]->GetAJoueTerrain());
-            clone->GetJoueurs()[i]->SetPv( this->GetJoueurs()[i]->GetPv());
-            // les 3 zones
-            for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetGraveyard().size() ; j++ )
-            {
-                if (this->GetJoueurs()[i]->GetGraveyard()[j]->GetIsCreature())
-                    clone->GetJoueurs()[i]->AddCardGraveyard(std::static_pointer_cast<Etat::Creature>(this->GetJoueurs()[i]->GetGraveyard()[j])->Clone());
-                else
-                    clone->GetJoueurs()[i]->AddCardGraveyard(this->GetJoueurs()[i]->GetGraveyard()[j]->Clone());
-            }
-            for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetLibrary().size() ; j++ )
-            {
-                if(this->GetJoueurs()[i]->GetLibrary()[j]->GetIsCreature())
-                       clone->GetJoueurs()[i]->AddCardLibrary(std::static_pointer_cast<Etat::Creature>(this->GetJoueurs()[i]->GetLibrary()[j])->Clone()); 
-                else
-                        clone->GetJoueurs()[i]->AddCardLibrary(this->GetJoueurs()[i]->GetLibrary()[j]->Clone());
-            }
-            for ( unsigned int j = 0 ; j < this->GetJoueurs()[i]->GetHand().size() ; j++ )
-            {
-                if (this->GetJoueurs()[i]->GetHand()[j]->GetIsCreature())
-                    clone->GetJoueurs()[i]->AddCardHand(std::static_pointer_cast<Etat::Creature>(this->GetJoueurs()[i]->GetHand()[j])->Clone());
-                else
-                    clone->GetJoueurs()[i]->AddCardHand(this->GetJoueurs()[i]->GetHand()[j]->Clone());
-            }
-            // la manapool
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetBlack() ; j++ )
-                clone->GetJoueurs()[i]->GetManaPool()->AddBlack();
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetBlue() ; j++ )
-                clone->GetJoueurs()[i]->GetManaPool()->AddBlue();
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetGreen() ; j++ )
-                clone->GetJoueurs()[i]->GetManaPool()->AddGreen();
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetMulti() ; j++ )
-                clone->GetJoueurs()[i]->GetManaPool()->AddMulti();
-            for ( int j = 0 ; j < this->GetJoueurs()[i]->GetManaPool()->GetInc() ; j++ )
-                clone->GetJoueurs()[i]->GetManaPool()->AddInc();
-        }
-        // gerer les cibles
-        for ( unsigned int i = 0 ; i < this->GetPile().size() ; i++ )
-            if (this->GetPile()[i]->GetTarget().lock().get() != nullptr)
-            {
-                bool trouve = false;
-                for ( unsigned int j = 0 ; j < this->GetPile().size() ; j++ )
-                    if (this->GetPile()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
-                    {
-                        trouve = true;
-                        clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(clone->GetPile()[j]));
-                    }
-                if (!trouve)
-                    for ( unsigned int j = 0 ; j < this->GetBattlefield().size() ; j++ )
-                        if (this->GetBattlefield()[j] == this->GetPile()[i]->GetTarget().lock() && !trouve )
-                        {
-                            trouve = true;
-                            clone->GetPile()[i]->SetTarget(std::weak_ptr<Objet>(clone->GetBattlefield()[j]));
-                        }
-            }
-        if (clone->GetAttaquants().size()!=this->GetAttaquants().size() || clone->GetBattlefield().size()!=this->GetBattlefield().size()
-                || clone->GetPile().size()!=this->GetPile().size() || clone->GetJoueurs()[0]->GetGraveyard().size() != this->GetJoueurs()[0]->GetGraveyard().size()
-                || clone->GetJoueurs()[0]->GetHand().size() != this->GetJoueurs()[0]->GetHand().size() || clone->GetJoueurs()[0]->GetLibrary().size() != this->GetJoueurs()[0]->GetLibrary().size()
-                || clone->GetJoueurs()[1]->GetGraveyard().size() != this->GetJoueurs()[1]->GetGraveyard().size()
-                || clone->GetJoueurs()[1]->GetHand().size() != this->GetJoueurs()[1]->GetHand().size() || clone->GetJoueurs()[1]->GetLibrary().size() != this->GetJoueurs()[1]->GetLibrary().size())
-            std::cout<<"probleme de copie"<<std::endl;
-   
-        return clone;
+
+    void State::AddListBloqueur(std::shared_ptr<Creature> crea) {
+        list_bloqueur.push_back(crea);
     }
-    
-};
+
+    std::vector<std::shared_ptr<Creature> > State::GetBloqueur() const {
+        return list_bloqueur;
+    }
+
+    void State::AddListBloque(std::shared_ptr<Creature> crea) {
+        list_bloque.push_back(crea);
+    }
+
+    std::vector<std::shared_ptr<Creature> > State::GetListBloque() const {
+        return list_bloque;
+    }
+
+    int State::GetInd()
+    {
+        return id++;
+    }
+    void State::SetTour(int value)
+    {
+        joueur = value;
+    }
+}

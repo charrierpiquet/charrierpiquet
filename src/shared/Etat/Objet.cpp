@@ -2,7 +2,7 @@
 
 namespace Etat
 {
-    Objet::Objet(bool capa, int id, int prop, std::string nom)
+    Objet::Objet(bool capa, int id, int prop, std::string nom, std::shared_ptr<Cout> cout) : cost(cout)
     {
         isCapacite = capa;
         idObj = id;
@@ -43,12 +43,9 @@ namespace Etat
     {
         return name;
     }
-    std::shared_ptr<Objet> Objet::Clone()
+    std::shared_ptr<Cout> Objet::GetCost()
     {
-        std::shared_ptr<Objet> clone (new Objet(isCapacite, idObj, indJoueur, name));
-        clone->SetOracle(oracle);
-        return clone;
+        return cost;
     }
-    
 };
 

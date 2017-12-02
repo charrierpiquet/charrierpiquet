@@ -1,7 +1,7 @@
 #include "Rendu.h"
-//#include "Etat.h"
 #include <iostream>
 #include <cstddef>
+#include "Etat/Objet.h"
 
 namespace Render {
     
@@ -178,7 +178,7 @@ namespace Render {
             //tampon = std::vector<std::shared_ptr<Etat::Objet> >(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().begin(),std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility().end());
             if (!selectedCard->GetIsCapacite())
             {
-                listCapa.Actu(Conv<Etat::Active>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
+                listCapa.Actu(Conv<Etat::Capacite>(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetAbility()));
                 listCapa.Draw(target);
             }
             // on affiche le cout que pour les cartes
@@ -192,7 +192,7 @@ namespace Render {
                 {   }
                 cout.setTexture(ttCout);
                 cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);
-                for(int i = 0 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost()->GetBlack();i++)
+                for(int i = 0 ; i < selectedCard->GetCost()->GetBlack();i++)
                 {
                     cout.setPosition(3./4.*dimensionX + 20*compteur,20);
                     compteur++;
@@ -202,7 +202,7 @@ namespace Render {
                 {   }
                 cout.setTexture(ttCout);
                 cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);
-                for(int i = 0 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost()->GetBlue();i++)
+                for(int i = 0 ; i < selectedCard->GetCost()->GetBlue();i++)
                 {
                     cout.setPosition(3./4.*dimensionX + 20*compteur,20);
                     compteur++;
@@ -212,16 +212,16 @@ namespace Render {
                 {   }
                 cout.setTexture(ttCout);
                 cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);
-                for(int i = 0 ; i < std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost()->GetGreen();i++)
+                for(int i = 0 ; i < selectedCard->GetCost()->GetGreen();i++)
                 {
                     cout.setPosition(3./4.*dimensionX + 20*compteur,20);
                     compteur++;
                     target.draw(cout);
                 }
                 
-                if(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost()->GetInc() > 0)
+                if(selectedCard->GetCost()->GetInc() > 0)
                 {
-                    if(!ttCout.loadFromFile("res/"+std::to_string(std::static_pointer_cast<Etat::Carte>(selectedCard)->GetCost()->GetInc())+".png"))
+                    if(!ttCout.loadFromFile("res/"+std::to_string(selectedCard->GetCost()->GetInc())+".png"))
                     {   }
                     cout.setTexture(ttCout);
                     cout.setScale(18./cout.getTextureRect().width,18./cout.getTextureRect().height);

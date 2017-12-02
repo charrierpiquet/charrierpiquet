@@ -8,12 +8,12 @@
 
 namespace Etat {
   class Cout;
-  class Active;
+  class Capacite;
   class Carte;
 }
 
 #include "Cout.h"
-#include "Active.h"
+#include "Capacite.h"
 #include "Carte.h"
 
 namespace Etat {
@@ -29,7 +29,7 @@ namespace Etat {
     bool malInvoc;
     // Operations
   public:
-    Creature (int strengh, int thougness, bool token, std::string nom, std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Active> > capa, int id, int prop);
+    Creature (int strengh, int thougness, bool token, std::string nom, std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
     int GetForce ();
     int GetEndurance ();
     bool GetMalInvoc ();
@@ -38,7 +38,6 @@ namespace Etat {
     void SetBonusEOT (int value);
     void SetBlessure (int value);
     void SetMalInvoc (bool value);
-    std::shared_ptr<Creature> Clone ();
     // Setters and Getters
   };
 

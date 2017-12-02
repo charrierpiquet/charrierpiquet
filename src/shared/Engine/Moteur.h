@@ -24,11 +24,14 @@ namespace Engine {
   private:
     std::shared_ptr<Etat::State> currentState;
     std::vector<std::shared_ptr<Command> > commands;
+    std::vector<std::shared_ptr<Command> > historic;
     // Operations
   public:
     Moteur (std::shared_ptr<Etat::State> state);
     void AddCommand (std::shared_ptr<Command> cmd);
     void Update ();
+    void RollBack ();
+    int HistoricSize ();
     // Setters and Getters
   };
 

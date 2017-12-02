@@ -27,17 +27,19 @@ namespace Etat {
   private:
     int joueur;
     int phase;
-    std::vector<std::shared_ptr<Joueur> > joueurs;
     int priorite;
+    std::vector<std::shared_ptr<Joueur> > joueurs;
     std::vector<std::shared_ptr<Objet> > pile;
     std::vector<std::shared_ptr<Carte> > battlefield;
-    int nbJoueur;
     std::vector<std::shared_ptr<Creature> > list_attaquant;
+    std::vector<std::shared_ptr<Creature> > list_bloqueur;
+    std::vector<std::shared_ptr<Creature> > list_bloque;
+    int id;
     // Operations
   public:
-    State (int nb = 2);
-    void IncrPriority ();
-    void IncrPhase ();
+    State (std::vector<std::string> list_deck);
+    void SetPriority (int value);
+    void SetPhase (int value);
     void AddCardPile (std::shared_ptr<Objet> card);
     void AddCardBattlefield (std::shared_ptr<Carte> card);
     std::vector<std::shared_ptr<Joueur> > GetJoueurs () const;
@@ -48,11 +50,15 @@ namespace Etat {
     int GetPhase () const;
     std::string GetPhaseName () const;
     int GetPriority () const;
-    bool GetPileEmpty () const;
     int GetJoueurTour () const;
     void AddListAttaquant (std::shared_ptr<Creature> crea);
     std::vector<std::shared_ptr<Creature> > GetAttaquants () const;
-    std::shared_ptr<State> Clone ();
+    void AddListBloqueur (std::shared_ptr<Creature> crea);
+    std::vector<std::shared_ptr<Creature> > GetBloqueur () const;
+    void AddListBloque (std::shared_ptr<Creature> crea);
+    std::vector<std::shared_ptr<Creature> > GetListBloque () const;
+    int GetInd ();
+    void SetTour (int value);
     // Setters and Getters
   };
 

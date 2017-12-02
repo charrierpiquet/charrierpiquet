@@ -10,36 +10,27 @@ namespace Engine
 
     void Moteur::AddCommand(std::shared_ptr<Command> cmd)
     {
-        //if (commands.find(priority) == commands.end())
-        //    commands[priority] = std::unique_ptr<Command>(cmd);
-        //else
-        //    std::cout<<"erreur : impossible d'ajouter cette commande."<<std::endl<<"\tniveau de priorite deja utilise."<<std::endl;
         commands.push_back(cmd);
     }
     
     void Moteur::Update()
     {
-        //std::map<int, std::unique_ptr<Command>::iterator it = commands.begin();
-        //while (it != commands.end())
-        //{
-        //    std::static_pointer_cast<Command>(it->second)->Execute(currentState);
-        //    it++;
-        //}
-        //etatsPreced.push_back(currentState->Clone());
         if (!commands.empty())
             for (int i = 0 ; i < (int)commands.size() ; i++ )
             {
                 commands[i]->Execute(currentState);
-                //std::cout<<currentState.GetPile().size()<<" "<<currentState.GetBattlefield().size()<<std::endl;
-                
+                historic.push_back(commands[i]); 
             }    
         commands.clear();
-   
     }
-    /*void Moteur::RollBack()
+    void Moteur::RollBack()
     {
-        currentState=etatsPreced[etatsPreced.size()-1]->Clone();
-        etatsPreced.pop_back();
-    }*/
+        commands[commands.size()-1]->Undo(currentState);
+        historic.pop_back();
+    }
+    int Moteur::HistoricSize()
+    {
+        return historic.size();
+    }
     
 }

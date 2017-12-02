@@ -7,13 +7,16 @@
 
 namespace Etat {
   class Objet;
+  class Cout;
 }
 
+#include "Cout.h"
 
 namespace Etat {
 
   /// class Objet - 
   class Objet {
+    // Associations
     // Attributes
   private:
     bool isCapacite;
@@ -22,9 +25,10 @@ namespace Etat {
     int idObj;
     std::string oracle;
     std::string name;
+    std::shared_ptr<Cout> cost;
     // Operations
   public:
-    Objet (bool capa, int id, int prop, std::string nom);
+    Objet (bool capa, int id, int prop, std::string nom, std::shared_ptr<Cout> cout);
     void SetTarget (std::weak_ptr<Objet> cible);
     std::weak_ptr<Objet> GetTarget () const;
     bool GetIsCapacite () const;
@@ -33,7 +37,7 @@ namespace Etat {
     void SetOracle (std::string txt);
     std::string GetOracle () const;
     std::string GetName () const;
-    std::shared_ptr<Objet> Clone ();
+    std::shared_ptr<Cout> GetCost ();
     // Setters and Getters
   };
 

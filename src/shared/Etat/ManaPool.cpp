@@ -1,132 +1,27 @@
 #include "ManaPool.h"
 #include <iostream>
+#include <algorithm>
 
 namespace Etat {
 
-    void ManaPool::AddInc() {
-        inc++;
+    void ManaPool::SetInc(int value) {
+        inc = std::max(value, 0);;
     }
 
-    void ManaPool::AddBlue() {
-        blue++;
+    void ManaPool::SetBlue(int value) {
+        blue= std::max(value, 0);
     }
 
-    void ManaPool::AddBlack() {
-        black++;
+    void ManaPool::SetBlack(int value) {
+        black= std::max(value, 0);
     }
 
-    void ManaPool::AddGreen() {
-        green++;
+    void ManaPool::SetGreen(int value) {
+        green= std::max(value, 0);
     }
 
-    void ManaPool::AddMulti() {
-        multi++;
-    }
-
-    void ManaPool::Vider() {
-        inc = 0;
-        blue = 0;
-        black = 0;
-        green = 0;
-        multi = 0;
-    }
-
-    bool ManaPool::Payer(std::shared_ptr<Cout> cost) {
-        //std::cout<<" ... \tdans la fonction ... ";
-        if (cost != nullptr) {
-            //std::cout<<"\ton est pas nul ...";
-            int I = cost->GetInc(), B = cost->GetBlack(), U = cost->GetBlue(), G = cost->GetGreen();
-            int tamponI = inc, tamponB = black, tamponU = blue, tamponG = green, tamponM = multi;
-            //std::cout<<"\tinitialisation Ok ...";
-            
-            if (I >= inc) {
-                I -= inc;
-                inc = 0;
-            } else {
-                inc -= I;
-                I = 0;
-            }
-
-            if (B >= black) {
-                B -= black;
-                black = 0;
-            } else {
-                black -= B;
-                B = 0;
-            }
-
-            if (U >= blue) {
-                U -= blue;
-                blue = 0;
-            } else {
-                blue -= U;
-                U = 0;
-            }
-
-            if (G >= green) {
-                G -= green;
-                green = 0;
-            } else {
-                green -= G;
-                G = 0;
-            }
-
-            if (G > 0 && multi > 0)
-                if (G <= multi) {
-                    multi -= G;
-                    G = 0;
-                }
-
-
-            if (B > 0 && multi > 0)
-                if (B <= multi) {
-                    multi -= B;
-                    B = 0;
-                }
-
-            if (U > 0 && multi > 0)
-                if (U <= multi) {
-                    multi -= U;
-                    U = 0;
-                }
-
-
-            if (I > 0 && (black > 0 || blue > 0 || green > 0 || multi > 0)) {
-                if (I <= black) {
-                    black -= I;
-                    I = 0;
-                } else {
-                    I -= black;
-                    black = 0;
-                    if (I <= blue) {
-                        blue -= I;
-                        I = 0;
-                    } else {
-                        I -= blue;
-                        blue = 0;
-                        if (I <= green) {
-                            green -= I;
-                            I = 0;
-                        } else {
-                            I -= green;
-                            green = 0;
-                        }
-                    }
-                }
-            }
-            
-            if (I > 0 || B > 0 || U > 0 || G > 0) {
-                inc = tamponI;
-                black = tamponB;
-                blue = tamponU;
-                green = tamponG;
-                multi = tamponM;
-                //std::cout<<"\t on peux pas payer ...";
-                return false;
-            }
-        }
-        //std::cout<<"\t on peux payer !!! ";
-        return true;
+    void ManaPool::SetMulti(int value) {
+        multi= std::max(value, 0);
     }
 
     int ManaPool::GetInc() const {

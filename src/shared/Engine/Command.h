@@ -14,9 +14,11 @@ namespace Engine {
 
   /// class Command - 
   class Command {
+    // Associations
     // Operations
   public:
     virtual void Execute (std::shared_ptr<Etat::State> state) = 0;
+    virtual void Undo ( std::shared_ptr<Etat::State>) = 0;
     // Setters and Getters
   };
 

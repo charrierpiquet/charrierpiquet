@@ -33,8 +33,6 @@ namespace Etat {
     Joueur ();
     int GetPv () const;
     void SetPv (int Pv);
-    void Draw ();
-    void Discard ();
     std::vector<std::shared_ptr<Carte> > GetHand () const;
     bool GetAJoueTerrain () const;
     void SetAJoueTerrain (bool value);

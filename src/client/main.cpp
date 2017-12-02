@@ -10,13 +10,13 @@ void testSFML() {
 // Fin test SFML
 
 #include "Etat.h"
-#include "Test.h"
+//#include "Test.h"
 #include "Render.h"
 #include <iostream>
 
 using namespace std;
 using namespace Etat;
-using namespace Test;
+//using namespace Test;
 using namespace Render;
 
 // c'est quoi ces problemes de memoire ?!
@@ -33,7 +33,7 @@ int main(int argc,char* argv[])
             cout << "Bonjour le monde !"<< endl;
         else if ((string)argv[1] == "state")
         {                
-            int sortie = TestEtat();   
+            int sortie =0;//= TestEtat();   
             if (sortie != 0)
                 cout << "Il y a des erreurs, voir sortie : "<< sortie << endl;
             else
@@ -41,11 +41,11 @@ int main(int argc,char* argv[])
         }
         else if ((string)argv[1] == "render")
         {
-            TestRender();
+            //TestRender();
         }
         else if ((string)argv[1] == "engine")
         {
-            int sortie = TestEngine();
+            int sortie = 0;//TestEngine();
             if (sortie != 0)
                 cout << "Il y a des erreurs, voir sortie : "<< sortie << endl;
             else
@@ -53,11 +53,11 @@ int main(int argc,char* argv[])
         }
         else if ((string)argv[1] == "random_ai")
         {
-            TestIARandom();
+            //TestIARandom();
         }
         else if ((string)argv[1] == "heuristic_ai")
         {
-            TestIAHeuristique();
+            //TestIAHeuristique();
         }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;

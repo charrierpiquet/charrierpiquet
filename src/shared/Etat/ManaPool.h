@@ -2,13 +2,6 @@
 #ifndef ETAT__MANAPOOL__H
 #define ETAT__MANAPOOL__H
 
-#include <memory>
-
-namespace Etat {
-  class Cout;
-}
-
-#include "Cout.h"
 
 namespace Etat {
 
@@ -23,13 +16,11 @@ namespace Etat {
     int multi;
     // Operations
   public:
-    void AddInc ();
-    void AddBlue ();
-    void AddBlack ();
-    void AddGreen ();
-    void AddMulti ();
-    void Vider ();
-    bool Payer (std::shared_ptr<Cout> cost);
+    void SetInc (int value);
+    void SetBlue (int value);
+    void SetBlack (int value);
+    void SetGreen (int value);
+    void SetMulti (int value);
     int GetInc () const;
     int GetBlue () const;
     int GetBlack () const;

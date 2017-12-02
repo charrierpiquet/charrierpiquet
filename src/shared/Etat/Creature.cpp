@@ -4,7 +4,7 @@
 namespace Etat
 {
     Creature::Creature(int strengh, int thougness,bool token,std::string nom, std::shared_ptr<Cout> cout,
-            std::vector<std::shared_ptr<Active> > capa, int id, int prop):Carte(true,false,true,token, nom, cout, capa, id, prop)
+            std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):Carte(true,false,true,token, nom, cout, capa, id, prop)
     {
         force = strengh;
         endurance = thougness;
@@ -56,22 +56,5 @@ namespace Etat
     void Creature::SetMalInvoc(bool value)
     {
         malInvoc = value;
-    }
-    
-    std::shared_ptr<Creature> Creature::Clone()
-    {
-        std::vector<std::shared_ptr<Active> > capa;
-        for (unsigned int i = 0 ; i < this->GetAbility().size() ; i++ )
-            capa.push_back(this->GetAbility()[i]->Clone());
-        
-        std::shared_ptr<Creature> clone (new Creature(force, endurance,this->GetIsToken(),this->GetName(), this->GetCost(),capa, this->GetIdObj(), this->GetIndJoueur()));
-        clone->SetCounter(this->GetCounter());
-        clone->SetIsTap(this->GetIsTap());
-        clone->SetOracle(this->GetOracle());
-        clone->SetBlessure(blessure);
-        clone->SetBonusEOT(bonusEOT);
-        clone->SetMalInvoc(malInvoc);
-        return clone;
-    }
-    
+    }    
 };

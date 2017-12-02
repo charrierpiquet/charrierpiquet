@@ -2,16 +2,12 @@
 #include <algorithm>
 namespace Etat {
 
-    Cout::Cout() {
-        inc = 0;
-        black = 0;
-        blue = 0;
-        green = 0;
-        discard = 0;
-        life = 0;
-        permanent = 0;
-        meule = 0;
-        exile = 0;
+    Cout::Cout(int L, int I, int B, int U, int G) {
+        inc = std::max(I, 0);
+        blue = std::max(U, 0);
+        black = std::max(B, 0);
+        green = std::max(G, 0);
+        life = std::max(L, 0);
     }
 
     int Cout::GetBlack() const {
@@ -30,36 +26,8 @@ namespace Etat {
         return green;
     }
 
-    int Cout::GetDiscard() const {
-        return discard;
-    }
-
-    int Cout::GetMeule() const {
-        return meule;
-    }
-
-    int Cout::GetExile() const {
-        return exile;
-    }
 
     int Cout::GetInc() const {
         return inc;
-    }
-
-    int Cout::GetPermanent() const {
-        return permanent;
-    }
-
-    void Cout::SetCost(int Inc, int Blue, int Black, int Green,
-            int Discard, int Life, int Permanent, int Exile, int Meule) {
-        inc = std::max(Inc, 0);
-        blue = std::max(Blue, 0);
-        black = std::max(Black, 0);
-        green = std::max(Green, 0);
-        discard = std::max(Discard, 0);
-        life = std::max(Life, 0);
-        permanent = std::max(Permanent, 0);
-        exile = std::max(Exile, 0);
-        meule = std::max(Meule, 0);
     }
 };

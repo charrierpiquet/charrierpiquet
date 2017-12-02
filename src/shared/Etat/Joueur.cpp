@@ -25,26 +25,6 @@ namespace Etat
         pv = std::max(Pv,0);
     }
     
-    void Joueur::Draw()
-    {
-        if (!library.empty())
-        {
-            hand.push_back(library.back());
-            library.pop_back();
-        }
-    }
-    
-    void Joueur::Discard()
-    {
-        std::srand(std::time(0));
-        int del = std::rand()%(hand.size()-1);
-        if (hand.size() > 0)
-        {
-            graveyard.push_back(hand[del]);
-            hand.erase(hand.begin()+del);
-        }
-    }
-    
     std::vector<std::shared_ptr<Carte> > Joueur::GetHand() const
     {
         return hand;
