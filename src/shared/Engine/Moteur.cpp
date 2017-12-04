@@ -25,8 +25,9 @@ namespace Engine
     }
     void Moteur::RollBack()
     {
-        commands[commands.size()-1]->Undo(currentState);
+        historic.back()->Undo(currentState);
         historic.pop_back();
+        //std::cout<<"retour"<<std::endl;
     }
     int Moteur::HistoricSize()
     {

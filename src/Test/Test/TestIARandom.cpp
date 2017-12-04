@@ -20,7 +20,16 @@ namespace Test
         
         Ai::Ia_Base ia (state, moteur);
         
-        
+    
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(0)));
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(0)));
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(0)));     
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(0)));
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(1)));
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(1)));
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(1)));
+        moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(1)));
+        moteur->Update();
         sf::RenderWindow window(sf::VideoMode(800,600),"Sorcellerie, le Regroupement",sf::Style::Close);
         window.setFramerateLimit(60);
 
@@ -41,7 +50,11 @@ namespace Test
                         rendu->Click(event.mouseButton.x,event.mouseButton.y);
                 
                 if (event.type == sf::Event::KeyPressed)
+                {
                     ia.Think();
+                    std::cout<<"Tour "<<state->GetJoueurTour()<<"; Phase "<<state->GetPhaseName()<<"; Priorite "<<state->GetPriority()<<std::endl;
+                }
+                    
             }
                 
             

@@ -11,7 +11,7 @@ namespace Engine
         //std::srand(unsigned ( std::time(0)));
         //int k = std::rand() % state->GetJoueurs()[idJoueur]->GetHand().size();
         state->GetJoueurs()[idJoueur]->AddCardHand(state->GetJoueurs()[idJoueur]->GetLibrary()[state->GetJoueurs()[idJoueur]->GetLibrary().size()-1]);
-        state->GetJoueurs()[idJoueur]->GetLibrary().pop_back();
+        state->GetJoueurs()[idJoueur]->DelCardLibrary(state->GetJoueurs()[idJoueur]->GetLibrary().size()-1);
         idCarte = state->GetJoueurs()[idJoueur]->GetHand()[state->GetJoueurs()[idJoueur]->GetHand().size()-1]->GetIdObj();
     }
     void  CommandDraw::Undo(std::shared_ptr<Etat::State> state)

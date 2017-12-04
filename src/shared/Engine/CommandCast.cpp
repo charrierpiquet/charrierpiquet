@@ -15,7 +15,7 @@ namespace Engine
             if (idCarte == state->GetJoueurs()[idJoueur]->GetHand()[i]->GetIdObj())
             {
                 state->AddCardPile(state->GetJoueurs()[idJoueur]->GetHand()[i]);
-                state->GetJoueurs()[idJoueur]->GetHand().erase(state->GetJoueurs()[idJoueur]->GetHand().begin() + i);
+                state->GetJoueurs()[idJoueur]->DelCardHand(i);
             }
     }
     void CommandCast::Undo(std::shared_ptr<Etat::State> state)

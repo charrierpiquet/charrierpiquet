@@ -30,8 +30,6 @@ namespace Etat {
         std::vector<std::shared_ptr< Capacite> > Capacites;
         unsigned int Joueur;
 
-        std::vector<std::vector<std::shared_ptr< Carte> > > decks;
-
         for (Joueur = 0; Joueur < list_deck.size(); Joueur++) {
             int TailleDeck = 0;
             std::ifstream FichierDeck;
@@ -67,12 +65,12 @@ namespace Etat {
                     if (k != 0)
                         for (int i = 0; i < k; i++) {
                             std::getline(Card, Ability);
-                            std::shared_ptr<Cout> CostAbility(new  Cout(0,Ability[0] - '0', Ability[4] - '0', Ability[2] - '0', Ability[6] - '0'));
-                            Capacites.push_back(std::shared_ptr< Capacite>(new  Capacite(CostAbility, Ability.substr(12, Ability.size() - 12), id++, Joueur, Ability.substr(12, Ability.size() - 12), (bool)(int) (Ability[18] - '0'))));
+                            std::shared_ptr<Cout> CostAbility(new  Cout(Ability[0] - '0',Ability[2] - '0', Ability[4] - '0', Ability[6] - '0', Ability[8] - '0'));
+                            Capacites.push_back(std::shared_ptr< Capacite>(new  Capacite(CostAbility, Ability.substr(12, Ability.size() - 12), id++, Joueur, Ability.substr(12, Ability.size() - 12), Ability[18]=='1')));
                         }
 			
                                         //std::cout << "Jusqu'ici ca va bien" << std::endl;
-                    std::shared_ptr<Cout> Cost(new Cout(0, strCout[0] - '0', strCout[4] - '0', strCout[2] - '0', strCout[6] - '0'));
+                    std::shared_ptr<Cout> Cost(new Cout(Ability[0] - '0', strCout[2] - '0', strCout[4] - '0', strCout[6] - '0', strCout[8] - '0'));
                     if (std::strcmp(Type.data(), "creature") == 0) {
                         deck.push_back(std::shared_ptr< Creature>(new  Creature(f, e, false, Nom, Cost, Capacites, id++, Joueur)));
                     } else {
@@ -89,17 +87,15 @@ namespace Etat {
                     Card.close();
                 }
             }
-                        decks.push_back(deck);
             FichierDeck.close();
-        }
-        for (unsigned int i = 0; i < list_deck.size(); i++) {
+            std::cout<<Joueur<<" "<<this->GetJoueurs().size()<<std::endl;
             std::srand(unsigned ( std::time(0)));
-            while (!decks[i].empty()) {
-                int k = std::rand() % decks[i].size();
-                this->GetJoueurs()[i]->AddCardLibrary(decks[i][k]);
-                decks[i].erase(decks[i].begin() + k);
+            while (!deck.empty()) {
+                int k = std::rand() % deck.size();
+                this->GetJoueurs()[Joueur]->AddCardLibrary(deck[k]);
+                deck.erase(deck.begin() + k);
             }
-        }
+        }            
     }
 
     void State::SetPriority(int value) {
@@ -200,5 +196,11 @@ namespace Etat {
     void State::SetTour(int value)
     {
         joueur = value;
+    }
+    void State::ClearAtt()
+    {
+        list_bloqueur.clear();
+        list_attaquant.clear();
+        list_bloque.clear();
     }
 }

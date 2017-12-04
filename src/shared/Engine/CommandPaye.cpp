@@ -1,5 +1,6 @@
 
 #include "CommandPaye.h"
+#include <iostream>
 namespace Engine {
 
     CommandPaye::CommandPaye(std::shared_ptr<Etat::Cout> cout) {

@@ -39,9 +39,7 @@ namespace Engine {
             } else
                 state->GetJoueurs()[1 - state->GetJoueurTour()]->SetPv(state->GetJoueurs()[1 - state->GetJoueurTour()]->GetPv() - dmgToDeal);
         }
-        state->GetAttaquants().clear();
-        state->GetBloqueur().clear();
-        state->GetListBloque().clear();
+        state->ClearAtt();
     }
 
     void CommandSolveCombat::Undo(std::shared_ptr<Etat::State> state) {

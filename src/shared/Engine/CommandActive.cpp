@@ -2,6 +2,7 @@
 #include "Etat/Objet.h"
 #include "Etat/Capacite.h"
 #include "Etat/State.h"
+#include <iostream>
 
 namespace Engine {
 
