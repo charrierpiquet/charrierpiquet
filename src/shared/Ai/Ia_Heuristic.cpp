@@ -34,16 +34,21 @@ namespace Ai {
             // on pioche
             engine->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(currentState->GetJoueurTour())));
             engine->Update();
+
+            // on joue un terrain
             
-            
-            
+            // on passe a la phase suivante
+
         }// si c'est la phase de declaration des attaquants
         else if (currentState->GetPhase() == 1) {
-
-        } else if (currentState->GetPhase() == 2){
-        }else if (currentState->GetPhase() == 3){
+            // on fait la liste des créatures avec lesquels c'est bien d'attaquer et on attaque
+        } else if (currentState->GetPhase() == 2) {
+            // priorite on combat
+        } else if (currentState->GetPhase() == 3) {
+            // on fait la liste des créatures avec lesquels c'est bien d'attaquer
         } else if (currentState->GetPhase() == 4) {
-            
+            // on tente de faire un coup
+
             // on tue les trucs qui doivent mourir
             for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
                 if (currentState->GetBattlefield()[i]->GetIsCreature())
@@ -181,8 +186,11 @@ namespace Ai {
                             // on reviens en arriere
                             Retour(hist);
                         }
-                    }// sinon
-                    else {
+                    }// sinon si on est dans une phase ou on peux lancer la carte et que la pile est vide et que soit c'est un terrain et on a pas lancer de terrain soit c'est pas un terrain
+                    else if ((currentState->GetPhase() == 0 || currentState->GetPhase() == 4) && currentState->GetPile().empty()
+                            && ((currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i]->GetIsLand() && !currentState->GetJoueurs()[currentState->GetPriority()]->GetAJoueTerrain())
+                            || !currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i]->GetIsLand())
+                            && currentState->GetPriority() == currentState->GetJoueurTour()) {
                         // on lance la carte
                         engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast(currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i])));
                         engine->Update();
@@ -260,7 +268,7 @@ namespace Ai {
                                 src = currentState->GetBattlefield()[i];
                                 obj = currentState->GetBattlefield()[i]->GetAbility()[j];
                                 cible = std::weak_ptr<Etat::Objet>();
-                            }   
+                            }
                         }
                     }
                     Retour(status);
@@ -269,10 +277,11 @@ namespace Ai {
 
         // on fait l'action correspondant au max
         if (obj->GetIsCapacite())
-            engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(src,std::static_pointer_cast<Etat::Capacite>(obj),cible)));
-        else
-        {
+            engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(src, std::static_pointer_cast<Etat::Capacite>(obj), cible)));
+        else {
             obj->SetTarget(cible);
+            if (std::static_pointer_cast<Etat::Carte>(obj)->GetIsLand())
+                currentState->GetJoueurs()[currentState->GetPriority()]->SetAJoueTerrain(true);
             engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast(std::static_pointer_cast<Etat::Carte>(obj))));
         }
         engine->Update();
@@ -285,43 +294,37 @@ namespace Ai {
     }
 
     // override TryCast pour qu'il engage aussi la mana
-    bool Ia_Heuristic::TryCast(std::shared_ptr<Etat::Cout> cost)
-    {
+    bool Ia_Heuristic::TryCast(std::shared_ptr<Etat::Cout> cost) {
         // on admet qu'il n'existe que trois type de terrain (les terrains de base)
         // on admet que l'on commence avec la manapool vide
         bool canCast = false;
         int hist = engine->HistoricSize();
-        int i = cost->GetInc(), b =  cost->GetBlack(), u = cost->GetBlue(), g = cost->GetGreen();
-        
-        for (unsigned int i = 0 ; i < currentState->GetBattlefield().size() ; i++)
-            if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap())
-            {
-                if (b > 0 && currentState->GetBattlefield()[i]->GetName()=="Marais" )
-                {
+        int inc = cost->GetInc(), b = cost->GetBlack(), u = cost->GetBlue(), g = cost->GetGreen();
+
+        for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
+            if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap()) {
+                if (b > 0 && currentState->GetBattlefield()[i]->GetName() == "Marais") {
                     engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                     b--;
                 }
-                if (u > 0 && currentState->GetBattlefield()[i]->GetName()=="Ile" )
-                {
+                if (u > 0 && currentState->GetBattlefield()[i]->GetName() == "Ile") {
                     engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                     u--;
                 }
-                if (g > 0 && currentState->GetBattlefield()[i]->GetName()=="Foret" )
-                {
+                if (g > 0 && currentState->GetBattlefield()[i]->GetName() == "Foret") {
                     engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                     g--;
                 }
             }
         engine->Update();
-        for (unsigned int i = 0 ; i < currentState->GetBattlefield().size() ; i++)
+        for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
             if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap())
-                if (i > 0)
-                {
+                if (i > 0) {
                     engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
-                    i--;
+                    inc--;
                 }
         engine->Update();
-        
+
         int m1 = currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetManaPool()->GetMulti();
         int i1 = currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetManaPool()->GetInc();
         int b1 = currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetManaPool()->GetBlack();
@@ -340,7 +343,7 @@ namespace Ai {
         canCast = m1 != m2 || i1 != i2 || b1 != b2 || u1 != u2 || g1 != g2;
         if (!canCast)
             Retour(hist);
-        
+
         return canCast;
     }
 
