@@ -33,7 +33,7 @@ int main(int argc,char* argv[])
             cout << "Bonjour le monde !"<< endl;
         else if ((string)argv[1] == "state")
         {                
-            int sortie =0;//= TestEtat();   
+            int sortie = TestEtat();   
             if (sortie != 0)
                 cout << "Il y a des erreurs, voir sortie : "<< sortie << endl;
             else

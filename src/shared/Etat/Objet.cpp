@@ -2,12 +2,13 @@
 
 namespace Etat
 {
-    Objet::Objet(bool capa, int id, int prop, std::string nom, std::shared_ptr<Cout> cout) : cost(cout)
+    Objet::Objet(bool capa, int id, int prop, std::string nom, std::shared_ptr<Cout> cout)
     {
         isCapacite = capa;
         idObj = id;
         indJoueur = prop;
         name = nom;
+        cost = cout;
         //oracle = std::shared_ptr<std::string>(new std::string());
     }
     

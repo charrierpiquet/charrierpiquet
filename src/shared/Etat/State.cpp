@@ -35,15 +35,17 @@ namespace Etat {
         for (Joueur = 0; Joueur < list_deck.size(); Joueur++) {
             int TailleDeck = 0;
             std::ifstream FichierDeck;
+            std::vector<std::shared_ptr<Carte> > deck;
             FichierDeck.open("./res/" + list_deck[Joueur] + ".deck");
             std::cout << "chargement deck " << Joueur << " ..." << std::endl;
 
             if (!FichierDeck)
                 std::cout << "impossible d'ouvrir le deck" << std::endl;
                 
-			std::cout << "Jusqu'ici on va bien" << std::endl;
+			//std::cout << "Jusqu'ici on va bien" << std::endl;
 
             while (FichierDeck.peek() != EOF) {
+                
                 TailleDeck++;
                 std::getline(FichierDeck, Nom);
                 Nom.erase(Nom.end() - 1);
@@ -52,40 +54,42 @@ namespace Etat {
                 if (!Card)
                     std::cout << "impossible d'ouvrir la carte " << Nom << std::endl;
                 else {
-					std::cout << "Jusqu'ici tout va bien" << std::endl;
+					//std::cout << "Jusqu'ici tout va bien" << std::endl;
                     std::getline(Card, Type); //Type.erase(Type.end()-1);
                     std::getline(Card, Nom); //Nom.erase(Nom.end()-1);
                     std::getline(Card, strCout); //Cout.erase(Cout.end()-1);
                     std::getline(Card, Force); //Force.erase(Force.end()-1);
                     std::getline(Card, Endurance); //Endurance.erase(Endurance.end()-1);
                     std::getline(Card, NbCapa); //NbCapa.erase(NbCapa.end()-1);                
-					std::cout << "Jusqu'ici tout va bien" << std::endl;
+					//std::cout << "Jusqu'ici tout va bien" << std::endl;
                     int k = std::stoi(NbCapa, nullptr, 0), f = std::stoi(Force, nullptr, 0), e = std::stoi(Endurance, nullptr, 0);
                     Capacites.clear();
                     if (k != 0)
                         for (int i = 0; i < k; i++) {
                             std::getline(Card, Ability);
                             std::shared_ptr<Cout> CostAbility(new  Cout(0,Ability[0] - '0', Ability[4] - '0', Ability[2] - '0', Ability[6] - '0'));
-                            Capacites.push_back(std::shared_ptr< Capacite>(new  Capacite(CostAbility, Ability.substr(20, Ability.size() - 20), id++, Joueur, Ability.substr(20, Ability.size() - 20), (bool)(int) (Ability[18] - '0'))));
+                            Capacites.push_back(std::shared_ptr< Capacite>(new  Capacite(CostAbility, Ability.substr(12, Ability.size() - 12), id++, Joueur, Ability.substr(12, Ability.size() - 12), (bool)(int) (Ability[18] - '0'))));
                         }
-					std::cout << "Jusqu'ici ca va bien" << std::endl;
+			
+                                        //std::cout << "Jusqu'ici ca va bien" << std::endl;
                     std::shared_ptr<Cout> Cost(new Cout(0, strCout[0] - '0', strCout[4] - '0', strCout[2] - '0', strCout[6] - '0'));
                     if (std::strcmp(Type.data(), "creature") == 0) {
-                        decks[Joueur].push_back(std::shared_ptr< Creature>(new  Creature(f, e, false, Nom, Cost, Capacites, id++, Joueur)));
+                        deck.push_back(std::shared_ptr< Creature>(new  Creature(f, e, false, Nom, Cost, Capacites, id++, Joueur)));
                     } else {
-                        decks[Joueur].push_back(std::shared_ptr< Carte>(new  Carte(std::strcmp(Type.data(), "sort") != 0, std::strcmp(Type.data(), "terrain") == 0, std::strcmp(Type.data(), "creature") == 0, 0, Nom, Cost, Capacites, id++, Joueur)));
+                        deck.push_back(std::shared_ptr< Carte>(new  Carte(std::strcmp(Type.data(), "sort") != 0, std::strcmp(Type.data(), "terrain") == 0, std::strcmp(Type.data(), "creature") == 0, 0, Nom, Cost, Capacites, id++, Joueur)));
                     }
-					std::cout << "Jusqu'ici tout va tranquille" << std::endl;
+					//std::cout << "Jusqu'ici tout va tranquille" << std::endl;
                     Texte = "";
                     while (Card.peek() != EOF) {
                         getline(Card, Ligne);
                         Texte = Texte + Ligne + "\n";
                     }
-                    decks[Joueur][TailleDeck - 1]->SetOracle(Texte);
-					std::cout << "Jusqu'ici tout va calmement" << std::endl;
+                    deck[TailleDeck - 1]->SetOracle(Texte);
+					//std::cout << "Jusqu'ici tout va calmement" << std::endl;
                     Card.close();
                 }
             }
+                        decks.push_back(deck);
             FichierDeck.close();
         }
         for (unsigned int i = 0; i < list_deck.size(); i++) {

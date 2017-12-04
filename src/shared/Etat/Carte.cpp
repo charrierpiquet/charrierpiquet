@@ -4,13 +4,13 @@ namespace Etat
 {
     Carte::Carte(bool permanent,bool land,bool creature,bool token,
             std::string nom,std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):
-    Objet(false, id, prop, nom,cout),ability(capa)
+    Objet(false, id, prop, nom,cout)
     {
         isPermanent = permanent;
         isLand = land;
         isCreature = creature;
         isToken = token;       
-        
+        ability = capa;
         counters =0;
         isTap = false;
         
