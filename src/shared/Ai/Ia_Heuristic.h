@@ -30,6 +30,9 @@ namespace Ai {
     void DoBestAction ();
     void Retour (int val);
     bool TryCast (std::shared_ptr<Etat::Cout> cost);
+    void FinTour ();
+    void Attaque ();
+    void Bloque ();
     // Setters and Getters
   };
 
