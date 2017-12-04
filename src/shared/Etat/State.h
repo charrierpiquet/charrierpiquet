@@ -59,7 +59,7 @@ namespace Etat {
     std::vector<std::shared_ptr<Creature> > GetListBloque () const;
     int GetInd ();
     void SetTour (int value);
-    void ClearAtt();
+    void ClearAtt ();
     // Setters and Getters
   };
 
