@@ -10,13 +10,13 @@ void testSFML() {
 // Fin test SFML
 
 #include "Etat.h"
-//#include "Test.h"
+#include "Test.h"
 #include "Render.h"
 #include <iostream>
 
 using namespace std;
 using namespace Etat;
-//using namespace Test;
+using namespace Test;
 using namespace Render;
 
 // c'est quoi ces problemes de memoire ?!
@@ -41,7 +41,7 @@ int main(int argc,char* argv[])
         }
         else if ((string)argv[1] == "render")
         {
-            //TestRender();
+            TestRender();
         }
         else if ((string)argv[1] == "engine")
         {

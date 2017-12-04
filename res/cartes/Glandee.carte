@@ -1,10 +1,10 @@
 invocation
 Glandee
-1 0 0 1 0 0 0 0 0
+0 1 0 0 1
 0
 0
 1
-2 0 0 1 0 0 0 0 0 0 TokenSquirrel
+0 2 0 0 1 0 TokenSquirrel
 Invocation
 2+G: creez un jeton de creature
 ecureuil 1/1.
