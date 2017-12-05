@@ -21,6 +21,6 @@ namespace Engine
     void CommandAttack::Undo(std::shared_ptr<Etat::State> state)
     {
         state->GetAttaquants()[state->GetAttaquants().size()-1]->SetIsTap(false);
-        state->GetAttaquants().pop_back();
+        state->DelListAttaquant(state->GetAttaquants().size()-1);
     }
 }

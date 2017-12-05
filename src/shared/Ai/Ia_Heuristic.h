@@ -3,6 +3,7 @@
 #define AI__IA_HEURISTIC__H
 
 #include <memory>
+#include <vector>
 
 namespace Etat {
   class State;
@@ -33,6 +34,9 @@ namespace Ai {
     void FinTour ();
     void Attaque ();
     void Bloque ();
+    void KillAll ();
+    std::vector<std::shared_ptr<Etat::Objet> > ListCible ();
+    std::vector<std::shared_ptr<Etat::Objet> > ListObjet ();
     // Setters and Getters
   };
 

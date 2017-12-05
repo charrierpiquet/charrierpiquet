@@ -47,7 +47,7 @@ namespace Engine {
         for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
             if (state->GetBattlefield()[i]->GetIdObj() == idSource) {
                 state->GetBattlefield()[i]->SetIsTap(false);
-                state->GetPile().pop_back();
+                state->DelCardPile(state->GetPile().size() -1);
             }
     }
 }

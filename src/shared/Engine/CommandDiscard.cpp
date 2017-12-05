@@ -18,6 +18,6 @@ namespace Engine
     void CommandDiscard::Undo(std::shared_ptr<Etat::State> state)
     {
         state->GetJoueurs()[iDJoueur]->AddCardHand(state->GetJoueurs()[iDJoueur]->GetGraveyard()[state->GetJoueurs()[iDJoueur]->GetGraveyard().size()-1]);
-        state->GetJoueurs()[iDJoueur]->GetGraveyard().pop_back();         
+        state->GetJoueurs()[iDJoueur]->DelCardGraveyard(state->GetJoueurs()[iDJoueur]->GetGraveyard().size()-1);         
     }
 }

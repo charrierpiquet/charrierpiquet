@@ -77,12 +77,12 @@ namespace Engine {
                     state->DelCardBattlefield(i);
         } else if (obj->GetKeyWord().compare("Contresort") == 0) {
             if (!target->GetIsCapacite())
-                state->GetJoueurs()[target->GetIndJoueur()]->GetGraveyard().pop_back();
-            
+                state->GetJoueurs()[target->GetIndJoueur()]->DelCardGraveyard(state->GetJoueurs()[target->GetIndJoueur()]->GetGraveyard().size() - 1);
+            // ici ca marche pas : faudra creer une fonction pour inserer dans une pile
             state->GetPile().insert(state->GetPile().begin()+pos_target,target);
         }//state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->AddCardHand(state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary()[state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1]);
             //state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->DelCardLibrary( state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1);
-
+        state->AddCardPile(obj);
     }
 
 }

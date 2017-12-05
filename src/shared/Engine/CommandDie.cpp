@@ -21,6 +21,6 @@ namespace Engine {
 
     void CommandDie::Undo(std::shared_ptr<Etat::State> state) {
         state->AddCardBattlefield(state->GetJoueurs()[idProp]->GetGraveyard()[state->GetJoueurs()[idProp]->GetGraveyard().size() - 1]);
-        state->GetJoueurs()[idProp]->GetGraveyard().pop_back();
+        state->GetJoueurs()[idProp]->DelCardGraveyard(state->GetJoueurs()[idProp]->GetGraveyard().size() - 1);
     }
 }

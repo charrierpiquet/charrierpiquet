@@ -20,4 +20,5 @@
 #include "Engine/CommandSolveCombat.h"
 #include "Engine/CommandResolveCard.h"
 #include "Engine/CommandTour.h"
+#include "Engine/CommandVideMp.h"
 #endif

@@ -60,6 +60,9 @@ namespace Etat {
     int GetInd ();
     void SetTour (int value);
     void ClearAtt ();
+    void DelListAttaquant (int ind);
+    void DelListBloque (int ind);
+    void DelListBloqueur (int ind);
     // Setters and Getters
   };
 

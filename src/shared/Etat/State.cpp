@@ -203,4 +203,16 @@ namespace Etat {
         list_attaquant.clear();
         list_bloque.clear();
     }
+    void State::DelListAttaquant(int ind)
+    {
+        list_attaquant.erase(list_attaquant.begin() + ind);
+    }
+    void State::DelListBloque(int ind)
+    {
+        list_bloque.erase(list_bloque.begin() + ind);
+    }
+    void State::DelListBloqueur(int ind)
+    {
+        list_bloqueur.erase(list_bloqueur.begin() + ind);
+    }
 }

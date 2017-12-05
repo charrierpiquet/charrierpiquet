@@ -21,8 +21,8 @@ namespace Engine
     }
     void CommandBlock::Undo(std::shared_ptr<Etat::State> state)
     {
-        state->GetListBloque().pop_back();
-        state->GetBloqueur().pop_back();
+        state->DelListBloque(state->GetListBloque().size()-1);
+        state->DelListBloqueur(state->GetBloqueur().size()-1);
     }
     
     
