@@ -20,10 +20,10 @@ namespace Engine {
   class CommandDiscard : public Engine::Command {
     // Associations
     // Attributes
-  public:
-    int idProp;
   private:
     int iDJoueur;
+    int idProp;
+    bool empty;
     // Operations
   public:
     CommandDiscard (int joueur);

@@ -88,6 +88,8 @@ namespace Ai {
             engine->Update();
             std::cout << "\ton joue" << std::endl;
             // on choisi une carte au hasard dans sa main
+            if (!currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetHand().empty())
+            {
             std::srand(unsigned ( std::time(0)));
             int k = std::rand() % currentState->GetJoueurs()[currentState->GetJoueurTour()]->GetHand().size();
             // si ce n'est pas un terrain
@@ -110,6 +112,7 @@ namespace Ai {
                     std::cout << "\tCommande resolu" << std::endl;
                 } else
                     std::cout << "\t\tNOPE" << std::endl;
+            }
             }
             std::cout << "\ton vide la manapool" << std::endl;
             // on vide les manapool

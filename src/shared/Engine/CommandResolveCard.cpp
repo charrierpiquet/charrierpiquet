@@ -4,6 +4,7 @@
 namespace Engine {
 
     CommandResolveCard::CommandResolveCard(std::shared_ptr<Etat::Carte> card, std::weak_ptr<Moteur> m) {
+        std::cout<<"\t\tinit resolvecard"<<std::endl;
         engine = m;
         isPermanent = card->GetIsPermanent();
         idCarte = card->GetIdObj();
@@ -12,6 +13,7 @@ namespace Engine {
     }
 
     void CommandResolveCard::Execute(std::shared_ptr<Etat::State> state) {
+        std::cout<<"\t\texec resolvecard"<<std::endl;
         //std::cout<<"\t\t\tpermanent ? "<<isPermanent;
         if (isPermanent) 
         {
@@ -21,7 +23,6 @@ namespace Engine {
        else {
             for (unsigned int i = 0; i < std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size(); i++)
                 engine.lock()->AddCommand(std::shared_ptr<CommandResolveCapa>(new CommandResolveCapa(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility()[i], engine)));
-
             state->GetJoueurs()[idProp]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
             //std::cout<<"\t cimetiere"<<std::endl;
         }
@@ -29,6 +30,7 @@ namespace Engine {
     }
 
     void CommandResolveCard::Undo(std::shared_ptr<Etat::State> state) {
+        std::cout<<"\t\tundo resolvecard"<<std::endl;
         if (isPermanent) {
             for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
                 if (state->GetBattlefield()[i]->GetIdObj() == idCarte) {
@@ -37,7 +39,7 @@ namespace Engine {
                 }
         } else {
             state->AddCardPile(state->GetJoueurs()[idProp]->GetGraveyard()[state->GetJoueurs()[idProp]->GetGraveyard().size() - 1]);
-            state->GetJoueurs()[idProp]->GetGraveyard().pop_back();
+            state->GetJoueurs()[idProp]->DelCardGraveyard(state->GetJoueurs()[idProp]->GetGraveyard().size() -1);
         }
     }
 

@@ -7,6 +7,7 @@
 namespace Engine {
 
     CommandActive::CommandActive(std::shared_ptr<Etat::Carte> carte, std::shared_ptr<Etat::Capacite> capa, std::weak_ptr<Etat::Objet> target) {
+        std::cout<<"\t\tinit active"<<std::endl;
         idSource = carte->GetIdObj();
         keyWord = capa->GetKeyWord();
         if (capa->GetNeedTarget())
@@ -16,6 +17,7 @@ namespace Engine {
     }
 
     void CommandActive::Execute(std::shared_ptr<Etat::State> state) {
+        std::cout<<"\t\texec active"<<std::endl;
         for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
             if (state->GetBattlefield()[i]->GetIdObj() == idSource)
                 if (!state->GetBattlefield()[i]->GetIsTap()) {
@@ -44,6 +46,7 @@ namespace Engine {
     }
 
     void CommandActive::Undo(std::shared_ptr<Etat::State> state) {
+        std::cout<<"\t\tundo active"<<std::endl;
         for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
             if (state->GetBattlefield()[i]->GetIdObj() == idSource) {
                 state->GetBattlefield()[i]->SetIsTap(false);

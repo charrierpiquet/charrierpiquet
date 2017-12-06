@@ -59,6 +59,10 @@ int main(int argc,char* argv[])
         {
             TestIAHeuristique();
         }
+        else if ((string)argv[1] == "rollback")
+        {
+            TestRollback();
+        }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
                

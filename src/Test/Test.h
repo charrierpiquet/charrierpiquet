@@ -6,5 +6,6 @@
 #include "Test/TestRender.h"
 #include "Test/TestIAHeuristique.h"
 #include "Test/TestIARandom.h"
+#include "Test/TestRollBack.h"
 
 #endif

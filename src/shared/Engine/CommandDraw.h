@@ -23,7 +23,7 @@ namespace Engine {
   private:
     int idJoueur;
     int idCarte;
-    bool wasTaped;
+    bool empty;
     // Operations
   public:
     CommandDraw (int id);

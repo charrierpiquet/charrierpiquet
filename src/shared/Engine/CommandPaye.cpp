@@ -4,6 +4,7 @@
 namespace Engine {
 
     CommandPaye::CommandPaye(std::shared_ptr<Etat::Cout> cout) {
+        std::cout<<"\t\tinit paye"<<std::endl;
         coutB = cout->GetBlack();
         coutU = cout->GetBlue();
         coutG = cout->GetGreen();
@@ -12,6 +13,7 @@ namespace Engine {
     }
 
     void CommandPaye::Execute(std::shared_ptr<Etat::State> state) {
+        std::cout<<"\t\texec paye"<<std::endl;
         mB = state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetBlack();
         mU = state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetBlue();
         mG = state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetGreen();
@@ -103,23 +105,34 @@ namespace Engine {
         }
 
         if (I > 0 || B > 0 || U > 0 || G > 0) {
-            Undo(state);
+                    state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetBlack(mB);
+        state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetBlue(mU);
+        state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetGreen(mG);
+        state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetInc(mI);
+        state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetMulti(mM);
+        state->GetJoueurs()[state->GetPriority()]->SetPv(state->GetJoueurs()[state->GetPriority()]->GetPv() + coutPv);
+        hasWork = false;
         } else {
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetBlack(tamponB);
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetBlue(tamponU);
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetGreen(tamponG);
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetInc(tamponI);
             state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetMulti(tamponM);
+            hasWork = true;
         }
     }
 
     void CommandPaye::Undo(std::shared_ptr<Etat::State> state) {
+        std::cout<<"\t\tundo paye"<<std::endl;
+        if( hasWork)
+        {
         state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetBlack(mB);
         state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetBlue(mU);
         state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetGreen(mG);
         state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetInc(mI);
         state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetMulti(mM);
         state->GetJoueurs()[state->GetPriority()]->SetPv(state->GetJoueurs()[state->GetPriority()]->GetPv() + coutPv);
+        }
     }
 
 }

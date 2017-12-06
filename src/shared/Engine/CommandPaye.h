@@ -23,6 +23,7 @@ namespace Engine {
   private:
     int coutB, coutU, coutG, coutI, coutPv;
     int mB, mU, mG, mI, mM;
+    bool hasWork;
     // Operations
   public:
     CommandPaye (std::shared_ptr<Etat::Cout> cout);

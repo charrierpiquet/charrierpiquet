@@ -199,15 +199,15 @@ namespace Ai {
             for (unsigned int j = 0; j < cibles.size(); j++) {
                 if (TryCast(objs[i]->GetCost())) {
                     objs[i]->SetTarget(std::weak_ptr<Etat::Objet>(cibles[j]));
-                    std::shared_ptr<Etat::Carte> source_tamporaire;
+                    //std::shared_ptr<Etat::Carte> source_tamporaire();
                     if (objs[i]->GetIsCapacite()) {
                         // on cherche la source
-                        for (unsigned int k = 0; k < currentState->GetBattlefield().size(); k++)
-                            for (unsigned int l = 0; l < currentState->GetBattlefield()[i]->GetAbility().size(); l++)
-                                if (currentState->GetBattlefield()[i]->GetAbility()[j]->GetIdObj() == objs[i]->GetIdObj())
-                                    source_tamporaire = currentState->GetBattlefield()[i];
+                        //for (unsigned int k = 0; k < currentState->GetBattlefield().size(); k++)
+                        //    for (unsigned int l = 0; l < currentState->GetBattlefield()[i]->GetAbility().size(); l++)
+                        //        if (currentState->GetBattlefield()[i]->GetAbility()[j]->GetIdObj() == objs[i]->GetIdObj())
+                        //            source_tamporaire = currentState->GetBattlefield()[i];
 
-                        engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(source_tamporaire, std::static_pointer_cast<Etat::Capacite>(objs[i]), cibles[j])));
+                        engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock(), std::static_pointer_cast<Etat::Capacite>(objs[i]), cibles[j])));
                     } else
                         engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast(std::static_pointer_cast<Etat::Carte>(objs[i]))));
 
@@ -217,7 +217,7 @@ namespace Ai {
                     if (val > max) {
                         max = val;
                         obj = objs[i];
-                        src = source_tamporaire;
+                        src = std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock();
                         cible = cibles[j];
                     }
                 }
@@ -288,13 +288,14 @@ namespace Ai {
     bool Ia_Heuristic::TryCast(std::shared_ptr<Etat::Cout> cost) {
         // on admet qu'il n'existe que trois type de terrain (les terrains de base)
         // on admet que l'on commence avec la manapool vide
-        bool canCast = 0 == cost->GetInc() && 0 == cost->GetBlack() && 0 == cost->GetBlue()&& 0 == cost->GetGreen();
+        std::cout<<"\tTryCast"<<std::endl;
+        bool canCast = (0 == cost->GetInc() && 0 == cost->GetBlack() && 0 == cost->GetBlue()&& 0 == cost->GetGreen());
         if (!canCast) {
             int hist = engine->HistoricSize();
             int inc = cost->GetInc(), b = cost->GetBlack(), u = cost->GetBlue(), g = cost->GetGreen(), k = 0;
             //std::cout<<"\t"<<inc<<"\t"<<b<<"\t"<<u<<"\t"<<g<<std::endl;
             for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
-                if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap()) {
+                if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority()) {
                     if (b > 0 && currentState->GetBattlefield()[i]->GetName() == "Marais") {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         b--;
@@ -313,7 +314,7 @@ namespace Ai {
                 }
             engine->Update();
             for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
-                if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap())
+                if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority())
                     if (i > 0) {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         inc--;
