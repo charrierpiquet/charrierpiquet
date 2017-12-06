@@ -196,30 +196,14 @@ namespace Ai {
         std::vector<std::shared_ptr<Etat::Objet> > cibles = ListCible();
         // pour chaque combinaison possible 
         for (unsigned int i = 0; i < objs.size(); i++) {
-            std::cout<<"\t"<<objs[i]->GetName()<<std::endl;
+
             if (objs[i]->GetIsCapacite()) {
                 if (std::static_pointer_cast<Etat::Capacite>(objs[i])->GetNeedTarget()) {
                     for (unsigned int j = 0; j < cibles.size(); j++) {
-                        if (TryCast(objs[i]->GetCost())) {
-                            objs[i]->SetTarget(std::weak_ptr<Etat::Objet>(cibles[j]));
+                        std::cout << "\t" << objs[i]->GetName() << std::endl;
+                        objs[i]->SetTarget(std::weak_ptr<Etat::Objet>(cibles[j]));
 
-                            engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock(), std::static_pointer_cast<Etat::Capacite>(objs[i]), cibles[j])));
-                            engine->Update();
-
-                            int val = EvalState();
-                            if (val > max) {
-                                max = val;
-                                obj = objs[i];
-                                src = std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock();
-                                cible = cibles[j];
-                            }
-                        }
-                        Retour(status);
-                    }
-                } else {
-                    if (TryCast(objs[i]->GetCost())) {
-
-                        engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock(), std::static_pointer_cast<Etat::Capacite>(objs[i]), std::weak_ptr<Etat::Objet>())));
+                        engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock(), std::static_pointer_cast<Etat::Capacite>(objs[i]), cibles[j])));
                         engine->Update();
 
                         int val = EvalState();
@@ -227,75 +211,85 @@ namespace Ai {
                             max = val;
                             obj = objs[i];
                             src = std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock();
-                            cible = std::weak_ptr<Etat::Objet>();
+                            cible = cibles[j];
                         }
-                    }
-                    Retour(status);
-                }
-            }
-            else if (!std::static_pointer_cast<Etat::Carte>(objs[i])->GetIsPermanent())
-            {
-                bool needT = false;
-                for (unsigned int k = 0 ; k < std::static_pointer_cast<Etat::Carte>(objs[i])->GetAbility().size() ; k++)
-                    if (std::static_pointer_cast<Etat::Carte>(objs[i])->GetAbility()[k]->GetNeedTarget())
-                        needT = true;
-                if (needT)
-                {
-                    for (unsigned int j = 0; j < cibles.size(); j++) {
-                        if (TryCast(objs[i]->GetCost())) {
-                            objs[i]->SetTarget(std::weak_ptr<Etat::Objet>(cibles[j]));
 
-                            engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast( std::static_pointer_cast<Etat::Carte>(objs[i]))));
-                            engine->Update();
-
-                            int val = EvalState();
-                            if (val > max) {
-                                max = val;
-                                obj = objs[i];
-                                src = std::shared_ptr<Etat::Carte>();
-                                cible = cibles[j];
-                            }
-                        }
                         Retour(status);
                     }
-                }
-                else
-                {
-                    if (TryCast(objs[i]->GetCost())) {
-                            engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast( std::static_pointer_cast<Etat::Carte>(objs[i]))));
-                            engine->Update();
+                } else {
+                    std::cout << "\t" << objs[i]->GetName() << std::endl;
 
-                            int val = EvalState();
-                            if (val > max) {
-                                max = val;
-                                obj = objs[i];
-                                src = std::shared_ptr<Etat::Carte>();
-                                cible =std::weak_ptr<Etat::Objet>();
-                            }
-                        }
-                     Retour(status);
-                }
-            }
-            else
-            {
-                if (TryCast(objs[i]->GetCost())) {
-                            engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast( std::static_pointer_cast<Etat::Carte>(objs[i]))));
-                            engine->Update();
+                    engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock(), std::static_pointer_cast<Etat::Capacite>(objs[i]), std::weak_ptr<Etat::Objet>())));
+                    engine->Update();
 
-                            int val = EvalState();
-                            if (val > max) {
-                                max = val;
-                                obj = objs[i];
-                                src = std::shared_ptr<Etat::Carte>();
-                                cible =std::weak_ptr<Etat::Objet>();
-                            }
+                    int val = EvalState();
+                    if (val > max) {
+                        max = val;
+                        obj = objs[i];
+                        src = std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock();
+                        cible = std::weak_ptr<Etat::Objet>();
+                    }
+
+                    Retour(status);
+                }
+            } else if (!std::static_pointer_cast<Etat::Carte>(objs[i])->GetIsPermanent()) {
+                bool needT = false;
+                for (unsigned int k = 0; k < std::static_pointer_cast<Etat::Carte>(objs[i])->GetAbility().size(); k++)
+                    if (std::static_pointer_cast<Etat::Carte>(objs[i])->GetAbility()[k]->GetNeedTarget())
+                        needT = true;
+                if (needT) {
+                    for (unsigned int j = 0; j < cibles.size(); j++) {
+                        std::cout << "\t" << objs[i]->GetName() << std::endl;
+
+                        objs[i]->SetTarget(std::weak_ptr<Etat::Objet>(cibles[j]));
+
+                        engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast(std::static_pointer_cast<Etat::Carte>(objs[i]))));
+                        engine->Update();
+
+                        int val = EvalState();
+                        if (val > max) {
+                            max = val;
+                            obj = objs[i];
+                            src = std::shared_ptr<Etat::Carte>();
+                            cible = cibles[j];
                         }
-                     Retour(status);
+
+                        Retour(status);
+                    }
+                } else {
+                    std::cout << "\t" << objs[i]->GetName() << std::endl;
+                    engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast(std::static_pointer_cast<Etat::Carte>(objs[i]))));
+                    engine->Update();
+
+                    int val = EvalState();
+                    if (val > max) {
+                        max = val;
+                        obj = objs[i];
+                        src = std::shared_ptr<Etat::Carte>();
+                        cible = std::weak_ptr<Etat::Objet>();
+                    }
+
+                    Retour(status);
+                }
+            } else {
+                std::cout << "\t" << objs[i]->GetName() << std::endl;
+                engine->AddCommand(std::shared_ptr<Engine::CommandCast>(new Engine::CommandCast(std::static_pointer_cast<Etat::Carte>(objs[i]))));
+                engine->Update();
+
+                int val = EvalState();
+                if (val > max) {
+                    max = val;
+                    obj = objs[i];
+                    src = std::shared_ptr<Etat::Carte>();
+                    cible = std::weak_ptr<Etat::Objet>();
+                }
+
+                Retour(status);
             }
         }
         Retour(status);
         if (max > def) {
-            std::cout << "\t\t" << obj->GetName() << std::endl;
+            std::cout << "\t\t\t" << obj->GetName() << std::endl;
             // on fait l'action correspondant au max
             if (TryCast(obj->GetCost())) {
                 if (obj->GetIsCapacite())
