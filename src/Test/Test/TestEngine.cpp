@@ -1,5 +1,5 @@
 #include <vector>
-
+//#include "Capacite.h"
 #include "TestEngine.h"
 #include "Etat.h"
 #include "Render.h"
@@ -42,15 +42,18 @@ namespace Test
         state->AddCardBattlefield(Ours3);
         
         std::vector<std::shared_ptr<Etat::Capacite> > capa1;
-        capa1.push_back(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(coutnull,"green",identifiant++,0,"green",false)));
+        capa1.push_back(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(coutnull,"green",identifiant++,0,"green",false,std::weak_ptr<Etat::Carte>())));
         std::shared_ptr<Etat::Carte> Foret1(new Etat::Carte(true,true,false,false,"Foret",coutnull,capa1,identifiant++,0));
         Foret1->SetOracle("T : add G to manapool");
+        Foret1->GetAbility()[0]->SetSource(Foret1);
         state->AddCardBattlefield(Foret1);
         
         std::vector<std::shared_ptr<Etat::Capacite> > capa2;
-        capa2.push_back(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(coutnull,"blue",identifiant++,0,"blue",false)));
+        capa2.push_back(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(coutnull,"blue",identifiant++,0,"blue",false,std::weak_ptr<Etat::Carte>())));
         std::shared_ptr<Etat::Carte> Ile1(new Etat::Carte(true,true,false,false,"Ile",coutnull,capa2,identifiant++,0));
         Ile1->SetOracle("T : add U to manapool");
+        Ile1->GetAbility()[0]->SetSource(Ile1);
+
         state->AddCardBattlefield(Ile1);
         
         std::shared_ptr<Etat::Creature> Ours4(new Etat::Creature(2,2,false,"Ours",coutOurs,capa,identifiant++,0));

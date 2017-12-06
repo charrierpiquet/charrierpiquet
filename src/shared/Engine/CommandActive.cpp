@@ -25,7 +25,7 @@ namespace Engine {
                         if (state->GetBattlefield()[i]->GetAbility()[j]->GetKeyWord() == keyWord) 
                             need_target = state->GetBattlefield()[i]->GetAbility()[j]->GetNeedTarget();
 
-                    state->AddCardPile(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(nullptr, keyWord, state->GetInd(), state->GetBattlefield()[i]->GetIndJoueur(), keyWord, need_target)));
+                    state->AddCardPile(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(nullptr, keyWord, state->GetInd(), state->GetBattlefield()[i]->GetIndJoueur(), keyWord, need_target,state->GetBattlefield()[i])));
                     bool trouver = need_target;
                     if (trouver)
                         for (unsigned int j = 0; j < state->GetBattlefield().size(); j++)

@@ -1,4 +1,5 @@
 #include "State.h"
+#include "Capacite.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -66,7 +67,7 @@ namespace Etat {
                         for (int i = 0; i < k; i++) {
                             std::getline(Card, Ability);
                             std::shared_ptr<Cout> CostAbility(new  Cout(Ability[0] - '0',Ability[2] - '0', Ability[4] - '0', Ability[6] - '0', Ability[8] - '0'));
-                            Capacites.push_back(std::shared_ptr< Capacite>(new  Capacite(CostAbility, Ability.substr(12, Ability.size() - 12), id++, Joueur, Ability.substr(12, Ability.size() - 12), Ability[18]=='1')));
+                            Capacites.push_back(std::shared_ptr< Capacite>(new  Capacite(CostAbility, Ability.substr(12, Ability.size() - 12), id++, Joueur, Ability.substr(12, Ability.size() - 12), Ability[18]=='1', std::weak_ptr<Etat::Carte>())));
                         }
 			
                                         //std::cout << "Jusqu'ici ca va bien" << std::endl;
@@ -76,6 +77,8 @@ namespace Etat {
                     } else {
                         deck.push_back(std::shared_ptr< Carte>(new  Carte(std::strcmp(Type.data(), "sort") != 0, std::strcmp(Type.data(), "terrain") == 0, std::strcmp(Type.data(), "creature") == 0, 0, Nom, Cost, Capacites, id++, Joueur)));
                     }
+                    for (unsigned int compteur = 0 ; compteur < deck[deck.size()-1]->GetAbility().size() ; compteur++)
+                    deck[deck.size()-1]->GetAbility()[compteur]->SetSource(std::weak_ptr<Carte>(deck[deck.size()-1]));
 					//std::cout << "Jusqu'ici tout va tranquille" << std::endl;
                     Texte = "";
                     while (Card.peek() != EOF) {
