@@ -17,12 +17,15 @@ namespace Engine {
         //std::cout<<"\t\t\tpermanent ? "<<isPermanent;
         if (isPermanent) 
         {
+            std::cout<<"\t\t\t"<< state->GetPile()[state->GetPile().size() - 1]->GetName()<<std::endl;
             state->AddCardBattlefield(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
             //std::cout<<"\t champ de bataille"<<std::endl;
         }
        else {
             for (unsigned int i = 0; i < std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size(); i++)
                 engine.lock()->AddCommand(std::shared_ptr<CommandResolveCapa>(new CommandResolveCapa(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility()[i], engine)));
+
+              
             state->GetJoueurs()[idProp]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
             //std::cout<<"\t cimetiere"<<std::endl;
         }

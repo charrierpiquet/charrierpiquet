@@ -17,7 +17,7 @@ namespace Engine {
     }
 
     void CommandResolveCapa::Execute(std::shared_ptr<Etat::State> state) {
-        std::cout<<"\t\texec resolvecapa"<<std::endl;
+        std::cout<<"\t\texec resolvecapa "<<std::endl;
         std::vector<std::shared_ptr<Etat::Capacite> > capaVide;
         std::shared_ptr<Etat::Cout> coutVide(new Etat::Cout(0,0,0,0,0));
         //std::cout<<obj->GetKeyWord()<<" "<<obj->GetKeyWord().compare("blue")<<" "<<obj->GetKeyWord().compare("green")<<std::endl;
@@ -55,9 +55,14 @@ namespace Engine {
                         state->GetJoueurs()[state->GetPile()[i]->GetIndJoueur()]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(target));
                         pos_target = i;
                 }
-        }//state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->AddCardHand(state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary()[state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1]);
+        }else
+        {
+            std::cout<<"\t\t keyword : "<<obj->GetKeyWord()<<" not found"<<std::endl;
+        }
+        //state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->AddCardHand(state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary()[state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1]);
             //state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->DelCardLibrary( state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1);
-        state->DelCardPile(state->GetPile().size()-1);
+        if (obj->GetSource().lock()->GetIsPermanent())
+            state->DelCardPile(state->GetPile().size()-1);
     }
 
     void CommandResolveCapa::Undo(std::shared_ptr<Etat::State> state) {

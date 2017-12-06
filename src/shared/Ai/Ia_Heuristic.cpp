@@ -129,7 +129,7 @@ namespace Ai {
         nb_land -= currentState->GetJoueurs()[1 - currentState->GetPriority()]->GetManaPool()->GetMulti();
         nb_land -= currentState->GetJoueurs()[1 - currentState->GetPriority()]->GetManaPool()->GetInc();
 
-        int k1 = 5, k2 = 3, k3 = 3, k4 = 1, k5 = 1, k6 = 1, k7 = 3; // voir pour changer les coefficients plus tard
+        int k1 = 5, k2 = 3, k3 = 3, k4 = 1, k5 = 1, k6 = 1, k7 = 7; // voir pour changer les coefficients plus tard
         sortie = nb_crea * k1 + offense * k2 + defense * k3 + carte_main * k4 + nb_land * k5 + nb_pv * k6 + nb_autre*k7;
         // on reviens en arriere
         Retour(status);
@@ -189,7 +189,7 @@ namespace Ai {
         std::weak_ptr<Etat::Objet> cible;
         std::shared_ptr<Etat::Carte> src;
         int status = engine->HistoricSize();
-
+        bool dosmth = false;
         // creer liste objet activable
         std::vector<std::shared_ptr<Etat::Objet> > objs = ListObjet();
         // creer liste cible legale
@@ -207,11 +207,12 @@ namespace Ai {
                         engine->Update();
 
                         int val = EvalState();
-                        if (val > max) {
+                        if (val >= max) {
                             max = val;
                             obj = objs[i];
                             src = std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock();
                             cible = cibles[j];
+                            dosmth = true;
                         }
 
                         Retour(status);
@@ -223,11 +224,12 @@ namespace Ai {
                     engine->Update();
 
                     int val = EvalState();
-                    if (val > max) {
+                    if (val >= max) {
                         max = val;
                         obj = objs[i];
                         src = std::static_pointer_cast<Etat::Capacite>(objs[i])->GetSource().lock();
                         cible = std::weak_ptr<Etat::Objet>();
+                        dosmth = true;
                     }
 
                     Retour(status);
@@ -247,11 +249,12 @@ namespace Ai {
                         engine->Update();
 
                         int val = EvalState();
-                        if (val > max) {
+                        if (val >= max) {
                             max = val;
                             obj = objs[i];
                             src = std::shared_ptr<Etat::Carte>();
                             cible = cibles[j];
+                            dosmth = true;
                         }
 
                         Retour(status);
@@ -262,11 +265,12 @@ namespace Ai {
                     engine->Update();
 
                     int val = EvalState();
-                    if (val > max) {
+                    if (val >= max) {
                         max = val;
                         obj = objs[i];
                         src = std::shared_ptr<Etat::Carte>();
                         cible = std::weak_ptr<Etat::Objet>();
+                        dosmth = true;
                     }
 
                     Retour(status);
@@ -277,18 +281,19 @@ namespace Ai {
                 engine->Update();
 
                 int val = EvalState();
-                if (val > max) {
+                if (val >= max) {
                     max = val;
                     obj = objs[i];
                     src = std::shared_ptr<Etat::Carte>();
                     cible = std::weak_ptr<Etat::Objet>();
+                    dosmth = true;
                 }
 
                 Retour(status);
             }
         }
         Retour(status);
-        if (max > def) {
+        if (max >= def  && dosmth) {
             std::cout << "\t\t\t" << obj->GetName() << std::endl;
             // on fait l'action correspondant au max
             if (TryCast(obj->GetCost())) {
@@ -357,32 +362,36 @@ namespace Ai {
         if (!canCast) {
             int hist = engine->HistoricSize();
             int inc = cost->GetInc(), b = cost->GetBlack(), u = cost->GetBlue(), g = cost->GetGreen(), k = 0;
-            //std::cout<<"\t"<<inc<<"\t"<<b<<"\t"<<u<<"\t"<<g<<std::endl;
+            std::cout<<"\t"<<inc<<"\t"<<b<<"\t"<<u<<"\t"<<g<<std::endl<<"\t\t";
             for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
                 if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority()) {
                     if (b > 0 && currentState->GetBattlefield()[i]->GetName() == "Marais") {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         b--;
                         k++;
+                        //std::cout<<" b ";
                     }
                     if (u > 0 && currentState->GetBattlefield()[i]->GetName() == "Ile") {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         u--;
                         k++;
+                        //std::cout<<" u ";
                     }
                     if (g > 0 && currentState->GetBattlefield()[i]->GetName() == "Foret") {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         g--;
                         k++;
+                        //std::cout<<" g ";
                     }
                 }
             engine->Update();
             for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
                 if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority())
-                    if (i > 0) {
+                    if (inc > 0) {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         inc--;
                         k++;
+                        //std::cout<<" i ";
                     }
             engine->Update();
             while (k--) {
@@ -410,7 +419,7 @@ namespace Ai {
             //std::cout<<"\t"<<canCast<<std::endl;
             if (!canCast)
                 Retour(hist);
-
+            //std::cout<<std::endl;
         }
         return canCast;
     }
@@ -450,30 +459,20 @@ namespace Ai {
         for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
             if (currentState->GetBattlefield()[i]->GetIsCreature() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetJoueurTour())
                 if (!std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetMalInvoc()) {
-                    int survie = std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetEndurance();
-                    bool tue = true;
-
-                    for (unsigned int j = 0; j < currentState->GetBattlefield().size(); j++)
-                        if (currentState->GetBattlefield()[j]->GetIsCreature() && currentState->GetBattlefield()[j]->GetIndJoueur() == 1 - currentState->GetJoueurTour()) {
-                            survie -= std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[j])->GetForce();
-                            if (std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetForce() < std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[j])->GetEndurance())
-                                tue = false;
-                        }
-
-                    if (tue && (!currentState->GetBattlefield()[i]->GetAbility().empty() || survie > 0))
+                    if (currentState->GetBattlefield()[i]->GetAbility().empty() && std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetForce()>0)
                         engine->AddCommand(std::shared_ptr<Engine::CommandAttack>(new Engine::CommandAttack(std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i]))));
                 }
     }
 
     void Ia_Heuristic::Bloque() {
         // bloquage extremement simplifie
-        // theoriquement, on pourrait aussi bloquer avec une creature "inutile",
-        // bloquer avec plusieurs creature sur une même creature, chercher a tuer a tout prix etc.
+        // on bloque en priorite avec des token
+        // et si se sont pas des token si on survie ou si on tue
         int jDef = 1 - currentState->GetJoueurTour();
 
         std::vector<std::shared_ptr<Etat::Creature> > creaJDef;
         for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
-            if (currentState->GetBattlefield()[i]->GetIsCreature() && currentState->GetBattlefield()[i]->GetIndJoueur() == jDef)
+            if (currentState->GetBattlefield()[i]->GetIsCreature() && currentState->GetBattlefield()[i]->GetIndJoueur() == jDef && !currentState->GetBattlefield()[i]->GetIsTap())
                 creaJDef.push_back(std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i]));
 
         std::vector<std::shared_ptr<Etat::Creature> > attaquant = currentState->GetAttaquants();
@@ -482,7 +481,7 @@ namespace Ai {
         for (unsigned int i = 0; i < attaquant.size(); i++)
             // si on peux la bloquer sans mourir
             for (unsigned int j = 0; j < creaJDef.size(); j++)
-                if (creaJDef[j]->GetEndurance() > attaquant[i]->GetForce()) {
+                if (creaJDef[j]->GetEndurance() > attaquant[i]->GetForce() || creaJDef[j]->GetIsToken() || creaJDef[j]->GetForce() >=  attaquant[i]->GetEndurance()) {
                     engine->AddCommand(std::shared_ptr<Engine::CommandBlock>(new Engine::CommandBlock(creaJDef[j], attaquant[i])));
                     creaJDef.erase(creaJDef.begin() + j);
                     break;

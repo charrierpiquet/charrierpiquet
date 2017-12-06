@@ -19,7 +19,7 @@ namespace Test
         std::shared_ptr<Engine::Moteur> moteur(new Engine::Moteur(state));
         std::vector<int> pallier;
         Ai::Ia_Base ia (state, moteur);
-        
+        pallier.push_back(0);
     
         moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(0)));
         moteur->AddCommand(std::shared_ptr<Engine::CommandDraw>(new Engine::CommandDraw(0)));
