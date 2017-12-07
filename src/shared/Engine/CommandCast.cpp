@@ -7,13 +7,13 @@ namespace Engine
 {
     CommandCast::CommandCast(std::shared_ptr<Etat::Carte> carte)
     {
-        std::cout<<"\t\tinit cast"<<std::endl;
+        //std::cout<<"\t\tinit cast"<<std::endl;
         idCarte = carte->GetIdObj();
         idJoueur =  carte->GetIndJoueur();
     }
     void CommandCast::Execute(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\texec cast"<<std::endl;
+        //std::cout<<"\t\texec cast"<<std::endl;
         for (unsigned int i = 0 ; i < state->GetJoueurs()[idJoueur]->GetHand().size() ; i++)
             if (idCarte == state->GetJoueurs()[idJoueur]->GetHand()[i]->GetIdObj())
             {
@@ -26,11 +26,14 @@ namespace Engine
     }
     void CommandCast::Undo(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\tundo cast"<<std::endl;
-        if (std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size()-1]))
+        //std::cout<<"\t\tundo cast"<<std::endl;
+        if (!state->GetPile().empty())
+        {
+        if (std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size()-1])->GetIsLand())
             state->GetJoueurs()[idJoueur]->SetAJoueTerrain(false);
         state->GetJoueurs()[idJoueur]->AddCardHand(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size()-1]));
         state->DelCardPile(state->GetPile().size()-1);
+        }
     }
 }
 

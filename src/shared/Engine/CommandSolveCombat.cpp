@@ -3,7 +3,7 @@
 namespace Engine {
 
     void CommandSolveCombat::Execute(std::shared_ptr<Etat::State> state) {
-        std::cout<<"\t\texec solvecombat"<<std::endl;
+        //std::cout<<"\t\texec solvecombat"<<std::endl;
         // recup des id
         for (unsigned int i = 0; i < state->GetAttaquants().size(); i++)
             idAttaquants.push_back(state->GetAttaquants()[i]->GetIdObj());
@@ -44,7 +44,7 @@ namespace Engine {
     }
 
     void CommandSolveCombat::Undo(std::shared_ptr<Etat::State> state) {
-        std::cout<<"\t\tundo solvecombat"<<std::endl;
+        //std::cout<<"\t\tundo solvecombat"<<std::endl;
         // reconstitution de la liste des attaquants
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++ )
         {

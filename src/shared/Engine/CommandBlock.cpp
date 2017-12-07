@@ -7,13 +7,13 @@ namespace Engine
 {
     CommandBlock::CommandBlock(std::shared_ptr<Etat::Creature> bloqueur, std::shared_ptr<Etat::Creature> bloque)
     {
-        std::cout<<"\t\tinit bloque"<<std::endl;
+        //std::cout<<"\t\tinit bloque"<<std::endl;
         idBloqueur = bloqueur->GetIdObj();
         idBloque = bloque->GetIdObj();
     }
     void CommandBlock::Execute(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\texec bloque"<<std::endl;
+        //std::cout<<"\t\texec bloque"<<std::endl;
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++)
         {
             if (state->GetBattlefield()[i]->GetIdObj() == idBloqueur)
@@ -24,7 +24,7 @@ namespace Engine
     }
     void CommandBlock::Undo(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\tundo bloque"<<std::endl;
+        //std::cout<<"\t\tundo bloque"<<std::endl;
         state->DelListBloque(state->GetListBloque().size()-1);
         state->DelListBloqueur(state->GetBloqueur().size()-1);
     }

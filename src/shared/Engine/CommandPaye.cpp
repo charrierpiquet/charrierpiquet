@@ -4,7 +4,7 @@
 namespace Engine {
 
     CommandPaye::CommandPaye(std::shared_ptr<Etat::Cout> cout) {
-        std::cout<<"\t\tinit paye"<<std::endl;
+        //std::cout<<"\t\tinit paye"<<std::endl;
         coutB = cout->GetBlack();
         coutU = cout->GetBlue();
         coutG = cout->GetGreen();
@@ -13,7 +13,7 @@ namespace Engine {
     }
 
     void CommandPaye::Execute(std::shared_ptr<Etat::State> state) {
-        std::cout<<"\t\texec paye"<<std::endl;
+        //std::cout<<"\t\texec paye"<<std::endl;
         mB = state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetBlack();
         mU = state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetBlue();
         mG = state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetGreen();
@@ -26,7 +26,7 @@ namespace Engine {
 
         int I = coutI, B = coutB, U = coutU, G = coutG;
         int tamponI = mI, tamponB = mB, tamponU = mU, tamponG = mG, tamponM = mM;
-        //std::cout<<"\tinitialisation Ok ...";
+        ////std::cout<<"\tinitialisation Ok ...";
 
         if (I >= tamponI) {
             I -= tamponI;
@@ -123,7 +123,7 @@ namespace Engine {
     }
 
     void CommandPaye::Undo(std::shared_ptr<Etat::State> state) {
-        std::cout<<"\t\tundo paye"<<std::endl;
+        //std::cout<<"\t\tundo paye"<<std::endl;
         if( hasWork)
         {
         state->GetJoueurs()[state->GetPriority()]->GetManaPool()->SetBlack(mB);

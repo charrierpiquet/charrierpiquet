@@ -91,7 +91,7 @@ namespace Ai {
             if (currentState->GetBattlefield()[i]->GetIsCreature()) {
                 // si c'est toi qui est en train de regarder
                 // on ne prend en compte que les creatures degages
-                if (std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetIsTap()) {
+                if (!std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetIsTap()) {
                     if (currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority()) {
                         nb_crea++;
                         offense += std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetForce();
@@ -101,17 +101,18 @@ namespace Ai {
                         offense -= std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetEndurance();
                         defense -= std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetForce();
                     }
-                } else {
-                    if (currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority())
-                        nb_autre++;
-                    else
-                        nb_autre--;
                 }
+
             } else if (currentState->GetBattlefield()[i]->GetIsLand()) {
                 if (currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority())
                     nb_land++;
                 else
                     nb_land--;
+            } else {
+                if (currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority())
+                    nb_autre++;
+                else
+                    nb_autre--;
             }
         }
         carte_main = currentState->GetJoueurs()[currentState->GetPriority()]->GetHand().size() - currentState->GetJoueurs()[1 - currentState->GetPriority()]->GetHand().size();
@@ -129,12 +130,16 @@ namespace Ai {
         nb_land -= currentState->GetJoueurs()[1 - currentState->GetPriority()]->GetManaPool()->GetMulti();
         nb_land -= currentState->GetJoueurs()[1 - currentState->GetPriority()]->GetManaPool()->GetInc();
 
-        int k1 = 5, k2 = 3, k3 = 3, k4 = 1, k5 = 1, k6 = 1, k7 = 7; // voir pour changer les coefficients plus tard
+        int k1 = 5, k2 = 3, k3 = 3, k4 = 1, k5 = 0, k6 = 2, k7 = 3; // voir pour changer les coefficients plus tard
         sortie = nb_crea * k1 + offense * k2 + defense * k3 + carte_main * k4 + nb_land * k5 + nb_pv * k6 + nb_autre*k7;
         // on reviens en arriere
         Retour(status);
         // end
         //std::cout << "\t" << sortie << std::endl;
+        if (currentState->GetJoueurs()[currentState->GetPriority()]->GetPv() <= 0)
+            sortie -= 1000;
+        if (currentState->GetJoueurs()[1-currentState->GetPriority()]->GetPv() <= 0)
+            sortie += 1000;
         return sortie;
     }
 
@@ -293,7 +298,7 @@ namespace Ai {
             }
         }
         Retour(status);
-        if (max >= def  && dosmth) {
+        if (max >= def && dosmth) {
             std::cout << "\t\t\t" << obj->GetName() << std::endl;
             // on fait l'action correspondant au max
             if (TryCast(obj->GetCost())) {
@@ -362,7 +367,7 @@ namespace Ai {
         if (!canCast) {
             int hist = engine->HistoricSize();
             int inc = cost->GetInc(), b = cost->GetBlack(), u = cost->GetBlue(), g = cost->GetGreen(), k = 0;
-            std::cout<<"\t"<<inc<<"\t"<<b<<"\t"<<u<<"\t"<<g<<std::endl<<"\t\t";
+            std::cout << "\t" << inc << "\t" << b << "\t" << u << "\t" << g << std::endl << "\t\t";
             for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
                 if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority()) {
                     if (b > 0 && currentState->GetBattlefield()[i]->GetName() == "Marais") {
@@ -459,7 +464,7 @@ namespace Ai {
         for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
             if (currentState->GetBattlefield()[i]->GetIsCreature() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetJoueurTour())
                 if (!std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetMalInvoc()) {
-                    if (currentState->GetBattlefield()[i]->GetAbility().empty() && std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetForce()>0)
+                    if (currentState->GetBattlefield()[i]->GetAbility().empty() && std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i])->GetForce() > 0)
                         engine->AddCommand(std::shared_ptr<Engine::CommandAttack>(new Engine::CommandAttack(std::static_pointer_cast<Etat::Creature>(currentState->GetBattlefield()[i]))));
                 }
     }
@@ -481,7 +486,7 @@ namespace Ai {
         for (unsigned int i = 0; i < attaquant.size(); i++)
             // si on peux la bloquer sans mourir
             for (unsigned int j = 0; j < creaJDef.size(); j++)
-                if (creaJDef[j]->GetEndurance() > attaquant[i]->GetForce() || creaJDef[j]->GetIsToken() || creaJDef[j]->GetForce() >=  attaquant[i]->GetEndurance()) {
+                if (creaJDef[j]->GetEndurance() > attaquant[i]->GetForce() || creaJDef[j]->GetIsToken() || creaJDef[j]->GetForce() >= attaquant[i]->GetEndurance()) {
                     engine->AddCommand(std::shared_ptr<Engine::CommandBlock>(new Engine::CommandBlock(creaJDef[j], attaquant[i])));
                     creaJDef.erase(creaJDef.begin() + j);
                     break;

@@ -21,8 +21,7 @@ namespace Engine {
     // Associations
     // Attributes
   private:
-    int idCarte;
-    int idProp;
+    std::shared_ptr<Etat::Carte> mourant;
     // Operations
   public:
     CommandDie (std::shared_ptr<Etat::Carte> carte);

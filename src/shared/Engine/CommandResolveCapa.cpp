@@ -7,7 +7,7 @@
 namespace Engine {
 
     CommandResolveCapa::CommandResolveCapa(std::shared_ptr<Etat::Capacite> capa, std::weak_ptr<Moteur> m) {
-        std::cout<<"\t\tinit resolvecapa"<<std::endl;
+        ////std::cout<<"\t\tinit resolvecapa"<<std::endl;
         engine = m;
         obj = capa;
         if (capa->GetNeedTarget())
@@ -17,10 +17,10 @@ namespace Engine {
     }
 
     void CommandResolveCapa::Execute(std::shared_ptr<Etat::State> state) {
-        std::cout<<"\t\texec resolvecapa "<<std::endl;
+        ////std::cout<<"\t\texec resolvecapa "<<std::endl;
         std::vector<std::shared_ptr<Etat::Capacite> > capaVide;
         std::shared_ptr<Etat::Cout> coutVide(new Etat::Cout(0,0,0,0,0));
-        //std::cout<<obj->GetKeyWord()<<" "<<obj->GetKeyWord().compare("blue")<<" "<<obj->GetKeyWord().compare("green")<<std::endl;
+        //////std::cout<<obj->GetKeyWord()<<" "<<obj->GetKeyWord().compare("blue")<<" "<<obj->GetKeyWord().compare("green")<<std::endl;
         if (obj->GetKeyWord().compare("multi") == 0)
             state->GetJoueurs()[obj->GetIndJoueur()]->GetManaPool()->SetMulti(state->GetJoueurs()[obj->GetIndJoueur()]->GetManaPool()->GetMulti() + 1);
         else if (obj->GetKeyWord().compare("blue") == 0)
@@ -57,7 +57,7 @@ namespace Engine {
                 }
         }else
         {
-            std::cout<<"\t\t keyword : "<<obj->GetKeyWord()<<" not found"<<std::endl;
+            ////std::cout<<"\t\t keyword : "<<obj->GetKeyWord()<<" not found"<<std::endl;
         }
         //state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->AddCardHand(state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary()[state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1]);
             //state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->DelCardLibrary( state->GetJoueurs()[state->GetPile()[state->GetPile().size()-1]->GetIndJoueur()]->GetLibrary().size()-1);
@@ -66,8 +66,8 @@ namespace Engine {
     }
 
     void CommandResolveCapa::Undo(std::shared_ptr<Etat::State> state) {
-        std::cout<<"\t\tundo resolvecapa"<<std::endl;
-        //std::cout<<obj->GetKeyWord()<<" "<<obj->GetKeyWord().compare("blue")<<" "<<obj->GetKeyWord().compare("green")<<std::endl;
+        ////std::cout<<"\t\tundo resolvecapa"<<std::endl;
+        //////std::cout<<obj->GetKeyWord()<<" "<<obj->GetKeyWord().compare("blue")<<" "<<obj->GetKeyWord().compare("green")<<std::endl;
         if (obj->GetKeyWord().compare("multi") == 0)
             state->GetJoueurs()[obj->GetIndJoueur()]->GetManaPool()->SetMulti(state->GetJoueurs()[obj->GetIndJoueur()]->GetManaPool()->GetMulti() - 1);
         else if (obj->GetKeyWord().compare("blue") == 0)

@@ -5,7 +5,7 @@ namespace Engine
 {
     void CommandVideMp::Execute(std::shared_ptr<Etat::State> state)
     { 
-        std::cout<<"\t\texec videmp"<<std::endl;
+        //std::cout<<"\t\texec videmp"<<std::endl;
         for (unsigned int i = 0; i < state->GetJoueurs().size(); i++) {
                 M.push_back(state->GetJoueurs()[i]->GetManaPool()->GetMulti());
                 I.push_back(state->GetJoueurs()[i]->GetManaPool()->GetInc());
@@ -26,7 +26,7 @@ namespace Engine
     }
     void CommandVideMp::Undo(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\tundo videmp"<<std::endl;
+        //std::cout<<"\t\tundo videmp"<<std::endl;
         for (unsigned int i = 0; i < state->GetJoueurs().size(); i++) {
                 state->GetJoueurs()[i]->GetManaPool()->SetMulti(M[i]);
                 state->GetJoueurs()[i]->GetManaPool()->SetInc(I[i]);

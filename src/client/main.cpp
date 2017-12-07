@@ -63,6 +63,10 @@ int main(int argc,char* argv[])
         {
             TestRollback();
         }
+        else if ((string)argv[1] == "deep_ai")
+        {
+            TestDeepIa();
+        }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
                

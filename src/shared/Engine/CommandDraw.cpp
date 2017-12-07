@@ -5,12 +5,12 @@ namespace Engine
 {
     CommandDraw:: CommandDraw(int joueur)
     {
-        std::cout<<"\t\tinit draw"<<std::endl;
+        //std::cout<<"\t\tinit draw"<<std::endl;
         idJoueur = joueur;
     }
     void  CommandDraw::Execute(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\texec draw"<<std::endl;
+        //std::cout<<"\t\texec draw"<<std::endl;
         //std::srand(unsigned ( std::time(0)));
         //int k = std::rand() % state->GetJoueurs()[idJoueur]->GetHand().size();
         empty = state->GetJoueurs()[idJoueur]->GetLibrary().empty();
@@ -23,7 +23,7 @@ namespace Engine
     }
     void  CommandDraw::Undo(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\tundo draw"<<std::endl;
+        //std::cout<<"\t\tundo draw"<<std::endl;
         if (! empty)
         {
         int k = -1;

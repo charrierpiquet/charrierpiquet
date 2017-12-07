@@ -4,4 +4,5 @@
 
 #include "Ai/Ia_Base.h"
 #include "Ai/Ia_Heuristic.h"
+#include "Ai/Ia_Deep.h"
 #endif

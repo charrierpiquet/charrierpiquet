@@ -5,7 +5,7 @@ namespace Engine {
     
     CommandUntap::CommandUntap(std::shared_ptr<Etat::Carte> carte)
     {
-        std::cout<<"\t\tinit untap"<<std::endl;
+        //std::cout<<"\t\tinit untap"<<std::endl;
         idCarte = carte->GetIdObj();
         wasTaped = carte->GetIsTap();
         if (carte->GetIsCreature())
@@ -16,7 +16,7 @@ namespace Engine {
     
     void CommandUntap::Execute(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\texec untap"<<std::endl;
+        //std::cout<<"\t\texec untap"<<std::endl;
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++ )
             if (state->GetBattlefield()[i]->GetIdObj() == idCarte)
             {
@@ -28,7 +28,7 @@ namespace Engine {
     
     void CommandUntap::Undo(std::shared_ptr<Etat::State> state)
     {
-        std::cout<<"\t\tundo untap"<<std::endl;
+        //std::cout<<"\t\tundo untap"<<std::endl;
         for (unsigned int i = 0 ; i < state->GetBattlefield().size() ; i++ )
             if (state->GetBattlefield()[i]->GetIdObj() == idCarte)
             {

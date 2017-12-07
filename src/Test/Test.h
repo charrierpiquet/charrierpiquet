@@ -7,5 +7,6 @@
 #include "Test/TestIAHeuristique.h"
 #include "Test/TestIARandom.h"
 #include "Test/TestRollBack.h"
+#include "Test/TestDeepIa.h"
 
 #endif
