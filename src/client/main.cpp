@@ -67,6 +67,10 @@ int main(int argc,char* argv[])
         {
             TestDeepIa();
         }
+        else if ((string)argv[1] == "thread")
+        {
+            TestMultiThread();
+        }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
                
