@@ -30,4 +30,21 @@ namespace Engine
                 std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->SetBlessure(blessure);
             }
     }
+    
+    Json::Value CommandClean::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "Clean";
+        val["idCarte"] = idCrea;
+        val["bonus"] = bonusEOT;
+        val["blessure"] = blessure;
+        return val;
+    }
+    CommandClean* CommandClean::Deserialize(const Json::Value& in)
+    {
+        bonusEOT = in["bonus"].asInt();
+        idCrea = in["idCarte"].asInt();
+        blessure = in["blessure"].asInt();
+        return this;
+    }
 }

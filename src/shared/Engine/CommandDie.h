@@ -3,11 +3,13 @@
 #define ENGINE__COMMANDDIE__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandDie;
   class Command;
 }
 
@@ -21,12 +23,15 @@ namespace Engine {
     // Associations
     // Attributes
   private:
-    std::shared_ptr<Etat::Carte> mourant;
+    int id_carte;
+    int id_prop;
     // Operations
   public:
     CommandDie (std::shared_ptr<Etat::Carte> carte);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandDie* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

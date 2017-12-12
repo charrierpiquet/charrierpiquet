@@ -90,4 +90,31 @@ namespace Engine {
         }
         
     }
+    
+    Json::Value CommandSolveCombat::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "SolveCombat";
+        Json::Value attaquant, bloqueur, bloque;
+        for(unsigned int i = 0 ; i < idAttaquants.size(); i++)
+            attaquant[i]["Id"] = idAttaquants[i];
+        for(unsigned int i = 0 ; i < idBloqueur.size(); i++)
+            bloqueur[i]["Id"] = idBloqueur[i];
+        for(unsigned int i = 0 ; i < idBloque.size(); i++)
+            bloque[i]["Id"] = idBloque[i];
+        val["Attaquants"] = attaquant;
+        val["Bloqueurs"] = bloqueur;
+        val["Bloques"] = bloque;
+        return val;
+    }
+    CommandSolveCombat* CommandSolveCombat::Deserialize(const Json::Value& in)
+    {
+        for (unsigned int i = 0 ; i < in["Attaquants"].size() ; i++ )
+            idAttaquants.push_back(in["Attaquants"][i]["Id"].asInt());
+        for (unsigned int i = 0 ; i < in["Bloqueurs"].size() ; i++ )
+            idBloqueur.push_back(in["Bloqueurs"][i]["Id"].asInt());
+        for (unsigned int i = 0 ; i < in["Bloques"].size() ; i++ )
+            idBloque.push_back(in["Bloques"][i]["Id"].asInt());
+        return this;
+    }
 }

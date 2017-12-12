@@ -45,5 +45,22 @@ namespace Engine {
             state->GetJoueurs()[idProp]->DelCardGraveyard(state->GetJoueurs()[idProp]->GetGraveyard().size() -1);
         }
     }
+    
+    Json::Value CommandResolveCard::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "ResolveCard";
+        val["IdCarte"] = idCarte;
+        val["Permanent"] = isPermanent;
+        val["Prop"] = idProp;
+        return val;
+    }
+    CommandResolveCard* CommandResolveCard::Deserialize(const Json::Value& in)
+    {
+        idCarte = in["IdCarte"].asInt();
+        isPermanent = in["Permanent"].asInt();
+        idProp = in["Prop"].asBool();
+                return this;
+    }
 
 }

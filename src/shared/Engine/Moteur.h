@@ -25,6 +25,7 @@ namespace Engine {
     std::shared_ptr<Etat::State> currentState;
     std::vector<std::shared_ptr<Command> > commands;
     std::vector<std::shared_ptr<Command> > historic;
+    bool record     = false;
     // Operations
   public:
     Moteur (std::shared_ptr<Etat::State> state);
@@ -32,6 +33,7 @@ namespace Engine {
     void Update ();
     void RollBack ();
     int HistoricSize ();
+    void SetRecord (bool value);
     // Setters and Getters
   };
 

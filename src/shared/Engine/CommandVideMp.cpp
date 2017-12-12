@@ -36,4 +36,34 @@ namespace Engine
                 state->GetJoueurs()[i]->SetAJoueTerrain(jt[i]);
         }
     }
+    
+    Json::Value CommandVideMp::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "VideMp";
+        for (unsigned int i = 0 ; i < jt.size() ; i ++)
+        {
+            val[i]["M"] = M[i];
+            val[i]["I"] = I[i];
+            val[i]["B"] = B[i];
+            val[i]["U"] = U[i];
+            val[i]["G"] = G[i];
+            val[i]["jt"] = jt[i];
+        }
+        return val;
+    }
+    CommandVideMp* CommandVideMp::Deserialize (const Json::Value& in)
+    {
+        for (unsigned int i = 0 ; i < in.size() ; i ++)
+        {
+            M.push_back(in[i]["M"].asInt());
+            I.push_back(in[i]["I"].asInt());
+            B.push_back(in[i]["B"].asInt());
+            U.push_back(in[i]["U"].asInt());
+            G.push_back(in[i]["G"].asInt());
+            jt.push_back(in[i]["jt"].asInt());
+           
+        }
+        return this;
+    }
 }

@@ -18,5 +18,20 @@ namespace Engine
         //std::cout<<"\t\tundo priority"<<std::endl;
         state->SetPriority(oldPriority);
     }
+    
+    Json::Value CommandPriority::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "Priority";
+        val["old"]=oldPriority;
+        val["new"]=newPriority;
+        return val;
+    }
+    CommandPriority* CommandPriority::Deserialize(const Json::Value& in)
+    {
+        oldPriority = in["old"].asInt();
+        newPriority = in["new"].asInt();
+        return this;
+    }
 }
 

@@ -3,11 +3,13 @@
 #define ENGINE__COMMANDCLEAN__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandClean;
   class Command;
 }
 
@@ -29,6 +31,8 @@ namespace Engine {
     CommandClean (std::shared_ptr<Etat::Creature> crea);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandClean* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

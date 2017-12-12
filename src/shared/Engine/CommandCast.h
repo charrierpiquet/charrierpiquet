@@ -3,11 +3,13 @@
 #define ENGINE__COMMANDCAST__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandCast;
   class Command;
 }
 
@@ -28,6 +30,8 @@ namespace Engine {
     CommandCast (std::shared_ptr<Etat::Carte> carte);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandCast* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

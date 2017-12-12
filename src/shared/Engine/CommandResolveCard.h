@@ -3,6 +3,7 @@
 #define ENGINE__COMMANDRESOLVECARD__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Engine {
   class Moteur;
@@ -11,6 +12,7 @@ namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandResolveCard;
   class Command;
 }
 
@@ -34,6 +36,8 @@ namespace Engine {
     CommandResolveCard (std::shared_ptr<Etat::Carte> card, std::weak_ptr<Moteur> m);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandResolveCard* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

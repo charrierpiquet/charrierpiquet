@@ -9,4 +9,6 @@
 #include "Test/TestRollBack.h"
 #include "Test/TestDeepIa.h"
 
+#include "Test/TestRecord.h"
+
 #endif

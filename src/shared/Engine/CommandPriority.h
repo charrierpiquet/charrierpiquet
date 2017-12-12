@@ -3,11 +3,13 @@
 #define ENGINE__COMMANDPRIORITY__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandPriority;
   class Command;
 }
 
@@ -28,6 +30,8 @@ namespace Engine {
     CommandPriority (int value);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandPriority* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

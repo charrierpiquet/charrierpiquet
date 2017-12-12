@@ -135,4 +135,38 @@ namespace Engine {
         }
     }
 
+    Json::Value CommandPaye::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "Paye";
+        val["CoutL"] = coutPv;
+        val["CoutI"] = coutI;
+        val["CoutB"] = coutB;
+        val["CoutU"] = coutU;
+        val["CoutG"] = coutG;
+        val["ManaM"] = mM;
+        val["ManaI"] = mI;
+        val["ManaB"] = mB;
+        val["ManaU"] = mU;
+        val["ManaG"] = mG;
+        val["worked"] = hasWork;
+        return val;
+    }
+    CommandPaye* CommandPaye::Deserialize(const Json::Value& in)
+    {
+        coutPv = in["CoutL"].asInt();
+        coutI = in["CoutI"].asInt();
+        coutB = in["CoutB"].asInt();
+        coutU = in["CoutU"].asInt();
+        coutG = in["CoutG"].asInt();
+        
+        mM = in["ManaM"].asInt();
+        mI = in["ManaI"].asInt();
+        mB = in["ManaB"].asInt();
+        mU = in["ManaU"].asInt();
+        mG = in["ManaG"].asInt();
+        
+        hasWork = in["worked"].asBool();
+        return this;
+    }
 }

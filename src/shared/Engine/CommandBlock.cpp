@@ -28,6 +28,20 @@ namespace Engine
         state->DelListBloque(state->GetListBloque().size()-1);
         state->DelListBloqueur(state->GetBloqueur().size()-1);
     }
+        
+    Json::Value CommandBlock::Serialize() const {
+        Json::Value val;
+        val["typeCmd"] = "Block";
+        val["idBloqueur"] = idBloqueur;
+        val["idBloque"] = idBloque;
+        return val;
+    }
+
+    CommandBlock* CommandBlock::Deserialize(const Json::Value& in) {
+        idBloqueur = in["idBloqueur"].asInt();
+        idBloque = in["idBloque"].asInt();
+        return this;
+    }
     
     
 }

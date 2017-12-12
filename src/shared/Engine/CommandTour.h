@@ -3,11 +3,13 @@
 #define ENGINE__COMMANDTOUR__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandTour;
   class Command;
 }
 
@@ -27,6 +29,8 @@ namespace Engine {
     CommandTour (int value);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandTour* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

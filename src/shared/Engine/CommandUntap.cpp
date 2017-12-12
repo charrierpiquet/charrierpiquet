@@ -37,5 +37,21 @@ namespace Engine {
                     std::static_pointer_cast<Etat::Creature>(state->GetBattlefield()[i])->SetMalInvoc(hadMalInvoc);
             }
     }
+    Json::Value CommandUntap::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "Untap";
+        val["Id"] = idCarte;
+        val["MalInvoc"] = hadMalInvoc;
+        val["Taped"] = wasTaped;
+        return val;
+    }
+    CommandUntap* CommandUntap::Deserialize (const Json::Value& in)
+    {
+        idCarte = in["Id"].asInt();
+        hadMalInvoc = in["MalInvoc"].asInt();
+        wasTaped = in["Taped"].asBool();
+        return this;
+    }
     
 }

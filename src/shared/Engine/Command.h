@@ -3,9 +3,13 @@
 #define ENGINE__COMMAND__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
+};
+namespace Engine {
+  class Command;
 }
 
 #include "Etat/State.h"
@@ -19,6 +23,8 @@ namespace Engine {
   public:
     virtual void Execute (std::shared_ptr<Etat::State> state) = 0;
     virtual void Undo ( std::shared_ptr<Etat::State>) = 0;
+    virtual Json::Value Serialize () const = 0;
+    Command* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

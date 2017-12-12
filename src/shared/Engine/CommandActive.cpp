@@ -53,4 +53,21 @@ namespace Engine {
                 state->DelCardPile(state->GetPile().size() -1);
             }
     }
+    
+        
+    Json::Value CommandActive::Serialize() const {
+        Json::Value val;
+        val["typeCmd"] = "Active";
+        val["idSource"] = idSource;
+        val["keyWord"] = keyWord;
+        val["idTarget"] = idTarget;
+        return val;
+    }
+
+    CommandActive* CommandActive::Deserialize(const Json::Value& in) {
+        idTarget = in["idTarget"].asInt();
+        keyWord = in["keyWord"].asString();
+        idSource = in["idSource"].asInt();
+        return this;
+    }
 }

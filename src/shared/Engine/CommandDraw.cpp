@@ -34,4 +34,21 @@ namespace Engine
         state->GetJoueurs()[idJoueur]->DelCardHand(k);
         }
     }
+    
+    Json::Value CommandDraw::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "Draw";
+        val["idJoueur"] = idJoueur;
+        val["idCarte"] = idCarte;
+        val["empty"] = empty;
+        return val;
+    }
+    CommandDraw* CommandDraw::Deserialize(const Json::Value& in)
+    {
+        idJoueur = in["idJoueur"].asInt();
+        idCarte = in["idCarte"].asInt();
+        empty = in["empty"].asBool();
+        return this;
+    }
 }

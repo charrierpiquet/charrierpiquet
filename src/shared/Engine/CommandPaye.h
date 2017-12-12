@@ -3,11 +3,13 @@
 #define ENGINE__COMMANDPAYE__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandPaye;
   class Command;
 }
 
@@ -29,6 +31,8 @@ namespace Engine {
     CommandPaye (std::shared_ptr<Etat::Cout> cout);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandPaye* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

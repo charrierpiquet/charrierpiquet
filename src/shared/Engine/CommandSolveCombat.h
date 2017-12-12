@@ -4,11 +4,13 @@
 
 #include <vector>
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandSolveCombat;
   class Command;
 }
 
@@ -29,6 +31,8 @@ namespace Engine {
   public:
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandSolveCombat* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

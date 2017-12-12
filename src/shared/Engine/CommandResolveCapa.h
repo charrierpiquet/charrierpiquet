@@ -4,6 +4,7 @@
 
 #include <string>
 #include <memory>
+#include <json/json.h>
 
 namespace Engine {
   class Moteur;
@@ -12,6 +13,7 @@ namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandResolveCapa;
   class Command;
 }
 
@@ -28,14 +30,14 @@ namespace Engine {
   private:
     std::string keyWord;
     std::weak_ptr<Moteur> engine;
-    std::shared_ptr<Etat::Capacite> obj;
-    std::shared_ptr<Etat::Objet> target;
-    int id_token, pos_target;
+    int id_token, pos_target, indProp, idCapa, idTarget;
     // Operations
   public:
     CommandResolveCapa (std::shared_ptr<Etat::Capacite> capa, std::weak_ptr<Moteur> m);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandResolveCapa* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

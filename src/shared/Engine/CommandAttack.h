@@ -3,11 +3,13 @@
 #define ENGINE__COMMANDATTACK__H
 
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandAttack;
   class Command;
 }
 
@@ -27,6 +29,8 @@ namespace Engine {
     CommandAttack ( std::shared_ptr<Etat::Creature>);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandAttack* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

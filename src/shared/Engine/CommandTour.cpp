@@ -20,4 +20,19 @@ namespace Engine
         state->SetTour(oldTour);
     }
     
+    Json::Value CommandTour::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "Tour";
+        val["old"]=oldTour;
+        val["new"]=newTour;
+        return val;
+    }
+    CommandTour* CommandTour::Deserialize(const Json::Value& in)
+    {
+        oldTour = in["old"].asInt();
+        newTour = in["new"].asInt();
+        return this;
+    }
+    
 }

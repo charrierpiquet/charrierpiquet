@@ -27,4 +27,15 @@ namespace Engine
         state->GetAttaquants()[state->GetAttaquants().size()-1]->SetIsTap(false);
         state->DelListAttaquant(state->GetAttaquants().size()-1);
     }
+    Json::Value CommandAttack::Serialize() const {
+        Json::Value val;
+        val["typeCmd"] = "Attack";
+        val["idAttaquant"] = idAttaquant;
+        return val;
+    }
+
+    CommandAttack* CommandAttack::Deserialize(const Json::Value& in) {
+        idAttaquant = in["idAttaquant"].asInt();
+        return this;
+    }
 }

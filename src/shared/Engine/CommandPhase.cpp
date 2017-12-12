@@ -19,5 +19,20 @@ namespace Engine
         //std::cout<<"\t\tundo phase"<<std::endl;
         state->SetPhase(oldPhase);
     }
+    Json::Value CommandPhase::Serialize() const
+    {
+        Json::Value val;
+        val["typeCmd"] = "Tour";
+        val["old"]=oldPhase;
+        val["new"]=newPhase;
+        return val;
+    }
+    CommandPhase* CommandPhase::Deserialize(const Json::Value& in)
+    {
+        oldPhase = in["old"].asInt();
+        newPhase = in["new"].asInt();
+        return this;
+    }
+    
 }
 

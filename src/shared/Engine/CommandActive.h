@@ -4,11 +4,13 @@
 
 #include <string>
 #include <memory>
+#include <json/json.h>
 
 namespace Etat {
   class State;
 };
 namespace Engine {
+  class CommandActive;
   class Command;
 }
 
@@ -30,6 +32,8 @@ namespace Engine {
     CommandActive (std::shared_ptr<Etat::Carte> carte, std::shared_ptr<Etat::Capacite> capa, std::weak_ptr<Etat::Objet> target);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
+    Json::Value Serialize () const;
+    CommandActive* Deserialize (const Json::Value& in);
     // Setters and Getters
   };
 

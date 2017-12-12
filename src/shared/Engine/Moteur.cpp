@@ -33,5 +33,9 @@ namespace Engine
     {
         return historic.size();
     }
+    void Moteur::SetRecord(bool value)
+    {
+        record = value;
+    }
     
 }
