@@ -8,5 +8,6 @@
 #include "Test/TestIARandom.h"
 #include "Test/TestRollBack.h"
 #include "Test/TestDeepIa.h"
+#include "Test/TestMultiThread.h"
 
 #endif
