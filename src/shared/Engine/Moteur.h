@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <vector>
+#include <json/json.h>
 
 namespace Etat {
   class State;
@@ -26,6 +27,7 @@ namespace Engine {
     std::vector<std::shared_ptr<Command> > commands;
     std::vector<std::shared_ptr<Command> > historic;
     bool record     = false;
+    Json::Value val;
     // Operations
   public:
     Moteur (std::shared_ptr<Etat::State> state);
@@ -35,6 +37,7 @@ namespace Engine {
     int HistoricSize ();
     void SetRecord (bool value);
     std::shared_ptr<Etat::State> GetState ();
+    ~Moteur ();
     // Setters and Getters
   };
 

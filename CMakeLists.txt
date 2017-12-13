@@ -44,7 +44,7 @@ file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 
 # Executables
 add_executable(client  ${shared_sources} ${client_sources} ${Test_sources} ${jsoncpp_sources})
-add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources} ${Test_sources})
+add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
 
 # SFML
 if(WIN32)

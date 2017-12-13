@@ -10,6 +10,4 @@
 #include "Test/TestDeepIa.h"
 #include "Test/TestMultiThread.h"
 
-#include "Test/TestRecord.h"
-
 #endif
