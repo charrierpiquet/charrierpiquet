@@ -37,5 +37,8 @@ namespace Engine
     {
         record = value;
     }
-    
+    std::shared_ptr<Etat::State> Moteur::GetState()
+    {
+        return currentState;
+    }
 }

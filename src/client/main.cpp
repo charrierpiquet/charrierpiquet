@@ -69,7 +69,8 @@ int main(int argc,char* argv[])
         }
         else if ((string)argv[1] == "thread")
         {
-            TestMultiThread();
+            auto test = new TestMultiThread();
+            test->testThread();
         }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;

@@ -34,6 +34,7 @@ namespace Engine {
     void RollBack ();
     int HistoricSize ();
     void SetRecord (bool value);
+    std::shared_ptr<Etat::State> GetState ();
     // Setters and Getters
   };
 

@@ -2,10 +2,21 @@
 #define TEST__TESTMULTITHREAD__H
 #include <thread>
 #include <mutex>
+#include "Engine.h"
 
 namespace Test
 {
-    void TestMultiThread();
+    class TestMultiThread{
+    private:
+        std::mutex mtx;
+        bool run = true, dosmth = false;
+        void threadMoteur (std::shared_ptr<Engine::Moteur> moteur);
+        
+    public :
+        void testThread();
+        
+        
+    };
 	
 };
 #endif /* TESTETAT_H */
