@@ -28,6 +28,7 @@ namespace Engine {
     bool empty;
     // Operations
   public:
+    CommandDraw ();
     CommandDraw (int id);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);

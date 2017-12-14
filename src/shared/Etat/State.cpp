@@ -92,7 +92,7 @@ namespace Etat {
             }
             FichierDeck.close();
             std::cout<<Joueur<<" "<<this->GetJoueurs().size()<<std::endl;
-            std::srand(unsigned ( std::time(0)));
+            std::srand(3); // pour toujours avoir la même sortie sinon on est dans la merde pour le replay
             while (!deck.empty()) {
                 int k = std::rand() % deck.size();
                 this->GetJoueurs()[Joueur]->AddCardLibrary(deck[k]);

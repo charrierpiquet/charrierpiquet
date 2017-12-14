@@ -9,5 +9,6 @@
 #include "Test/TestRollBack.h"
 #include "Test/TestDeepIa.h"
 #include "Test/TestMultiThread.h"
+#include "Test/TestReplay.h"
 
 #endif

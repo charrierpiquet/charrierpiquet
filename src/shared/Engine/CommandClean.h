@@ -33,6 +33,7 @@ namespace Engine {
     void Undo (std::shared_ptr<Etat::State> state);
     Json::Value Serialize () const;
     CommandClean* Deserialize (const Json::Value& in);
+    CommandClean ();
     // Setters and Getters
   };
 

@@ -38,6 +38,8 @@ namespace Engine {
     void Undo (std::shared_ptr<Etat::State> state);
     Json::Value Serialize () const;
     CommandResolveCapa* Deserialize (const Json::Value& in);
+    void SetEngine (std::weak_ptr<Engine::Moteur> moteur);
+    CommandResolveCapa ();
     // Setters and Getters
   };
 

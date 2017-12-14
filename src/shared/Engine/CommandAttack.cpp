@@ -10,6 +10,7 @@ namespace Engine
         //std::cout<<"\t\tinit attaque"<<std::endl;
         idAttaquant = crea->GetIdObj();
     }
+    CommandAttack::CommandAttack(){}
     void CommandAttack::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec attaque"<<std::endl;

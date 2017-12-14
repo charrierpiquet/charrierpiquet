@@ -13,7 +13,10 @@ namespace Engine {
         else
             hadMalInvoc = -1;
     }
+    CommandUntap::CommandUntap()
+    {
     
+    }
     void CommandUntap::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec untap"<<std::endl;

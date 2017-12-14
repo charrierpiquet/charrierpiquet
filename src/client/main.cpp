@@ -72,6 +72,10 @@ int main(int argc,char* argv[])
             auto test = new TestMultiThread();
             test->testThread();
         }
+        else if ((string)argv[1] == "play")
+        {
+            TestReplay();            
+        }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
                

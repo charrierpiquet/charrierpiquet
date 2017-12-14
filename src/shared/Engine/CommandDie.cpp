@@ -8,7 +8,7 @@ namespace Engine {
         id_carte = carte->GetIdObj();
         id_prop = carte->GetIndJoueur();
     }
-
+CommandDie::CommandDie(){}
     void CommandDie::Execute(std::shared_ptr<Etat::State> state) {
         //std::cout<<"\t\texec die"<<std::endl;
         bool trouver = false;

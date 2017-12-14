@@ -15,6 +15,8 @@ namespace Engine {
         else
             idTarget = -1;
     }
+     CommandActive::CommandActive()
+     {}
 
     void CommandActive::Execute(std::shared_ptr<Etat::State> state) {
         //std::cout<<"\t\texec active"<<std::endl;

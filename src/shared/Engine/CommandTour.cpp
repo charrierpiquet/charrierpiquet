@@ -8,6 +8,7 @@ namespace Engine
         //std::cout<<"\t\tinit tour"<<std::endl;
         newTour = value;
     }
+    CommandTour::CommandTour(){}
     void CommandTour::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec tour"<<std::endl;

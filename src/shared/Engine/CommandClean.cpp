@@ -10,6 +10,7 @@ namespace Engine
         bonusEOT = crea->GetBonusEOT();
         blessure = crea->GetBlessure();
     }
+    CommandClean::CommandClean(){}
     void CommandClean::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec clean"<<std::endl;

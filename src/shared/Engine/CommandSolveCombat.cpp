@@ -2,6 +2,8 @@
 #include <iostream>
 namespace Engine {
 
+    
+    CommandSolveCombat::CommandSolveCombat(){}
     void CommandSolveCombat::Execute(std::shared_ptr<Etat::State> state) {
         //std::cout<<"\t\texec solvecombat"<<std::endl;
         // recup des id

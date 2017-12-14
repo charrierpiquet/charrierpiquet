@@ -26,19 +26,25 @@ namespace Engine
             for (int i = 0 ; i < (int)commands.size() ; i++ )
             {
                 commands[i]->Execute(currentState);
-                historic.push_back(commands[i]); 
-                tempo.append(commands[i]->Serialize());
+                historic.push_back(commands[i]);
+		if (record) 
+                	tempo.append(commands[i]->Serialize());
             }    
         commands.clear();
         
-        if (!tempo.empty())
+        if (!tempo.empty() && record)
             val.append(tempo);
     }
     void Moteur::RollBack()
     {
+        if (record)
+        {
+            val[val.size()-1].removeIndex(val[val.size()-1].size()-1, &val[val.size()-1][val[val.size()-1].size()-1]);
+            if (val[val.size()-1].empty())
+                val.removeIndex(val.size()-1,&val[val.size()-1]);
+        }
         historic.back()->Undo(currentState);
         historic.pop_back();
-        //std::cout<<"retour"<<std::endl;
     }
     int Moteur::HistoricSize()
     {

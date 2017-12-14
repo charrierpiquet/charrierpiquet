@@ -7,6 +7,7 @@ namespace Engine
         //std::cout<<"\t\tinit priority"<<std::endl;
         newPriority = value;
     }
+    CommandPriority::CommandPriority(){}
     void CommandPriority::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec priority"<<std::endl;

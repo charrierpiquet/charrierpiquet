@@ -17,7 +17,7 @@ namespace Engine {
         else
             idTarget = -1;
     }
-
+CommandResolveCapa::CommandResolveCapa(){}
     void CommandResolveCapa::Execute(std::shared_ptr<Etat::State> state) {
         ////std::cout<<"\t\texec resolvecapa "<<std::endl;
         std::vector<std::shared_ptr<Etat::Capacite> > capaVide;
@@ -36,7 +36,10 @@ namespace Engine {
         else if (keyWord.compare("burn") == 0)
             state->GetJoueurs()[1 - indProp]->SetPv(state->GetJoueurs()[1 - indProp]->GetPv() - 1);
         else if (keyWord.compare("draw") == 0)
-            engine.lock()->AddCommand(std::shared_ptr<CommandDraw>(new CommandDraw(indProp)));
+        {
+            if (!engine.expired())
+                engine.lock()->AddCommand(std::shared_ptr<CommandDraw>(new CommandDraw(indProp)));
+        }
         else if (keyWord.compare("TokenRat") == 0) {
             std::shared_ptr<Etat::Creature> Rat(new Etat::Creature(1, 1, true, (std::string)"Rat", coutVide, capaVide, state->GetInd(), indProp));
             Rat->SetOracle("Creature Jeton 1/1\nJeton de creature rat,\ncree par Chef des rats.");
@@ -48,7 +51,10 @@ namespace Engine {
             state->AddCardBattlefield(Squirrel);
             id_token = Squirrel->GetIdObj();
         } else if (keyWord.compare("Folie") == 0)
-            engine.lock()->AddCommand(std::shared_ptr<CommandDiscard>(new CommandDiscard(1 - indProp)));
+        {
+            if (!engine.expired())
+                engine.lock()->AddCommand(std::shared_ptr<CommandDiscard>(new CommandDiscard(1 - indProp)));
+        }
         else if (keyWord.compare("Contresort") == 0) {
             std::shared_ptr<Etat::Objet> target;
             for (unsigned int i = 0; i < state->GetPile().size(); i++)
@@ -135,6 +141,10 @@ namespace Engine {
         id_token = in["idToken"].asInt();
         pos_target = in["posTarget"].asInt();
         return this;
+    }
+    void CommandResolveCapa::SetEngine(std::weak_ptr<Engine::Moteur> moteur)
+    {
+        engine = moteur;
     }
 
 }

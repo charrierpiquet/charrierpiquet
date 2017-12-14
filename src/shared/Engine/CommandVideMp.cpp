@@ -3,6 +3,8 @@
 
 namespace Engine
 {
+    CommandVideMp::CommandVideMp()
+    {}
     void CommandVideMp::Execute(std::shared_ptr<Etat::State> state)
     { 
         //std::cout<<"\t\texec videmp"<<std::endl;

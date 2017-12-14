@@ -8,6 +8,7 @@ namespace Engine
         //std::cout<<"\t\tinit phase"<<std::endl;
         newPhase = value;
     }
+    CommandPhase::CommandPhase(){}
     void CommandPhase::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec phase"<<std::endl;
@@ -22,7 +23,7 @@ namespace Engine
     Json::Value CommandPhase::Serialize() const
     {
         Json::Value val;
-        val["typeCmd"] = "Tour";
+        val["typeCmd"] = "Phase";
         val["old"]=oldPhase;
         val["new"]=newPhase;
         return val;

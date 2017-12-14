@@ -31,6 +31,7 @@ namespace Engine {
     void Undo (std::shared_ptr<Etat::State> state);
     Json::Value Serialize () const;
     CommandTour* Deserialize (const Json::Value& in);
+    CommandTour ();
     // Setters and Getters
   };
 

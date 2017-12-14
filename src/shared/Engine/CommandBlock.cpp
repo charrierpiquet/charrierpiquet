@@ -11,6 +11,7 @@ namespace Engine
         idBloqueur = bloqueur->GetIdObj();
         idBloque = bloque->GetIdObj();
     }
+    CommandBlock::CommandBlock(){}
     void CommandBlock::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec bloque"<<std::endl;

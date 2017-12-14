@@ -33,6 +33,7 @@ namespace Engine {
     /// 			
     Json::Value Serialize () const;
     CommandBlock* Deserialize (const Json::Value& in);
+    CommandBlock ();
     // Setters and Getters
   };
 

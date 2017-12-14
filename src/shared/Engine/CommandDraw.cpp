@@ -8,6 +8,7 @@ namespace Engine
         //std::cout<<"\t\tinit draw"<<std::endl;
         idJoueur = joueur;
     }
+    CommandDraw:: CommandDraw(){}
     void  CommandDraw::Execute(std::shared_ptr<Etat::State> state)
     {
         //std::cout<<"\t\texec draw"<<std::endl;

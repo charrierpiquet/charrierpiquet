@@ -12,24 +12,26 @@ namespace Engine {
         ////std::cout<<"\t\t\tcommande : "<<isPermanent<<std::endl;
     }
 
+    CommandResolveCard::CommandResolveCard() {
+    }
+
     void CommandResolveCard::Execute(std::shared_ptr<Etat::State> state) {
         //std::cout<<"\t\texec resolvecard"<<std::endl;
         ////std::cout<<"\t\t\tpermanent ? "<<isPermanent;
-        if (isPermanent) 
-        {
+        if (isPermanent) {
             //std::cout<<"\t\t\t"<< state->GetPile()[state->GetPile().size() - 1]->GetName()<<std::endl;
             state->AddCardBattlefield(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
             ////std::cout<<"\t champ de bataille"<<std::endl;
-        }
-       else {
-            for (unsigned int i = 0; i < std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size(); i++)
-                engine.lock()->AddCommand(std::shared_ptr<CommandResolveCapa>(new CommandResolveCapa(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility()[i], engine)));
+        } else {
+            if (!engine.expired())
+                for (unsigned int i = 0; i < std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility().size(); i++)
+                    engine.lock()->AddCommand(std::shared_ptr<CommandResolveCapa>(new CommandResolveCapa(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1])->GetAbility()[i], engine)));
 
-              
+
             state->GetJoueurs()[idProp]->AddCardGraveyard(std::static_pointer_cast<Etat::Carte>(state->GetPile()[state->GetPile().size() - 1]));
             ////std::cout<<"\t cimetiere"<<std::endl;
         }
-        state->DelCardPile(state->GetPile().size()-1);
+        state->DelCardPile(state->GetPile().size() - 1);
     }
 
     void CommandResolveCard::Undo(std::shared_ptr<Etat::State> state) {
@@ -42,12 +44,11 @@ namespace Engine {
                 }
         } else {
             state->AddCardPile(state->GetJoueurs()[idProp]->GetGraveyard()[state->GetJoueurs()[idProp]->GetGraveyard().size() - 1]);
-            state->GetJoueurs()[idProp]->DelCardGraveyard(state->GetJoueurs()[idProp]->GetGraveyard().size() -1);
+            state->GetJoueurs()[idProp]->DelCardGraveyard(state->GetJoueurs()[idProp]->GetGraveyard().size() - 1);
         }
     }
-    
-    Json::Value CommandResolveCard::Serialize() const
-    {
+
+    Json::Value CommandResolveCard::Serialize() const {
         Json::Value val;
         val["typeCmd"] = "ResolveCard";
         val["IdCarte"] = idCarte;
@@ -55,12 +56,16 @@ namespace Engine {
         val["Prop"] = idProp;
         return val;
     }
-    CommandResolveCard* CommandResolveCard::Deserialize(const Json::Value& in)
-    {
+
+    CommandResolveCard* CommandResolveCard::Deserialize(const Json::Value& in) {
         idCarte = in["IdCarte"].asInt();
-        isPermanent = in["Permanent"].asInt();
+        isPermanent = in["Permanent"].asBool();
         idProp = in["Prop"].asBool();
-                return this;
+        return this;
+    }
+
+    void CommandResolveCard::SetEngine(std::weak_ptr<Engine::Moteur> moteur) {
+        engine = moteur;
     }
 
 }

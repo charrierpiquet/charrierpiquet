@@ -10,7 +10,7 @@ namespace Engine {
         idCarte = carte->GetIdObj();
         idJoueur = carte->GetIndJoueur();
     }
-
+ CommandCast::CommandCast(){}
     void CommandCast::Execute(std::shared_ptr<Etat::State> state) {
         //std::cout<<"\t\texec cast"<<std::endl;
         for (unsigned int i = 0; i < state->GetJoueurs()[idJoueur]->GetHand().size(); i++)

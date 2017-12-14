@@ -11,7 +11,7 @@ namespace Engine {
         coutI = cout->GetInc();
         coutPv = cout->GetLife();
     }
-
+CommandPaye::CommandPaye(){}
     void CommandPaye::Execute(std::shared_ptr<Etat::State> state) {
         //std::cout<<"\t\texec paye"<<std::endl;
         mB = state->GetJoueurs()[state->GetPriority()]->GetManaPool()->GetBlack();
