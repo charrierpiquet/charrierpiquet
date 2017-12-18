@@ -193,6 +193,5 @@ namespace Ai {
                 //currentState->GetJoueurs()[currentState->GetJoueurTour()]->SetAJoueTerrain(true);
             }
         }
-
     }
 }

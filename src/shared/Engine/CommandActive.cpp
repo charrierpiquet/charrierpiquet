@@ -24,12 +24,15 @@ namespace Engine {
             if (state->GetBattlefield()[i]->GetIdObj() == idSource)
                 if (!state->GetBattlefield()[i]->GetIsTap()) {
                     state->GetBattlefield()[i]->SetIsTap(true);
-                    bool need_target = false;;
+                    bool need_target = false; int ind = -1;
                     for (unsigned int j = 0; j < state->GetBattlefield()[i]->GetAbility().size(); j++)
                         if (state->GetBattlefield()[i]->GetAbility()[j]->GetKeyWord() == keyWord) 
+                        {
                             need_target = state->GetBattlefield()[i]->GetAbility()[j]->GetNeedTarget();
+                            ind = j;
+                        }
 
-                    state->AddCardPile(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(nullptr, keyWord, state->GetInd(), state->GetBattlefield()[i]->GetIndJoueur(), keyWord, need_target,state->GetBattlefield()[i])));
+                    state->AddCardPile(std::shared_ptr<Etat::Capacite>(new Etat::Capacite(nullptr, keyWord,state->GetBattlefield()[i]->GetAbility()[ind]->GetIdObj() , state->GetBattlefield()[i]->GetIndJoueur(), keyWord, need_target,state->GetBattlefield()[i])));
                     bool trouver = need_target;
                     if (trouver)
                         for (unsigned int j = 0; j < state->GetBattlefield().size(); j++)
