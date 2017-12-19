@@ -154,10 +154,9 @@ namespace Ai {
                         if (currentState->GetPile().empty())
                             if (TryCast(currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i]->GetCost()))
                                 sortie.push_back(currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i]);
-                } else {
+                } else
                     if (TryCast(currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i]->GetCost()))
                         sortie.push_back(currentState->GetJoueurs()[currentState->GetPriority()]->GetHand()[i]);
-                }
             }
             Retour(hist);
         }
@@ -366,27 +365,22 @@ namespace Ai {
         bool canCast = (0 == cost->GetInc() && 0 == cost->GetBlack() && 0 == cost->GetBlue()&& 0 == cost->GetGreen());
         if (!canCast) {
             int hist = engine->HistoricSize();
-            int inc = cost->GetInc(), b = cost->GetBlack(), u = cost->GetBlue(), g = cost->GetGreen(), k = 0;
+            int pile_size = currentState->GetPile().size();
+            int inc = cost->GetInc(), b = cost->GetBlack(), u = cost->GetBlue(), g = cost->GetGreen();
             std::cout << "\t" << inc << "\t" << b << "\t" << u << "\t" << g << std::endl << "\t\t";
             for (unsigned int i = 0; i < currentState->GetBattlefield().size(); i++)
                 if (currentState->GetBattlefield()[i]->GetIsLand() && !currentState->GetBattlefield()[i]->GetIsTap() && currentState->GetBattlefield()[i]->GetIndJoueur() == currentState->GetPriority()) {
                     if (b > 0 && currentState->GetBattlefield()[i]->GetName() == "Marais") {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         b--;
-                        k++;
-                        //std::cout<<" b ";
                     }
                     if (u > 0 && currentState->GetBattlefield()[i]->GetName() == "Ile") {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         u--;
-                        k++;
-                        //std::cout<<" u ";
                     }
                     if (g > 0 && currentState->GetBattlefield()[i]->GetName() == "Foret") {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         g--;
-                        k++;
-                        //std::cout<<" g ";
                     }
                 }
             engine->Update();
@@ -395,11 +389,10 @@ namespace Ai {
                     if (inc > 0) {
                         engine->AddCommand(std::shared_ptr<Engine::CommandActive>(new Engine::CommandActive(currentState->GetBattlefield()[i], currentState->GetBattlefield()[i]->GetAbility()[0], std::weak_ptr<Etat::Objet>())));
                         inc--;
-                        k++;
-                        //std::cout<<" i ";
                     }
             engine->Update();
-            while (k--) {
+            
+            while (pile_size != (int)currentState->GetPile().size()) {
                 engine->AddCommand(std::shared_ptr<Engine::CommandResolveCapa>(new Engine::CommandResolveCapa(std::static_pointer_cast<Etat::Capacite>(currentState->GetPile()[currentState->GetPile().size() - 1]), std::weak_ptr<Engine::Moteur>(engine))));
                 engine->Update();
             }

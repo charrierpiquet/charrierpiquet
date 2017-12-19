@@ -16,8 +16,13 @@ namespace Engine {
             idTarget = capa->GetTarget().lock()->GetIdObj();
         else
             idTarget = -1;
+        //std::cout<<"la"<<std::endl;
     }
-CommandResolveCapa::CommandResolveCapa(){}
+
+    CommandResolveCapa::CommandResolveCapa() {
+        //std::cout<<"ici et c'est pas normal"<<std::endl;
+    }
+
     void CommandResolveCapa::Execute(std::shared_ptr<Etat::State> state) {
         ////std::cout<<"\t\texec resolvecapa "<<std::endl;
         std::vector<std::shared_ptr<Etat::Capacite> > capaVide;
@@ -35,12 +40,10 @@ CommandResolveCapa::CommandResolveCapa(){}
             state->GetJoueurs()[indProp]->GetManaPool()->SetInc(state->GetJoueurs()[indProp]->GetManaPool()->GetInc() + 1);
         else if (keyWord.compare("burn") == 0)
             state->GetJoueurs()[1 - indProp]->SetPv(state->GetJoueurs()[1 - indProp]->GetPv() - 1);
-        else if (keyWord.compare("draw") == 0)
-        {
+        else if (keyWord.compare("draw") == 0) {
             if (!engine.expired())
                 engine.lock()->AddCommand(std::shared_ptr<CommandDraw>(new CommandDraw(indProp)));
-        }
-        else if (keyWord.compare("TokenRat") == 0) {
+        } else if (keyWord.compare("TokenRat") == 0) {
             std::shared_ptr<Etat::Creature> Rat(new Etat::Creature(1, 1, true, (std::string)"Rat", coutVide, capaVide, state->GetInd(), indProp));
             Rat->SetOracle("Creature Jeton 1/1\nJeton de creature rat,\ncree par Chef des rats.");
             state->AddCardBattlefield(Rat);
@@ -50,17 +53,15 @@ CommandResolveCapa::CommandResolveCapa(){}
             Squirrel->SetOracle("Creature Jeton 1/1\nJeton de creature ecureuil,\ncree par Glandee.");
             state->AddCardBattlefield(Squirrel);
             id_token = Squirrel->GetIdObj();
-        } else if (keyWord.compare("Folie") == 0)
-        {
+        } else if (keyWord.compare("Folie") == 0) {
             if (!engine.expired())
                 engine.lock()->AddCommand(std::shared_ptr<CommandDiscard>(new CommandDiscard(1 - indProp)));
-        }
-        else if (keyWord.compare("Contresort") == 0) {
+        } else if (keyWord.compare("Contresort") == 0) {
             std::shared_ptr<Etat::Objet> target;
             for (unsigned int i = 0; i < state->GetPile().size(); i++)
                 if (state->GetPile()[i]->GetIdObj() == idTarget)
                     target = state->GetPile()[i];
-            
+
             for (unsigned int i = 0; i < state->GetPile().size() - 1; i++)
                 if (state->GetPile()[i]->GetIdObj() == idTarget) {
                     state->DelCardPile(i);
@@ -75,8 +76,14 @@ CommandResolveCapa::CommandResolveCapa(){}
         for (unsigned int i = 0; i < state->GetBattlefield().size(); i++)
             for (unsigned int j = 0; j < state->GetBattlefield()[i]->GetAbility().size(); j++)
                 if (state->GetBattlefield()[i]->GetAbility()[j]->GetIdObj() == idCapa)
+                {
+                    std::cout<<"ici 1 "<<std::endl;
                     if (state->GetBattlefield()[i]->GetAbility()[j]->GetSource().lock()->GetIsPermanent())
+                    {
                         state->DelCardPile(state->GetPile().size() - 1);
+                        std::cout <<"ici 2 "<<std::endl;
+                    }
+                }
     }
 
     void CommandResolveCapa::Undo(std::shared_ptr<Etat::State> state) {
@@ -118,22 +125,20 @@ CommandResolveCapa::CommandResolveCapa(){}
                         state->AddCardPile(state->GetBattlefield()[i]->GetAbility()[j]);
     }
 
-    Json::Value CommandResolveCapa::Serialize() const
-    {
+    Json::Value CommandResolveCapa::Serialize() const {
         Json::Value val;
-        val["typeCmd"]="ResolveCapa";
-        val["keyWord"]=keyWord;
-        val["idProp"]=indProp;
-        val["idTarget"]=idTarget;
-        val["idCapa"]=idCapa;
-        val["idToken"]=id_token;
-        val["posTarget"]=pos_target;
-        
+        val["typeCmd"] = "ResolveCapa";
+        val["keyWord"] = keyWord;
+        val["idProp"] = indProp;
+        val["idTarget"] = idTarget;
+        val["idCapa"] = idCapa;
+        val["idToken"] = id_token;
+        val["posTarget"] = pos_target;
+
         return val;
     }
-    
-    CommandResolveCapa* CommandResolveCapa::Deserialize(const Json::Value& in)
-    {
+
+    CommandResolveCapa* CommandResolveCapa::Deserialize(const Json::Value& in) {
         keyWord = in["keyWord"].asString();
         indProp = in["idProp"].asInt();
         idTarget = in["idTarget"].asInt();
@@ -142,8 +147,8 @@ CommandResolveCapa::CommandResolveCapa(){}
         pos_target = in["posTarget"].asInt();
         return this;
     }
-    void CommandResolveCapa::SetEngine(std::weak_ptr<Engine::Moteur> moteur)
-    {
+
+    void CommandResolveCapa::SetEngine(std::weak_ptr<Engine::Moteur> moteur) {
         engine = moteur;
     }
 

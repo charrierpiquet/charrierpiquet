@@ -33,13 +33,13 @@ namespace Engine {
     int id_token, pos_target, indProp, idCapa, idTarget;
     // Operations
   public:
+      CommandResolveCapa ();
     CommandResolveCapa (std::shared_ptr<Etat::Capacite> capa, std::weak_ptr<Moteur> m);
     void Execute (std::shared_ptr<Etat::State> state);
     void Undo (std::shared_ptr<Etat::State> state);
     Json::Value Serialize () const;
     CommandResolveCapa* Deserialize (const Json::Value& in);
     void SetEngine (std::weak_ptr<Engine::Moteur> moteur);
-    CommandResolveCapa ();
     // Setters and Getters
   };
 
