@@ -28,8 +28,8 @@ exec_program(${DIA2CODE} ARGS -ns Etat  -d ../src/shared -t cpp ../src/state.dia
 exec_program(${DIA2CODE} ARGS -ns Render -d ../src/client -t cpp ../src/render.dia)
 exec_program(${DIA2CODE} ARGS -ns Engine -d ../src/shared -t cpp ../src/engine.dia)
 exec_program(${DIA2CODE} ARGS -ns Ai     -d ../src/shared -t cpp ../src/ia.dia)
-#exec_program(${DIA2CODE} ARGS -ns client -d ../src/client -t cpp ../src/module.dia)
-#exec_program(${DIA2CODE} ARGS -ns server -d ../src/server -t cpp ../src/module.dia)
+exec_program(${DIA2CODE} ARGS -ns client -d ../src/client -t cpp ../src/module.dia)
+exec_program(${DIA2CODE} ARGS -ns server -d ../src/server -t cpp ../src/module.dia)
 
 # Sources
 file(GLOB_RECURSE shared_sources src/shared/*.cpp)
@@ -69,5 +69,6 @@ find_library(
 	NAMES microhttpd microhttpd-10 libmicrohttpd libmicrohttpd-dll
 	DOC "microhttpd library"
 )
-#target_link_libraries(server ${MHD_LIBRARY})
-
+target_link_libraries(server ${MHD_LIBRARY})
+#include_directories ("${PROJECT_SOURCE_DIR}/extern/libmicrohttpd/include")
+#target_link_libraries(tdrest "${PROJECT_SOURCE_DIR}/extern/libmicrohttpd/lib/libmicrohttpd.so")
