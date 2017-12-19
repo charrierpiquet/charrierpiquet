@@ -112,6 +112,7 @@ namespace Render {
         str += "\nMain : " + std::to_string(state->GetJoueurs()[1-joueur]->GetHand().size());
         str += "\nDeck : " + std::to_string(state->GetJoueurs()[1-joueur]->GetLibrary().size());
         str += "\nPhase : " +state->GetPhaseName();
+        str += "\nTour du joueur " +std::to_string(state->GetJoueurTour()+1);
         str += "\nDeck : " + std::to_string(state->GetJoueurs()[joueur]->GetLibrary().size());
         str += "\nMain : " +std::to_string(state->GetJoueurs()[joueur]->GetHand().size());
         str += "\nPV : " + std::to_string(state->GetJoueurs()[joueur]->GetPv());
