@@ -10,5 +10,6 @@
 #include "Test/TestDeepIa.h"
 #include "Test/TestMultiThread.h"
 #include "Test/TestReplay.h"
+#include "Test/TestClient.h"
 
 #endif

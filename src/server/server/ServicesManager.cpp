@@ -27,6 +27,7 @@ AbstractService* ServicesManager::findService (const string& url) const {
 }
 
 HttpStatus ServicesManager::queryService (string& out, const string& in, const string& url, const string& method) { 
+    //cerr<<url<<endl;
     AbstractService* service = findService(url);
     if (!service)
         throw ServiceException(HttpStatus::NOT_FOUND,"Service "+url+" non trouvé");

@@ -76,6 +76,10 @@ int main(int argc,char* argv[])
         {
             TestReplay();            
         }
+        else if ((string)argv[1] == "network")
+        {
+            TestClient();
+        }
         else
             cout << "\""<< argv[1] << "\"n'est pas une commande implémentée."<<endl;
                
