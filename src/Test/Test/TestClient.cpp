@@ -30,7 +30,6 @@ namespace Test
         //std::cout<<obj.toStyledString()<<std::endl;
         std::string str = "\'{\"name\":\""+std::to_string(val)+"\",\"free\":false}\'";
         //std::cout<<str<<std::endl;
-<<<<<<< HEAD
         sf::Http::Request req1 ("user/-1",sf::Http::Request::Method::Post,obj.toStyledString());
         req1.setMethod(sf::Http::Request::Method::Post);
         rep = http.sendRequest(req1);
@@ -64,26 +63,4 @@ namespace Test
 		std::cout<<"nb joueur : "<<std::endl<<rep.getBody()<<std::endl;
     }
 }
-=======
-        sf::Http::Request req1 ("user",sf::Http::Request::Method::Put,obj.toStyledString());
-        req1.setMethod(sf::Http::Request::Method::Put);
-        rep = http.sendRequest(req1);
-        std::cout<<rep.getBody()<<std::endl;
-        int id = 0; // recuperer son identifiant
-        sf::Http::Request req2 ("user/"+std::to_string(id));
-        rep = http.sendRequest(req2);
-        std::cout<<rep.getBody()<<std::endl;
-        char a;
-        do// trouver un truc pour faire des choses tant que l'on a pas appuyé sur une touche
-        {
-            a = std::getchar();
-            // get
-            // si suffisament joueurs
-            //      break
-            // sleep
-        }while (a != 'a');
-        sf::Http::Request req3 ("http://localhost:8080/user/"+std::to_string(id),sf::Http::Request::Method::Delete);
-        rep = http.sendRequest(req3);
-    }
-}
->>>>>>> 89fd093ffbb508ed24727a92ec930da23f19dd05
+

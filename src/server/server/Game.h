@@ -27,10 +27,7 @@ namespace server {
     int addUser (std::unique_ptr<Joueur> user);
     void setUser (int id, std::unique_ptr<Joueur> user);
     void removeUser (int id);
-<<<<<<< HEAD
     int getNbUser () const;
-=======
->>>>>>> 89fd093ffbb508ed24727a92ec930da23f19dd05
     // Setters and Getters
     int getIdseq() const;
     void setIdseq(int idseq);
