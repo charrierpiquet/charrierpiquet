@@ -19,11 +19,14 @@ const Joueur* Game::getUser (int id) const {
     return ite->second.get();
 }
 
+<<<<<<< HEAD
 int Game::getNbUser() const
 {
 	return users.size();
 }
 
+=======
+>>>>>>> 89fd093ffbb508ed24727a92ec930da23f19dd05
 int Game::addUser (unique_ptr<Joueur> user) {
     int id = idseq++;
     users.insert(std::make_pair(id,std::move(user)));
@@ -44,8 +47,11 @@ void Game::removeUser (int id) {
     users.erase(ite);
 }
 
+<<<<<<< HEAD
 const std::map<int,std::unique_ptr<Joueur> >& Game::getUsers() const{
 	return users;
 }
 
+=======
+>>>>>>> 89fd093ffbb508ed24727a92ec930da23f19dd05
 }

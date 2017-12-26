@@ -27,7 +27,11 @@ AbstractService* ServicesManager::findService (const string& url) const {
 }
 
 HttpStatus ServicesManager::queryService (string& out, const string& in, const string& url, const string& method) { 
+<<<<<<< HEAD
     cerr<<url<<"\t"<<method<<endl;
+=======
+    //cerr<<url<<endl;
+>>>>>>> 89fd093ffbb508ed24727a92ec930da23f19dd05
     AbstractService* service = findService(url);
     if (!service)
         throw ServiceException(HttpStatus::NOT_FOUND,"Service "+url+" non trouvé");
@@ -60,6 +64,7 @@ HttpStatus ServicesManager::queryService (string& out, const string& in, const s
         return status;
     }
     else if (method == "POST") {
+<<<<<<< HEAD
         cerr << "Requête POST " << pattern << " avec contenu: " << endl << in <<"et l'id "<<id << endl;
         Json::Reader jsonReader;
         Json::Value jsonIn;
@@ -80,6 +85,15 @@ HttpStatus ServicesManager::queryService (string& out, const string& in, const s
 	        return status;
 	}    
 	}
+=======
+        cerr << "Requête POST " << pattern << " avec contenu: " << in << endl;
+        Json::Reader jsonReader;
+        Json::Value jsonIn;
+        if (!jsonReader.parse(in,jsonIn))
+            throw ServiceException(HttpStatus::BAD_REQUEST,"Données invalides: "+jsonReader.getFormattedErrorMessages());
+        return service->post(jsonIn,id);
+    }
+>>>>>>> 89fd093ffbb508ed24727a92ec930da23f19dd05
     else if (method == "PUT") {
         cerr << "Requête PUT " << pattern << " avec contenu: " << in << endl;
         Json::Reader jsonReader;
