@@ -1,0 +1,12 @@
+Type (creature, terrain, invocation, sort, pas de majuscule ni d'accent)
+Nom (de la carte, sans accent)
+Coût (PV Inco Noir Bleu Vert, entiers, dans cet ordre, séparés par des espaces)
+force (De la créature, mettre 0 si la carte n'est pas une créature)
+endurance (de même)
+Nombre de capacités (nombre de capacités ci dessous)
+capacité 1 (coût (même que au dessus) + cibles (0 si la capacité n'a pas de cibles, 1 si la capacité en a) + mot clé)
+capa 2
+...
+Texte oracle (Répéter ce qu'il y a d'écrit sur la carte)
+Suite du texte oracle (Revenir à la ligne avant 40 caractères)
+

@@ -3,6 +3,7 @@
 #define ETAT__CREATURE__H
 
 #include <string>
+#include <memory>
 #include <vector>
 
 namespace Etat {
@@ -18,7 +19,7 @@ namespace Etat {
 namespace Etat {
 
   /// class Creature - 
-  class Creature : public Carte {
+  class Creature : public Etat::Carte {
     // Attributes
   private:
     int force;
@@ -28,6 +29,7 @@ namespace Etat {
     bool malInvoc;
     // Operations
   public:
+    Creature (int strengh, int thougness, bool token, std::string nom, std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
     int GetForce ();
     int GetEndurance ();
     bool GetMalInvoc ();
@@ -36,7 +38,6 @@ namespace Etat {
     void SetBonusEOT (int value);
     void SetBlessure (int value);
     void SetMalInvoc (bool value);
-    Creature (int strengh, int thougness, bool token, std::string nom, Cout cout, std::vector<Capacite> capa, int id, int prop);
     // Setters and Getters
   };
 

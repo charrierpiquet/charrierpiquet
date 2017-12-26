@@ -1,15 +1,19 @@
 #include "Creature.h"
+#include <iostream>
 
 namespace Etat
 {
-    Creature::Creature(int strengh, int thougness,bool token,std::string nom, Cout cout,
-            std::vector<Capacite> capa, int id, int prop):Carte(true,false,true,token, nom, cout, capa, id, prop)
+    Creature::Creature(int strengh, int thougness,bool token,std::string nom, std::shared_ptr<Cout> cout,
+            std::vector<std::shared_ptr<Capacite> > capa, int id, int prop):Carte(true,false,true,token, nom, cout, capa, id, prop)
     {
         force = strengh;
         endurance = thougness;
         
-        blessure = 0;
-        bonusEOT = 0;
+        //bonusEOT = std::shared_ptr<int>(new int(0));
+        //blessure = std::shared_ptr<int>(new int(0));
+        
+        bonusEOT = 0; blessure = 0;
+       
         malInvoc = true;
     }
     
@@ -20,11 +24,12 @@ namespace Etat
     
     int Creature::GetEndurance()
     {
-        return endurance + GetCounter() + bonusEOT;
+        return endurance + GetCounter() + bonusEOT - blessure;
     }
     
     int Creature::GetBlessure()
     {
+        //std::cout<<*blessure<<std::endl;
         return blessure;
     }
     
@@ -33,17 +38,17 @@ namespace Etat
         return malInvoc;
     }
     
-    int Creature::GetBonusEOT()
+    int Creature::GetBonusEOT() 
     {
         return bonusEOT;
     }
     
-    void Creature::SetBlessure(int value)
+    void Creature::SetBlessure(int value) 
     {
         blessure = std::max(value,0);
     }
     
-    void Creature::SetBonusEOT(int value)
+    void Creature::SetBonusEOT(int value) 
     {
         bonusEOT = value;
     }
@@ -51,8 +56,5 @@ namespace Etat
     void Creature::SetMalInvoc(bool value)
     {
         malInvoc = value;
-    }
-    
-
-    
+    }    
 };

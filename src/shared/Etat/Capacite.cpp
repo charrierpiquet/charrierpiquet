@@ -1,29 +1,30 @@
 #include "Capacite.h"
-#include <iostream>
-#include <string>
+#include "iostream"
 
 namespace Etat
 {
-    Capacite::Capacite(std::string motclef, int type, int id, int prop):Objet(true, id, prop)
+    Capacite::Capacite(std::shared_ptr<Cout> cout, std::string motclef, int id, int prop, std::string nom, bool target, std::weak_ptr<Carte> origine):Objet(true, id, prop, nom,cout)
     {
         keyWord = motclef;
-        
-        if (type >= 0 && type <= 2)
-            categorie = type; // 0 = statique; 1 = activée; 2 = déclenchée
-        else
-            std::cout<<"erreur, ce type de capacite n'existe pas"<<std::endl;
-    }  
-    
-    int Capacite::GetCategorie()
-    {
-        return categorie;
+        needTarget = target;
+        source = origine;
     }
     
-    std::string Capacite::GetKeyWord()
+    std::string Capacite::GetKeyWord() const
     {
         return keyWord;
     }
+    bool Capacite::GetNeedTarget() const
+    {
+        return needTarget;
+    }
+    std::weak_ptr<Carte> Capacite::GetSource() const
+    {
+		return source;
+	}
+	void Capacite::SetSource(std::weak_ptr<Carte> origine)
+	{
+		source = origine;
+	}
   
-    
 };
-

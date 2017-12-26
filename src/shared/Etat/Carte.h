@@ -2,8 +2,9 @@
 #ifndef ETAT__CARTE__H
 #define ETAT__CARTE__H
 
-#include <string>
 #include <vector>
+#include <memory>
+#include <string>
 
 namespace Etat {
   class Cout;
@@ -27,24 +28,20 @@ namespace Etat {
     bool isTap;
     bool isCreature;
     bool isToken;
-    std::string name;
-    Cout cost;
     int counters;
-    std::vector<Capacite> ability;
+    std::vector<std::shared_ptr<Capacite> > ability;
     // Operations
   public:
-    std::string GetName ();
-    Cout GetCost ();
-    int GetCounter ();
-    bool GetIsLand ();
-    bool GetIsPermanent ();
-    bool GetIsCreature ();
-    bool GetIsToken ();
-    bool GetIsTap ();
-    std::vector<Capacite> GetAbility ();
+    Carte (bool permanent, bool land, bool creature, bool token, std::string nom, std::shared_ptr<Cout> cout, std::vector<std::shared_ptr<Capacite> > capa, int id, int prop);
+    int GetCounter () const;
+    bool GetIsLand () const;
+    bool GetIsPermanent () const;
+    bool GetIsCreature () const;
+    bool GetIsToken () const;
+    bool GetIsTap () const;
+    std::vector<std::shared_ptr<Capacite> > GetAbility () const;
     void SetIsTap (bool value);
     void SetCounter (int value);
-    Carte (bool permanent, bool land, bool creature, bool token, std::string nom, Cout cout, std::vector<Capacite> capa, int id, int prop);
     // Setters and Getters
   };
 
