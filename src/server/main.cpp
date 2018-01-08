@@ -133,6 +133,12 @@ void TestListen() {
     }
 }
 
+// comportement du service commande
+// get k > 0 renvois toute les commandes d'ID supérieur a k
+// get k < 0 renvois le nombre de commande
+// put ajoute une commande (et renvois l'id mais on s'en fout)
+// delete k supprime la commande k
+
 
 // Gestionnaire principal
 

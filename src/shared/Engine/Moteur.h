@@ -28,9 +28,10 @@ namespace Engine {
     std::vector<std::shared_ptr<Command> > historic;
     bool record     = false;
     Json::Value val;
+    bool network     = false;
     // Operations
   public:
-    Moteur (std::shared_ptr<Etat::State> state);
+    Moteur (std::shared_ptr<Etat::State> state, bool record = false, bool network = false);
     void AddCommand (std::shared_ptr<Command> cmd);
     void Update ();
     void RollBack ();

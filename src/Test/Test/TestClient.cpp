@@ -8,6 +8,8 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
 
 
 namespace Test
@@ -30,8 +32,9 @@ namespace Test
         //std::cout<<obj.toStyledString()<<std::endl;
         std::string str = "\'{\"name\":\""+std::to_string(val)+"\",\"free\":false}\'";
         //std::cout<<str<<std::endl;
-        sf::Http::Request req1 ("user/-1",sf::Http::Request::Method::Post,obj.toStyledString());
-        req1.setMethod(sf::Http::Request::Method::Post);
+        sf::Http::Request req1 ("user",sf::Http::Request::Method::Put,obj.toStyledString());
+        //req1.setMethod(sf::Http::Request::Method::Post);
+	req1.setField("Content-Type","application/x-www-form-urlencoded");
         rep = http.sendRequest(req1);
         std::cout<<rep.getBody()<<std::endl;
 	
@@ -46,10 +49,31 @@ namespace Test
         std::cout<<rep.getBody()<<std::endl;
 
 	// on affiche les joueurs connectes
-        	sf::Http::Request req3 ("user/-1");
+        sf::Http::Request req3 ("user/-1");
+	rep = http.sendRequest(req3);
+	std::cout<<"nb joueur : "<<std::endl<<rep.getBody()<<std::endl;
+	
+	// tant que y a pas deux joueurs connectes
+	while (1)
+	{
+		// attendre
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		// recuperer le nombre de joueur
 		rep = http.sendRequest(req3);
-		std::cout<<"nb joueur : "<<std::endl<<rep.getBody()<<std::endl;
+		if (jsonReader.parse(rep.getBody(),jsonIn))
+			if(jsonIn.size() == 2)
+				break;
+	}
 
+	// init affichage et tout et tout
+	// boucle de partie
+		// boucle d'evenement
+			// si on quitte
+		// on recupère les commandes et on les executes
+		// si c'est a nous de jouer (comparer id et priority)
+			// on fait penser l'IA
+		// on attend 1 seconde
+			
 
 	getc(stdin);
 
