@@ -11,8 +11,9 @@
 #include <chrono>
 #include <thread>
 
-void readCommand(Json::Value val);
-void actu();
+void readCommand(Json::Value,std::shared_ptr<Engine::Moteur>);
+void actu(std::shared_ptr<Engine::Moteur>);
+std::weak_ptr<Engine::Moteur> null_weak_ptr;
 
 namespace Test
 {
@@ -81,7 +82,7 @@ namespace Test
 	// on attend 1 seconde
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	// on récupère la pioche
-	actu();
+	actu(moteur);
 	// boucle de partie
 	while (window.isOpen())
         {
@@ -90,11 +91,11 @@ namespace Test
                 if (event.type == sf::Event::Closed)
                 	window.close();
 		// on recupère les commandes et on les executes
-		actu();
+		actu(moteur);
 		// si c'est a nous de jouer (comparer id et priority)
 		if (id == state->GetPriority())
 			// on fait penser l'IA
-			ia.think();
+			ia.Think();
 		// on attend 1 seconde
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));			
 	}
@@ -111,17 +112,18 @@ namespace Test
     }
 }
 
-void actu()
+void actu(std::shared_ptr<Engine::Moteur> moteur)
 {
+	sf::Http http ("http://localhost",8080); // oui c'est moche
 	sf::Http::Request request ("command/"+std::to_string(moteur->HistoricSize()));
 	auto rep = http.sendRequest(request);
 	Json::Reader jsonReader;
 	Json::Value jsonIn;
 	if (jsonReader.parse(rep.getBody(),jsonIn))
-		readCommand(jsonIn);
+		readCommand(jsonIn,moteur);
 }
 
-void readCommand(Json::Value val)
+void readCommand(Json::Value val, std::shared_ptr<Engine::Moteur> moteur)
 {
 	for (unsigned int i = 0 ; i < val.size() ; i++)
 	{
