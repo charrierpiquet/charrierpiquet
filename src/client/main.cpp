@@ -19,8 +19,6 @@ using namespace Etat;
 using namespace Test;
 using namespace Render;
 
-// c'est quoi ces problemes de memoire ?!
-
 int main(int argc,char* argv[]) 
 {
     //Exemple exemple;

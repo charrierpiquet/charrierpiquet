@@ -44,7 +44,7 @@ namespace Engine
 	if (!tempo.empty() && network)
 	{
 		sf::Http http ("http://localhost",8080);
-		sf::Http::Request q ("command",sf::Http::Request::Method::Put,tempon.toStyledString());
+		sf::Http::Request q ("command",sf::Http::Request::Method::Put,tempo.toStyledString());
 		q.setField("Content-Type","application/x-www-form-urlencoded");
 		http.sendRequest(q);
 	}
@@ -60,7 +60,7 @@ namespace Engine
         historic.back()->Undo(currentState);
         historic.pop_back();
 	// envoyer commande delete
-	if (!tempo.empty() && network)
+	if (network)
 	{
 		sf::Http http ("http://localhost",8080);
 		sf::Http::Request size ("command/-1", sf::Http::Request::Method::Get);
@@ -69,8 +69,8 @@ namespace Engine
 		Json::Value jsonIn;
 		if (jsonReader.parse(rep.getBody(),jsonIn))
 		{
-			int k = jsonIn["size"].toInt();
-			sf::Http::Request q ("command/"+std::to_string(k-1),sf::Http::Request::Method::Delete,tempon.toStyledString());
+			int k = jsonIn["size"].asInt();
+			sf::Http::Request q ("command/"+std::to_string(k-1),sf::Http::Request::Method::Delete);
 			http.sendRequest(q);
 		}
 	}
