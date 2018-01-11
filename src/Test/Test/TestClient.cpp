@@ -55,7 +55,7 @@ namespace Test
         sf::Http::Request req3 ("user/-1");
 	rep = http.sendRequest(req3);
 	std::cout<<"nb joueur : "<<std::endl<<rep.getBody()<<std::endl;
-	
+	/*
 	// tant que y a pas deux joueurs connectes
 	while (1)
 	{
@@ -98,8 +98,8 @@ namespace Test
 			ia.Think();
 		// on attend 1 seconde
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));			
-	}
-	//getc(stdin);
+	}*/
+	getc(stdin);
 
 	// on supprime le gens
         sf::Http::Request req4 ("user/"+std::to_string(id),sf::Http::Request::Method::Delete);
