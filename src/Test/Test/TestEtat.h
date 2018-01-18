@@ -1,5 +1,5 @@
-#ifndef TESTETAT_H
-#define TESTETAT_H
+#ifndef TEST__TESTETAT__H
+#define TEST__TESTETAT__H
 
 namespace Test
 {

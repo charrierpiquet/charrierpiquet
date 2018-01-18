@@ -2,33 +2,51 @@
 
 namespace Etat
 {
-    Objet::Objet(bool capa, int id, int prop)
+    Objet::Objet(bool capa, int id, int prop, std::string nom, std::shared_ptr<Cout> cout)
     {
         isCapacite = capa;
         idObj = id;
         indJoueur = prop;
+        name = nom;
+        cost = cout;
+        //oracle = std::shared_ptr<std::string>(new std::string());
     }
     
-    void Objet::SetTarget(Objet cible)
+    void Objet::SetTarget(std::weak_ptr<Objet> cible)
     {
-        target = &cible;
+        target = cible;
     }
-    Objet Objet::GetTarget()
+    std::weak_ptr<Objet> Objet::GetTarget() const
     {
-        return *target;
+        return target;
     }
-    bool Objet::GetIsCapacite()
+    bool Objet::GetIsCapacite() const
     {
         return isCapacite;
     }
-    int Objet::GetIndJoueur()
+    int Objet::GetIndJoueur() const
     {
         return indJoueur;
     }
-    int Objet::GetIdObj()
+    int Objet::GetIdObj() const
     {
         return idObj;
     }
-    
+    void Objet::SetOracle(std::string txt)
+    {
+        oracle = txt;
+    }
+    std::string Objet::GetOracle() const
+    {
+        return oracle;
+    }
+    std::string Objet::GetName() const
+    {
+        return name;
+    }
+    std::shared_ptr<Cout> Objet::GetCost()
+    {
+        return cost;
+    }
 };
 

@@ -4,12 +4,6 @@
 
 
 namespace Etat {
-  class Cout;
-}
-
-#include "Cout.h"
-
-namespace Etat {
 
   /// class ManaPool - 
   class ManaPool {
@@ -22,18 +16,16 @@ namespace Etat {
     int multi;
     // Operations
   public:
-    void AddInc ();
-    void AddBlue ();
-    void AddBlack ();
-    void AddGreen ();
-    void AddMulti ();
-    void Vider ();
-    void Payer (Cout cost);
-    int GetInc ();
-    int GetBlue ();
-    int GetBlack ();
-    int GetGreen ();
-    int GetMulti ();
+    void SetInc (int value);
+    void SetBlue (int value);
+    void SetBlack (int value);
+    void SetGreen (int value);
+    void SetMulti (int value);
+    int GetInc () const;
+    int GetBlue () const;
+    int GetBlack () const;
+    int GetGreen () const;
+    int GetMulti () const;
     // Setters and Getters
   };
 

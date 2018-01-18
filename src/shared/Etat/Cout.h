@@ -13,23 +13,15 @@ namespace Etat {
     int black;
     int blue;
     int green;
-    int discard;
     int life;
-    int permanent;
-    int meule;
-    int exile;
     // Operations
   public:
-    int GetDiscard ();
-    int GetLife ();
-    int GetPermanent ();
-    int GetMeule ();
-    int GetExile ();
-    int GetInc ();
-    int GetBlue ();
-    int GetBlack ();
-    int GetGreen ();
-    void SetCost (int inc = 0, int blue = 0, int black = 0, int green = 0, int discard = 0, int life = 0, int permanent = 0, int exile = 0, int meule = 0);
+    Cout (int L, int I, int B, int U, int G);
+    int GetLife () const;
+    int GetInc () const;
+    int GetBlue () const;
+    int GetBlack () const;
+    int GetGreen () const;
     // Setters and Getters
   };
 
